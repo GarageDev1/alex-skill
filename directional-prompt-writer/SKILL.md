@@ -1,9 +1,9 @@
 ---
-name: strategic-prompt-writer
-description: Write prompts at the strategic/methodology level instead of the prescriptive task level. Use this skill ONLY when the user is explicitly asking you to write, draft, generate, design, or improve a prompt that will be given to another AI model (Claude, GPT, etc.) to execute a task. Trigger phrases include "帮我写个 prompt", "写一段提示词", "写一个让 Claude/GPT 做 X 的 prompt", "draft a prompt for…", "write a system prompt that…", "design a prompt to make the model…", or any request where the explicit deliverable is a prompt for an AI executor. Do NOT trigger for general instruction-writing, workflow documentation, role descriptions for humans, or tasks where "prompt" is not the explicit deliverable — only when the user is clearly asking for AI-executor prompt text.
+name: directional-prompt-writer
+description: Write prompts at the directional/methodology level instead of the prescriptive task level. Use this skill ONLY when the user is explicitly asking you to write, draft, generate, design, or improve a prompt that will be given to another AI model (Claude, GPT, etc.) to execute a task. Trigger phrases include "帮我写个 prompt", "写一段提示词", "写一个让 Claude/GPT 做 X 的 prompt", "draft a prompt for…", "write a system prompt that…", "design a prompt to make the model…", or any request where the explicit deliverable is a prompt for an AI executor. Do NOT trigger for general instruction-writing, workflow documentation, role descriptions for humans, or tasks where "prompt" is not the explicit deliverable — only when the user is clearly asking for AI-executor prompt text.
 ---
 
-# Strategic Prompt Writer
+# Directional Prompt Writer
 
 ## Why this skill exists
 
