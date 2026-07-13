@@ -1,4 +1,4 @@
 interface:
   display_name: "Document Structure Map"
-  short_description: "Turn any document into a shareable vertical structure map."
-  default_prompt: "Use $document-structure-map to turn this document into a vertical structure map."
+  short_description: "将研究报告、长文档转为适合打印、汇报与插入的结构图。"
+  default_prompt: "Use $document-structure-map to turn this document into a print-ready vertical structure map."

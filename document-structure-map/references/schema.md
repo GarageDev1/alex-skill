@@ -35,13 +35,15 @@ Use this schema as the handoff between document analysis and visual rendering. K
 }
 ```
 
+`style.preset` 固定使用 `reference` 或省略；该 skill 专注于文档插入/打印版。需要生成手机转发长图时，使用 `$mobile-share-map`。
+
 Allowed `tone` values: `blue`, `amber`, `green`, `pink`, `cyan`, `purple`, `orange`, `gray`. If omitted, the renderer cycles colors.
 
 For the reference screenshot style:
 
 - Set `style.preset` to `reference` or omit it; the renderer defaults to the reference style.
 - Keep `style.show_title` false unless the user asks for a visible document title.
-- Put the full visible section heading in `tag`. The renderer places `tag` left of the timeline rail.
+- Put the full visible section heading in `tag`. The renderer places `tag` directly over the timeline rail.
 - Use `heading` only for a right-column subheading. Most reference-style outputs should leave it empty.
 - Prefer tone order: `blue` -> `amber` -> `green` -> `pink` -> `cyan` -> `purple` -> `orange`.
 

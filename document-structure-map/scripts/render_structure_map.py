@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render a document structure-map JSON file into a reference-style HTML page."""
+"""Render a document structure-map JSON file into print or mobile-share HTML."""
 
 from __future__ import annotations
 
@@ -26,6 +26,22 @@ TONE_ORDER = ["blue", "amber", "green", "pink", "cyan", "purple", "orange", "gra
 
 def esc(value: Any) -> str:
     return html.escape("" if value is None else str(value), quote=True)
+
+
+def clamp_int(value: Any, default: int, low: int, high: int) -> int:
+    try:
+        return max(low, min(high, int(value)))
+    except (TypeError, ValueError):
+        return default
+
+
+def safe_color(value: Any, default: str = "#e45b3f") -> str:
+    text = str(value or "").strip()
+    if len(text) in (4, 7) and text.startswith("#") and all(
+        char in "0123456789abcdefABCDEF" for char in text[1:]
+    ):
+        return text
+    return default
 
 
 def palette_for(tone: str | None, index: int) -> dict[str, str]:
@@ -143,16 +159,25 @@ def render_blocks(blocks: list[dict[str, Any]], pal: dict[str, str]) -> str:
     return "\n".join(rendered)
 
 
-def render_section(section: dict[str, Any], index: int) -> str:
+def render_section(section: dict[str, Any], index: int, preset: str) -> str:
     pal = palette_for(section.get("tone"), index)
     rail_label = section.get("tag") or section.get("title") or f"{index + 1:02d}"
     heading = section.get("heading", "")
-    heading_html = f"<h2>{esc(heading)}</h2>" if heading else ""
+    if preset == "mobile-share":
+        kicker_html = f'<div class="section-kicker">{esc(heading)}</div>' if heading else ""
+        heading_html = f"{kicker_html}<h2>{esc(rail_label)}</h2>"
+        label_html = f'<div class="section-label mobile-index">{index + 1:02d}</div>'
+    else:
+        heading_html = f"<h2>{esc(heading)}</h2>" if heading else ""
+        label_html = (
+            f'<div class="section-label" style="background:{pal["label"]}; '
+            f'color:{pal["accent"]}">{esc(rail_label)}</div>'
+        )
     cards = render_cards(section.get("cards", []), pal)
     blocks = render_blocks(section.get("blocks", []), pal)
     return f"""
     <section class="map-section">
-      <div class="section-label" style="background:{pal['label']}; color:{pal['accent']}">{esc(rail_label)}</div>
+      {label_html}
       <div class="section-body">
         {heading_html}
         <div class="cards">{cards}</div>
@@ -162,8 +187,8 @@ def render_section(section: dict[str, Any], index: int) -> str:
     """
 
 
-def render_hero(data: dict[str, Any], style: dict[str, Any]) -> str:
-    if not style.get("show_title", False):
+def render_hero(data: dict[str, Any], style: dict[str, Any], preset: str) -> str:
+    if not style.get("show_title", preset == "mobile-share"):
         return ""
     meta = data.get("meta", {})
     meta_bits = [meta.get("source"), meta.get("date"), meta.get("analyst")]
@@ -180,12 +205,63 @@ def render_hero(data: dict[str, Any], style: dict[str, Any]) -> str:
     """
 
 
+def render_mobile_masthead(data: dict[str, Any]) -> str:
+    share = data.get("share", {})
+    meta = data.get("meta", {})
+    eyebrow = share.get("eyebrow") or meta.get("source") or "智富界 · 研究简报"
+    badge = share.get("badge") or meta.get("date") or ""
+    badge_html = f'<span class="masthead-badge">{esc(badge)}</span>' if badge else ""
+    return f"""
+    <div class="safe-area" aria-hidden="true"></div>
+    <div class="mobile-masthead">
+      <span class="masthead-eyebrow">{esc(eyebrow)}</span>
+      {badge_html}
+    </div>
+    """
+
+
+def render_mobile_footer(data: dict[str, Any]) -> str:
+    share = data.get("share", {})
+    if share.get("show_footer", True) is False:
+        return ""
+    title = share.get("footer_title") or "欢迎关注「智富界」公众号"
+    body = share.get("footer_text") or "获取更多研究长图与投资洞察"
+    qr_image = share.get("qr_image")
+    qr_label = share.get("qr_label") or "扫码关注"
+    if qr_image:
+        qr_html = f'<img class="qr-image" src="{esc(qr_image)}" alt="{esc(qr_label)}">'
+    else:
+        qr_html = '<div class="qr-placeholder"><span>二维码</span><small>预留位</small></div>'
+    return f"""
+    <footer class="mobile-footer">
+      <div class="footer-copy">
+        <div class="footer-title">{esc(title)}</div>
+        <div class="footer-text">{esc(body)}</div>
+      </div>
+      <div class="footer-qr">
+        {qr_html}
+        <div class="qr-label">{esc(qr_label)}</div>
+      </div>
+    </footer>
+    <div class="bottom-safe-area" aria-hidden="true"></div>
+    """
+
+
 def render_html(data: dict[str, Any]) -> str:
     style = data.get("style", {})
+    preset = style.get("preset", "reference")
+    if preset not in {"reference", "mobile-share"}:
+        preset = "reference"
     sections = data.get("sections", [])
-    section_html = "\n".join(render_section(section, index) for index, section in enumerate(sections))
-    hero_html = render_hero(data, style)
+    section_html = "\n".join(
+        render_section(section, index, preset) for index, section in enumerate(sections)
+    )
+    hero_html = render_hero(data, style, preset)
     map_class = "map has-hero" if hero_html else "map"
+    masthead_html = render_mobile_masthead(data) if preset == "mobile-share" else ""
+    footer_html = render_mobile_footer(data) if preset == "mobile-share" else ""
+    safe_top = clamp_int(style.get("safe_top_px"), 132, 72, 240)
+    accent = safe_color(style.get("accent"))
     return f"""<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -209,9 +285,9 @@ def render_html(data: dict[str, Any]) -> str:
       padding: 28px 0 48px;
     }}
     .hero {{
-      margin-left: 230px;
+      margin-left: 0;
       margin-bottom: 20px;
-      max-width: 700px;
+      max-width: 960px;
     }}
     h1 {{
       margin: 0 0 8px;
@@ -231,12 +307,12 @@ def render_html(data: dict[str, Any]) -> str:
     }}
     .map {{
       position: relative;
-      padding-left: 230px;
+      padding-left: 98px;
     }}
     .map::before {{
       content: "";
       position: absolute;
-      left: 176px;
+      left: 62px;
       top: 0;
       bottom: 0;
       width: 1.5px;
@@ -249,11 +325,12 @@ def render_html(data: dict[str, Any]) -> str:
       min-height: 40px;
     }}
     .section-label {{
-      position: absolute;
-      left: -230px;
-      top: 0;
-      width: 168px;
-      min-height: 28px;
+      position: relative;
+      z-index: 1;
+      display: table;
+      width: auto;
+      min-height: 0;
+      margin: 0 0 14px -98px;
       padding: 6px 8px;
       border-radius: 2px;
       font-size: 14px;
@@ -262,16 +339,10 @@ def render_html(data: dict[str, Any]) -> str:
       overflow-wrap: anywhere;
     }}
     .section-label::after {{
-      content: "";
-      position: absolute;
-      right: -8px;
-      top: 15px;
-      width: 8px;
-      height: 1px;
-      background: #272727;
+      display: none;
     }}
     .section-body {{
-      width: min(700px, 100%);
+      width: min(820px, 100%);
       padding-top: 0;
     }}
     h2 {{
@@ -291,9 +362,9 @@ def render_html(data: dict[str, Any]) -> str:
     .timeline-node::before {{
       content: "";
       position: absolute;
-      left: -54px;
+      left: -36px;
       top: 18px;
-      width: 54px;
+      width: 36px;
       height: 1px;
       background: #272727;
     }}
@@ -456,27 +527,26 @@ def render_html(data: dict[str, Any]) -> str:
         padding-top: 18px;
       }}
       .hero {{
-        margin-left: 112px;
+        margin-left: 0;
       }}
       .map {{
-        padding-left: 112px;
+        padding-left: 64px;
       }}
       .map::before {{
-        left: 88px;
+        left: 38px;
       }}
       .section-label {{
-        left: -112px;
-        width: 82px;
+        margin-left: -64px;
+        margin-bottom: 10px;
         font-size: 11px;
         padding: 5px 6px;
       }}
       .section-label::after {{
-        right: -6px;
-        width: 6px;
+        display: none;
       }}
       .timeline-node::before {{
-        left: -24px;
-        width: 24px;
+        left: -26px;
+        width: 26px;
       }}
       .section-body {{
         width: 100%;
@@ -488,14 +558,194 @@ def render_html(data: dict[str, Any]) -> str:
         padding: 11px;
       }}
     }}
+
+    /* Dedicated 1080px composition for social sharing on phones. */
+    .preset-mobile-share {{
+      background: #eef1f5;
+      color: #17191f;
+      font-size: 30px;
+      line-height: 1.62;
+    }}
+    .preset-mobile-share .page {{
+      width: 1080px;
+      max-width: none;
+      margin: 0 auto;
+      padding: 0 72px;
+      background: #ffffff;
+      overflow: hidden;
+    }}
+    .preset-mobile-share .safe-area {{
+      height: var(--mobile-safe-top);
+      margin: 0 -72px;
+      background: #ffffff;
+    }}
+    .preset-mobile-share .mobile-masthead {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 92px;
+      padding: 0 0 24px;
+      border-bottom: 3px solid #191b20;
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 3px;
+    }}
+    .preset-mobile-share .masthead-badge {{
+      color: var(--brand-accent);
+      letter-spacing: 1px;
+    }}
+    .preset-mobile-share .hero {{
+      max-width: none;
+      margin: 54px 0 62px;
+    }}
+    .preset-mobile-share h1 {{
+      margin: 0 0 22px;
+      font-size: 62px;
+      line-height: 1.16;
+      letter-spacing: -2px;
+    }}
+    .preset-mobile-share .subtitle {{
+      max-width: 880px;
+      color: #545966;
+      font-size: 30px;
+      line-height: 1.55;
+    }}
+    .preset-mobile-share .meta {{
+      margin-top: 18px;
+      color: #8b909b;
+      font-size: 24px;
+    }}
+    .preset-mobile-share .map,
+    .preset-mobile-share .map.has-hero {{ padding-left: 0; }}
+    .preset-mobile-share .map::before {{ display: none; }}
+    .preset-mobile-share .map-section {{
+      display: grid;
+      grid-template-columns: 128px minmax(0, 1fr);
+      gap: 28px;
+      margin: 0;
+      padding: 50px 0 58px;
+      border-top: 2px solid #282b32;
+    }}
+    .preset-mobile-share .map-section:first-child {{ border-top: 0; padding-top: 0; }}
+    .preset-mobile-share .section-label.mobile-index {{
+      position: static;
+      width: auto;
+      min-height: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #111318;
+      font-size: 72px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -4px;
+    }}
+    .preset-mobile-share .section-label::after,
+    .preset-mobile-share .timeline-node::before {{ display: none; }}
+    .preset-mobile-share .section-body {{ width: 100%; }}
+    .preset-mobile-share .section-kicker {{
+      margin: 2px 0 9px;
+      color: var(--brand-accent);
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }}
+    .preset-mobile-share h2 {{
+      margin: 0 0 31px;
+      color: #15171c;
+      font-size: 40px;
+      line-height: 1.28;
+      font-weight: 900;
+    }}
+    .preset-mobile-share .cards {{ gap: 23px; }}
+    .preset-mobile-share .claim-card {{
+      position: relative;
+      min-height: 0;
+      padding: 0 0 0 40px;
+      background: transparent !important;
+      border-radius: 0;
+      color: #30333b;
+      overflow-wrap: anywhere;
+    }}
+    .preset-mobile-share .claim-card::after {{
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 21px;
+      width: 22px;
+      height: 4px;
+      background: #17191f;
+    }}
+    .preset-mobile-share .claim-label {{ color: var(--brand-accent); font-weight: 900; }}
+    .preset-mobile-share .claim-text {{ color: #353941; }}
+    .preset-mobile-share .source {{ margin-top: 8px; color: #8b909b; font-size: 22px; }}
+    .preset-mobile-share .visual-block {{
+      margin-top: 34px;
+      padding: 28px;
+      border-radius: 8px;
+      box-shadow: 0 5px 22px rgba(25, 35, 55, 0.07);
+    }}
+    .preset-mobile-share .visual-block h3 {{ font-size: 27px; }}
+    .preset-mobile-share table {{ font-size: 23px; }}
+    .preset-mobile-share th,
+    .preset-mobile-share td {{ padding: 16px 14px; }}
+    .preset-mobile-share .eco-grid {{ grid-template-columns: repeat(2, 1fr); gap: 18px; }}
+    .preset-mobile-share .eco-item h4 {{ font-size: 25px; }}
+    .preset-mobile-share .eco-item ul,
+    .preset-mobile-share .note-block p {{ font-size: 23px; }}
+    .preset-mobile-share .matrix {{ height: 420px; }}
+    .preset-mobile-share .mobile-footer {{
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      align-items: center;
+      gap: 48px;
+      margin: 44px -72px 0;
+      padding: 56px 72px;
+      color: #ffffff;
+      background: #132f63;
+    }}
+    .preset-mobile-share .footer-title {{ font-size: 38px; line-height: 1.3; font-weight: 900; }}
+    .preset-mobile-share .footer-text {{
+      margin-top: 14px;
+      color: rgba(255,255,255,.78);
+      font-size: 25px;
+    }}
+    .preset-mobile-share .footer-qr {{ text-align: center; }}
+    .preset-mobile-share .qr-image,
+    .preset-mobile-share .qr-placeholder {{
+      display: flex;
+      width: 210px;
+      height: 210px;
+      margin: 0 auto;
+      border: 12px solid #ffffff;
+      background: #ffffff;
+      object-fit: contain;
+    }}
+    .preset-mobile-share .qr-placeholder {{
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-color: #d9dee8;
+      color: #657084;
+      font-weight: 900;
+    }}
+    .preset-mobile-share .qr-placeholder small {{ font-size: 20px; font-weight: 500; }}
+    .preset-mobile-share .qr-label {{ margin-top: 10px; font-size: 21px; }}
+    .preset-mobile-share .bottom-safe-area {{
+      height: 96px;
+      margin: 0 -72px;
+      background: #132f63;
+    }}
   </style>
 </head>
-<body>
-  <main class="page">
+<body class="preset-{preset}">
+  <main class="page" style="--mobile-safe-top:{safe_top}px; --brand-accent:{accent}">
+    {masthead_html}
     {hero_html}
     <div class="{map_class}">
       {section_html}
     </div>
+    {footer_html}
   </main>
 </body>
 </html>
@@ -515,9 +765,16 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Render document structure-map JSON to HTML.")
     parser.add_argument("input", help="Input JSON file, or '-' for stdin.")
     parser.add_argument("--output", "-o", help="Output HTML file. Defaults to input basename with .html.")
+    parser.add_argument(
+        "--preset",
+        choices=("reference", "mobile-share"),
+        help="Override style.preset from the input JSON.",
+    )
     args = parser.parse_args()
 
     data = load_json(args.input)
+    if args.preset:
+        data.setdefault("style", {})["preset"] = args.preset
     if args.output:
         output = Path(args.output)
     elif args.input == "-":

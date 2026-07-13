@@ -1,75 +1,76 @@
 ---
 name: document-structure-map
-description: "Transform PDFs, DOCX files, Markdown notes, web pages, images, transcripts, reports, or other long documents into a single vertical structure-map long image/HTML: extract the document's argument skeleton, section hierarchy, key claims, evidence, comparison tables, matrices, ecosystem blocks, and render it as a shareable 文档总图/总截图/结构化长图/一图看懂. Use when the user asks to make a 总截图, 长图总结, 文档总图, 结构化图解, research map, one-page visual brief, or wants a document converted into a visual skeleton rather than a prose summary."
+description: "将 PDF、DOCX、Markdown 笔记、网页、图片、访谈记录、报告或其他长文档转为适合打印或插入文档的纵向结构图 HTML/长图。提炼论证骨架、章节层级、核心观点、证据、表格、矩阵和生态图，并使用左侧时间轴与浅色观点条排版。适用于总截图、长图总结、文档总图、结构化图解、一图看懂、research map 或 one-page visual brief。手机转发长图请使用 $mobile-share-map。"
 ---
 
-# Document Structure Map
+# 文档结构图（打印/文档版）
 
-## Purpose
+## 目标
 
-Turn an arbitrary document into a vertical "structure map" long image/HTML. The default output should closely follow the provided reference screenshot: a white long canvas, a single black left-side timeline rail, pastel section labels placed left of the rail, dense pastel horizontal claim bars placed right of the rail, and white inset chart/table blocks connected to the same rail.
+将任意文档转为可打印、可插入报告的纵向“结构图”长图/HTML。使用白色画布、左侧时间轴、章节标签、浅色观点条和必要的图表块，帮助读者快速掌握一篇文档的论证逻辑。
 
-Default to Simplified Chinese output unless the user explicitly asks for another language.
+除非用户明确要求其他语言，否则默认使用简体中文。
 
-## Workflow
+## 工作流程
 
-1. Ingest the source document.
-   - Prefer structured extraction for PDFs, DOCX, Markdown, HTML, spreadsheets, and slide decks.
-   - Preserve original headings, tables, figures, dates, numbers, named entities, and source links.
-   - For images or screenshots, OCR first, then manually sanity-check obvious recognition errors.
-   - For finance, market, legal, medical, or current-events documents, verify time-sensitive facts with current sources when needed.
+1. 读取源文档。
+   - 优先对 PDF、DOCX、Markdown、HTML、表格和幻灯片进行结构化提取。
+   - 保留原始标题、表格、图表、日期、数字、命名实体和来源链接。
+   - 对图片或截图先做 OCR，再人工核对明显识别错误。
+   - 对金融、市场、法律、医疗或时事类文档，在需要时使用最新来源核验时效性事实。
 
-2. Build the argument skeleton before rendering.
-   - Identify the document's core question, thesis, section logic, evidence chain, and unresolved risks.
-   - Collapse repetition. A structure map is not a full abstract and not a paragraph-by-paragraph digest.
-   - Use 4-8 major sections for most documents. Use 2-5 claim cards per section.
-   - Use the section's left label as the visible section title, matching the reference image. Do not duplicate a large heading inside the right content column unless the document truly needs a subheading.
-   - Make each card one sharp point: `bold label + one sentence + key evidence`.
+2. 先建立论证骨架，再开始渲染。
+   - 识别核心问题、中心论点、章节逻辑、证据链和未解决风险。
+   - 合并重复信息。结构图不是完整摘要，也不是逐段复述。
+   - 大多数文档使用 4-8 个一级章节，每章使用 2-5 张观点卡。
+   - 使用压在时间轴上的章节标签作为可见章节标题；除非确有必要，不要在正文列重复放置大标题。
+   - 每张卡只表达一个尖锐观点：`加粗标签 + 一句话结论 + 关键证据`。
 
-3. Choose visual blocks deliberately.
-   - Use `table` for direct comparisons across dimensions.
-   - Use `matrix` for two-axis judgment, positioning, or prioritization.
-   - Use `ecosystem` for value chains, modules, stakeholders, product stacks, or causal systems.
-   - Use plain cards when the point is a sequential claim or conclusion.
-   - Avoid decorative diagrams that do not add reasoning value.
+3. 有目的地选择视觉块。
+   - 使用 `table` 展示实体之间的直接维度比较。
+   - 使用 `matrix` 展示双轴判断、定位或优先级。
+   - 使用 `ecosystem` 展示产业链、模块、利益相关方、产品栈或因果系统。
+   - 顺序性观点或结论使用普通观点卡。
+   - 不要为了装饰而绘制不能增加推理价值的图。
 
-4. Create a JSON map using `references/schema.md`.
-   - Include all final text in the JSON. Do not leave placeholders.
-   - Keep chart/table labels concise enough to fit in a narrow long-image layout.
-   - Use exact numbers and dates from sources; do not round important figures silently.
+4. 按 `references/schema.md` 创建 JSON 结构图。
+   - 将所有最终文案写入 JSON，不保留占位符。
+   - 将图表和表格标签压缩到能适应窄幅长图的长度。
+   - 使用来源中的精确数字和日期；不要静默四舍五入关键数据。
 
-5. Render with `scripts/render_structure_map.py`.
-   - Example: `python scripts/render_structure_map.py input.json --output output.html`
-   - Save user-facing deliverables under the current task's `outputs/` directory when available.
-   - If the user needs an image, open the HTML in a browser at about 900-960px viewport width and export a full-page screenshot as PNG.
+5. 使用 `scripts/render_structure_map.py` 渲染。
+   - 示例：`python scripts/render_structure_map.py input.json --output output.html`
+   - 有当前任务 `outputs/` 目录时，将面向用户的交付物保存在该目录。
+   - 以约 900-960px 视口宽度打开 HTML 并导出全页 PNG。
 
-6. Verify the result.
-   - Check the rendered page visually at desktop width and a narrow mobile width.
-   - Ensure no text overlaps, section labels align with the left rail, tables fit, and long words wrap.
-   - Confirm the map contains the document's actual logic, not generic summary prose.
+6. 验收结果。
+   - 在桌面导出宽度和窄屏宽度下目检结果。
+   - 确认文字不重叠、章节标签与时间轴对齐、表格完整且长词正常换行。
+   - 确认结构图表达的是文档真实逻辑，而不是泛泛的总结文案。
 
-## Writing Rules
+## 写作规则
 
-- Write for a final reader who has not seen the conversation.
-- Do not include process notes, extraction errors, or phrases like "根据文档" unless needed for attribution.
-- Keep the main claim visible near the top.
-- Prefer precise section titles: `产业需求演进`, `技术路径差异`, `竞争格局`, `风险与验证点`.
-- Make claim labels stable and skimmable, for example `核心结论`, `证据`, `分歧`, `风险`, `下一步验证`.
-- If the source contains contradictions, surface them as `分歧/待验证`, not as smoothed-over conclusions.
+- 面向没有看过对话过程的最终读者写作。
+- 除非用于归因，不要写入过程说明、提取错误或“根据文档”等表达。
+- 将核心结论放在靠近顶部的位置。
+- 使用精确的章节标题，例如：`产业需求演进`、`技术路径差异`、`竞争格局`、`风险与验证点`。
+- 观点标签应稳定且易扫读，例如：`核心结论`、`证据`、`分歧`、`风险`、`下一步验证`。
+- 若源文档存在矛盾，不要将其平滑处理为单一结论；应明确标为 `分歧/待验证`。
 
-## Visual Standard
+## 视觉规范
 
-- Use a single white vertical canvas, not a carded web page.
-- Use a 1-2px black/gray vertical rail at the left. Every claim bar and major visual block should have a thin horizontal connector back to the rail.
-- Put section titles in compact pastel label blocks left of the rail. Use the exact role of the screenshot's colored labels: they anchor each section, not just decorative tags.
-- Put content in dense pastel horizontal strips: light blue/purple for definitions, pale amber for demand/industry logic, pale green for NPO/landing logic, pale pink for competitive dynamics, pale cyan for technical route details, pale lavender for CPU packaging, pale orange for domestic substitution.
-- Keep claim bars flat and compact: 2-4px radius, light tint, no heavy shadows, label in bold followed by one sentence.
-- Render tables, matrices, and ecosystem blocks as white inset cards with light gray borders and subtle shadows, placed between claim strips when they clarify the section.
-- Avoid large hero titles, decorative gradients, floating cards, oversized headings, and marketing-page composition.
-- The output should look like a polished research long screenshot based on the reference image.
+- 使用单一白色纵向画布，不要做成卡片式网页。
+- 在左侧使用一条 1-2px 的黑色/深灰时间轴。每个观点条和主要视觉块都应通过细横线连接到时间轴。
+- 将章节标题放入直接压在时间轴上的紧凑浅色标签块；竖线在标签处被标签背景遮住，标签下方继续贯穿内容。标签承担章节锚点功能，不只是装饰。
+- 页面主标题如需显示，必须从完整页面内容宽度起排，不得跟随时间轴后的正文列缩进。
+- 将内容放入高信息密度的浅色横条：浅蓝/浅紫用于定义，浅琥珀用于需求与产业逻辑，浅绿用于 NPO/落地逻辑，浅粉用于竞争动态，浅青用于技术路线细节，浅薰衣草用于 CPU 封装，浅橙用于国产替代。
+- 观点条保持扁平、紧凑：圆角 2-4px、浅色底、无厚重阴影；使用加粗标签加一句话说明。
+- 表格、矩阵和生态图使用白色内嵌卡片，配浅灰边框和轻微阴影；仅在能提升理解时插入观点条之间。
+- 避免大面积英雄标题、装饰性渐变、悬浮卡片、超大标题和营销页式构图。
+- 最终效果应像基于参考图制作的精致研究长截图。
 
-## Resources
+## 资源
 
-- Read `references/schema.md` when preparing the JSON structure or deciding which block type to use.
-- Read `references/reference-style.md` when the user asks to replicate the screenshot's colors, structure, or visual feel.
-- Use `scripts/render_structure_map.py` to produce the HTML deliverable from the JSON map.
+- 准备 JSON 结构或判断视觉块类型时，阅读 `references/schema.md`。
+- 用户要求复刻参考图的配色、结构或视觉气质时，阅读 `references/reference-style.md`。
+- 使用 `scripts/render_structure_map.py` 将 JSON 结构图渲染为 HTML 交付物。

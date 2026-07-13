@@ -6,7 +6,7 @@ Use this visual specification when the user asks to replicate the provided refer
 
 - Canvas: tall white page, compact margins, no hero section by default.
 - Main rail: one thin black/dark-gray vertical line running down the left side.
-- Section label: pastel colored rectangle placed left of the rail. It contains the section title and serves as the main visible heading.
+- Section label: pastel colored rectangle placed directly over the rail. The rail is visually interrupted by the label background, then continues below it; the label contains the section title and serves as the main visible heading.
 - Connector lines: every claim strip and major visual block should connect back to the rail with a thin horizontal black/dark-gray line.
 - Content column: right of the rail, medium width, high information density.
 - Visual blocks: white inset cards inside the content column for tables, matrices, charts, and ecosystem grids.
