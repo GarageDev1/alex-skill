@@ -1,0 +1,21 @@
+{
+  "masthead_text": "智富界 · AI炒股达人都在这",
+  "footer_title": "欢迎加入智富界交流群",
+  "footer_intro": "智富界是一家 AI 战略咨询机构，帮助企业把 AI 落到内容增长、业务流程和长期资产配置三件事上；同时作为香港 SFC Type 4/9 持牌机构，提供 AI 主题资产配置服务。",
+  "footer_points": [
+    {
+      "label": "人",
+      "text": "AI IP 与 AI 员工，搭建内容增长与岗位 Agent 工作流。"
+    },
+    {
+      "label": "事",
+      "text": "业务 AI 改造，把 AI 嵌进真实流程，形成可量化的降本增效。"
+    },
+    {
+      "label": "钱",
+      "text": "AI 主题资产配置，在合规框架下连接产业认知与长期资本配置。"
+    }
+  ],
+  "qr_image": "assets/zhifujie-qr.png",
+  "qr_label": "扫码加入交流群"
+}
