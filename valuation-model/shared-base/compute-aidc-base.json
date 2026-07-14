@@ -1,0 +1,344 @@
+{
+  "meta": {
+    "chain": "compute-aidc",
+    "title": "AI 算力/数据中心 产业链共享物理基座",
+    "version": "1.0.0",
+    "updated": "2026-06-03",
+    "unit": "USD Billion",
+    "extracted_from": "NVDA_coverage_model_v2.xlsx (sheets: AIDC CapEx增速估计, AI数据中心TAM)",
+    "consumed_by": [
+      "NVDA",
+      "SK Hynix (000660.KS)",
+      "TSMC",
+      "AVGO",
+      "Vertiv",
+      "memory/GPU/foundry/networking/power/cooling makers"
+    ],
+    "known_issues": [
+      "口径=AI datacenter capex(非hyperscaler总额);2021-24为AI起步期粗估,重点用2025A-2030E。"
+    ]
+  },
+  "aidc_capex_forecast": {
+    "note": "全球 **AI 数据中心** 专项 capex(非 hyperscaler 总额)。口径严格锁 AI 维度。2021-2024 为 AI 起步期粗估(很小);2025A 起为 AI 规模化期(本模型重点),2025=300+→2026 公司指引。",
+    "growth_assumptions_yoy": {
+      "2027E": 0.27,
+      "2028E": 0.18,
+      "2029E": 0.11,
+      "2030E": 0.09,
+      "2031E": 0.07,
+      "2032E": 0.05,
+      "2033E": 0.05,
+      "2034E": 0.05,
+      "2035E": 0.05,
+      "2036E": 0.05
+    },
+    "series": [
+      {
+        "year": "2022A",
+        "total": 30,
+        "us_top5": null,
+        "china": null,
+        "type": "实际",
+        "source": "AI 数据中心专项 capex 粗估(AI 2023 才起量;2021-22 极小)",
+        "url": "epoch.ai/data-insights/hyperscaler-capex-trend"
+      },
+      {
+        "year": "2023A",
+        "total": 70,
+        "us_top5": null,
+        "china": null,
+        "type": "实际",
+        "source": "AI 数据中心专项 capex 粗估(AI 2023 才起量;2021-22 极小)",
+        "url": "know.creditsights.com"
+      },
+      {
+        "year": "2024A",
+        "total": 200,
+        "us_top5": null,
+        "china": null,
+        "type": "实际",
+        "source": "AI 数据中心专项 capex 粗估(AI 2023 才起量;2021-22 极小)",
+        "url": "know.creditsights.com"
+      },
+      {
+        "year": "2025A",
+        "total": 488,
+        "us_top5": 443,
+        "china": 45,
+        "type": "实际",
+        "source": "CreditSights / 公司财报",
+        "url": "know.creditsights.com"
+      },
+      {
+        "year": "2026E",
+        "total": 830,
+        "us_top5": 705,
+        "china": 125,
+        "type": "公司指引",
+        "source": "TrendForce (2026/5); 美国四大云厂指引合计已 >$700B",
+        "url": "infotechlead.com, evertiq.com"
+      },
+      {
+        "year": "2027E",
+        "total": 1050,
+        "us_top5": 890,
+        "china": 160,
+        "type": "预测",
+        "source": "Goldman Sachs Global Institute 'Tracking Trillions'",
+        "url": "goldmansachs.com/insights/articles/tracking-trillions"
+      },
+      {
+        "year": "2028E",
+        "total": 1240,
+        "us_top5": 1050,
+        "china": 190,
+        "type": "预测",
+        "source": "Goldman Sachs 基线",
+        "url": "goldmansachs.com/insights/articles/tracking-trillions"
+      },
+      {
+        "year": "2029E",
+        "total": 1380,
+        "us_top5": 1170,
+        "china": 210,
+        "type": "预测",
+        "source": "Goldman Sachs 基线",
+        "url": "goldmansachs.com/insights/articles/tracking-trillions"
+      },
+      {
+        "year": "2030E",
+        "total": 1500,
+        "us_top5": 1270,
+        "china": 230,
+        "type": "预测",
+        "source": "Goldman Sachs 基线",
+        "url": "goldmansachs.com/insights/articles/tracking-trillions"
+      },
+      {
+        "year": "2031E",
+        "total": 1600,
+        "us_top5": 1350,
+        "china": 250,
+        "type": "预测",
+        "source": "Goldman Sachs 基线",
+        "url": "goldmansachs.com/insights/articles/tracking-trillions"
+      },
+      {
+        "year": "2032E",
+        "total": 1680,
+        "us_top5": null,
+        "china": null,
+        "type": "长期外推",
+        "source": "5% CAGR 外推",
+        "url": ""
+      },
+      {
+        "year": "2033E",
+        "total": 1764,
+        "us_top5": null,
+        "china": null,
+        "type": "长期外推",
+        "source": "5% CAGR 外推",
+        "url": ""
+      },
+      {
+        "year": "2034E",
+        "total": 1852,
+        "us_top5": null,
+        "china": null,
+        "type": "长期外推",
+        "source": "5% CAGR 外推",
+        "url": ""
+      },
+      {
+        "year": "2035E",
+        "total": 1945,
+        "us_top5": null,
+        "china": null,
+        "type": "长期外推",
+        "source": "5% CAGR 外推",
+        "url": ""
+      },
+      {
+        "year": "2036E",
+        "total": 2042,
+        "us_top5": null,
+        "china": null,
+        "type": "长期外推",
+        "source": "5% CAGR 外推",
+        "url": ""
+      }
+    ],
+    "sanity_checks": {
+      "aidc_capex_pct_of_global_gdp_2026E": "约 0.7% (global GDP ~$120T @3% growth)",
+      "down_cycle_analog": "1996-2010 美国宽带行业 capex: $21B(1996)→$76B峰值(2000-01)→回落 $49B(2003)→缓升. 用于 stress-test AIDC 见顶后的回落形态."
+    }
+  },
+  "cost_breakdown_per_gw": {
+    "total_per_gw": 51.6,
+    "source": "BofA / 硅谷101 'AI最烧钱的战场:数据中心的真实账单'",
+    "url": "bilibili.com/video/BV1DcSkBxE7E",
+    "note": "1GW AIDC 的 CapEx 拆解. spend_tree 为 MECE(互斥, 求和=总额); chip_content_view 为跨切口视图(与 tree 节点重叠, 标 subset_of).",
+    "spend_tree": [
+      {
+        "node": "IT设备",
+        "usd_per_gw": 43.15,
+        "parent": null,
+        "children": [
+          {
+            "node": "服务器",
+            "usd_per_gw": 37.5,
+            "parent": "IT设备",
+            "children": [
+              {
+                "node": "GPU(含HBM)",
+                "usd_per_gw": 26.25,
+                "parent": "服务器",
+                "note": "= 服务器×0.7; 含封装内 HBM. JPM 估 GPU 占服务器 70-80%"
+              },
+              {
+                "node": "服务器其他(CPU/DRAM通用/主板/存储控制器)",
+                "usd_per_gw": 11.25,
+                "parent": "服务器"
+              }
+            ]
+          },
+          {
+            "node": "网络",
+            "usd_per_gw": 3.75,
+            "parent": "IT设备",
+            "children": [
+              {
+                "node": "交换机+网卡DPU",
+                "usd_per_gw": 1.5,
+                "parent": "网络",
+                "note": "= 网络×0.4; NVDA 在网卡/DPU ~90%+ 份额, 交换机 30-40%"
+              },
+              {
+                "node": "光模块/线缆/其他网络",
+                "usd_per_gw": 2.25,
+                "parent": "网络",
+                "note": "光模块 NVDA 接近 0%(Innolight/中际旭创/Coherent)"
+              }
+            ]
+          },
+          {
+            "node": "存储",
+            "usd_per_gw": 1.9,
+            "parent": "IT设备",
+            "note": "企业级 SSD 阵列 (NAND 主力需求之一)"
+          }
+        ]
+      },
+      {
+        "node": "供电",
+        "usd_per_gw": 2.7,
+        "parent": null,
+        "children": [
+          {
+            "node": "备用柴油发电机",
+            "usd_per_gw": 0.8,
+            "parent": "供电"
+          },
+          {
+            "node": "开关设备",
+            "usd_per_gw": 0.615,
+            "parent": "供电"
+          },
+          {
+            "node": "UPS",
+            "usd_per_gw": 0.985,
+            "parent": "供电"
+          },
+          {
+            "node": "其他配电",
+            "usd_per_gw": 0.3,
+            "parent": "供电"
+          }
+        ]
+      },
+      {
+        "node": "冷却",
+        "usd_per_gw": 1.475,
+        "parent": null,
+        "children": [
+          {
+            "node": "冷却塔",
+            "usd_per_gw": 0.09,
+            "parent": "冷却"
+          },
+          {
+            "node": "冷水机组",
+            "usd_per_gw": 0.36,
+            "parent": "冷却"
+          },
+          {
+            "node": "CDU冷却分配单元",
+            "usd_per_gw": 0.45,
+            "parent": "冷却"
+          },
+          {
+            "node": "CRAH机房空气处理",
+            "usd_per_gw": 0.575,
+            "parent": "冷却"
+          }
+        ]
+      },
+      {
+        "node": "工程建设",
+        "usd_per_gw": 4.28,
+        "parent": null
+      }
+    ],
+    "chip_content_view": {
+      "note": "芯片/存储含量视图. 与 spend_tree 重叠, 用 subset_of 标明归属, 防止与 tree 节点重复相加.",
+      "items": [
+        {
+          "node": "HBM",
+          "usd_per_gw": 10.5,
+          "subset_of": "GPU(含HBM)",
+          "rationale": "HBM ≈ 服务器×28% (GPU 封装内, 区间 25-40%). 注:HBM 收入已包在 GPU 售价里, 与 GPU 节点重叠."
+        },
+        {
+          "node": "DRAM通用(DDR5)",
+          "usd_per_gw": 3.5,
+          "subset_of": "服务器其他(CPU/DRAM通用/主板/存储控制器)",
+          "rationale": "服务器内通用 DDR5, 约占'服务器其他'25-35%."
+        },
+        {
+          "node": "NAND",
+          "usd_per_gw": 2.84,
+          "subset_of": "存储 + 服务器内置",
+          "rationale": "= 总额×5.5%; 企业级 SSD 阵列(存储$1.9B)+ 服务器内置启动/缓存/checkpoint 盘."
+        }
+      ]
+    }
+  },
+  "company_slices_examples": {
+    "note": "公司切片示例(Layer 2). 各家映射到 spend_tree 或 chip_content 节点. ⚠ 营收跨层叠加: Hynix 的 HBM 已包在 NVDA 的 GPU 里, 两者营收不能相加去对总额.",
+    "NVDA": {
+      "captures": [
+        "GPU(含HBM)",
+        "交换机+网卡DPU"
+      ],
+      "sam_per_gw": "≈ 26.25 + 1.5 = 27.75",
+      "note": "卖整颗 GPU(含转售的 HBM)+ 网络份额"
+    },
+    "Hynix": {
+      "captures": [
+        "HBM",
+        "DRAM通用(DDR5)",
+        "NAND"
+      ],
+      "sam_per_gw": "≈ 10.5 + 3.5 + 2.84 = 16.84",
+      "note": "存储器三件套; HBM 这部分嵌在 NVDA GPU 收入内"
+    },
+    "TSMC": {
+      "captures": [
+        "GPU 逻辑代工部分"
+      ],
+      "sam_per_gw": "GPU 含量中的 wafer/代工价值(需按代工价占 GPU ASP 比例拆)",
+      "note": "在 GPU 节点内再切代工层"
+    }
+  }
+}

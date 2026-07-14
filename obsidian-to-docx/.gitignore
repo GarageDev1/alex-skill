@@ -1,0 +1,10 @@
+# 生成产物 / 渲染中间件,不入库
+*.docx
+charts_*/
+_work/
+__pycache__/
+*.py[cod]
+node_modules/
+
+# ECharts 只保留 assets/ 下的单一副本
+scripts/echarts.min.js
