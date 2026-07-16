@@ -1,4 +1,7 @@
 import importlib.util
+import json
+import struct
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -32,6 +35,54 @@ def neutral_data():
 
 
 class OutputPolicyTests(unittest.TestCase):
+    def test_brand_defaults_match_research_report_cta(self):
+        brand_path = SCRIPT.parents[1] / "assets" / "brand.json"
+        brand = json.loads(brand_path.read_text(encoding="utf-8"))
+        self.assertEqual(brand["footer_title"], "完整研报加入智富界交流群")
+        self.assertEqual(brand["qr_label"], "扫码获取完整研报")
+        self.assertEqual(brand["footer_points"], [])
+        self.assertTrue((SCRIPT.parents[1] / brand["footer_background"]).is_file())
+
+    def test_footer_uses_layered_background_and_fixed_height(self):
+        html = MODULE.render_html(MODULE.single_variant(neutral_data()), "single")
+        self.assertIn('class="footer-background"', html)
+        self.assertIn("height:536px", html)
+        self.assertIn("完整研报加入智富界交流群", html)
+        self.assertIn('<div class="header-qr-label">扫码获取完整研报</div>', html)
+        self.assertIn('<div class="qr-label">扫码获取完整研报</div>', html)
+        self.assertRegex(html, r'<img class="header-qr-image"[^>]+alt="扫码获取完整研报">')
+        self.assertRegex(html, r'<img class="qr-image"[^>]+alt="扫码获取完整研报">')
+        self.assertNotIn('class="bottom-safe-area"', html)
+        self.assertNotIn("AI IP 与 AI 员工", html)
+
+    def test_footer_points_override_remains_compatible(self):
+        data = neutral_data()
+        data["share"] = {
+            "override_brand": True,
+            "footer_points": [{"label": "人", "text": "兼容说明"}],
+        }
+        html = MODULE.render_html(MODULE.single_variant(data), "single")
+        self.assertIn("兼容说明", html)
+
+    def test_brand_empty_points_suppress_unoverridden_input_points(self):
+        data = neutral_data()
+        data["share"] = {"footer_points": [{"label": "旧", "text": "不应出现"}]}
+        html = MODULE.render_html(MODULE.single_variant(data), "single")
+        self.assertNotIn("不应出现", html)
+
+    def test_render_png_crops_to_page_height(self):
+        html = MODULE.render_html(MODULE.single_variant(neutral_data()), "single")
+        with tempfile.TemporaryDirectory() as temp_dir:
+            html_path = Path(temp_dir) / "short.html"
+            png_path = Path(temp_dir) / "short.png"
+            html_path.write_text(html, encoding="utf-8")
+            MODULE.render_png(html_path, png_path)
+            png = png_path.read_bytes()
+            width, height = struct.unpack(">II", png[16:24])
+        self.assertEqual(width, 1080)
+        self.assertLess(height, 1920)
+        self.assertGreaterEqual(height, 536)
+
     def test_single_allows_neutral_industry_language(self):
         variant = MODULE.single_variant(neutral_data())
         html = MODULE.render_html(variant, "single")

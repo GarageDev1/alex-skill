@@ -106,18 +106,23 @@ def brand_settings(share: dict[str, Any]) -> dict[str, Any]:
     use_input_override = share.get("override_brand") is True
 
     def value(key: str, fallback: Any = "") -> Any:
-        if use_input_override and share.get(key):
+        if use_input_override and key in share:
             return share[key]
-        return brand.get(key) or share.get(key) or fallback
+        if key in brand:
+            return brand[key]
+        if key in share:
+            return share[key]
+        return fallback
 
     points = value("footer_points", [])
     return {
         "masthead_text": value("masthead_text", "智富界 · 用AI炒股的人都在这"),
-        "footer_title": value("footer_title", "欢迎加入智富界交流群"),
+        "footer_title": value("footer_title", "完整研报加入智富界交流群"),
         "footer_intro": value("footer_intro", ""),
         "footer_points": points if isinstance(points, list) else [],
+        "footer_background": asset_uri(value("footer_background", "")),
         "qr_image": asset_uri(value("qr_image", "")),
-        "qr_label": value("qr_label", "扫码加入交流群"),
+        "qr_label": value("qr_label", "扫码获取完整研报"),
     }
 
 
@@ -159,9 +164,9 @@ def external_variant(data: dict[str, Any]) -> dict[str, Any]:
     safe_share_defaults = {
         "eyebrow": "智富界 · 公司研究",
         "badge": "",
-        "footer_title": "欢迎加入智富界交流群",
+        "footer_title": "完整研报加入智富界交流群",
         "external_footer_text": "获取更多公司与产业研究",
-        "qr_label": "扫码加入交流群",
+        "qr_label": "扫码获取完整研报",
     }
     for key, default in safe_share_defaults.items():
         if contains_sensitive(share.get(key)):
@@ -284,6 +289,11 @@ def render_footer(data: dict[str, Any], mode: str) -> str:
     brand = brand_settings(share)
     title = brand["footer_title"]
     intro = brand["footer_intro"]
+    background = (
+        f'<img class="footer-background" src="{esc(brand["footer_background"])}" alt="">'
+        if brand["footer_background"]
+        else ""
+    )
     points = "".join(
         f'<div class="footer-point"><b>{esc(point.get("label", ""))}</b>{esc(point.get("text", ""))}</div>'
         for point in brand["footer_points"]
@@ -295,10 +305,10 @@ def render_footer(data: dict[str, Any], mode: str) -> str:
         qr_html = '<div class="qr-placeholder"><span>二维码</span><small>预留位</small></div>'
     return f"""
     <footer class="mobile-footer">
+      {background}
       <div class="footer-copy"><div class="footer-title">{esc(title)}</div><div class="footer-intro">{esc(intro)}</div><div class="footer-points">{points}</div></div>
       <div class="footer-qr">{qr_html}<div class="qr-label">{esc(brand["qr_label"])}</div></div>
     </footer>
-    <div class="bottom-safe-area" aria-hidden="true"></div>
     """
 
 
@@ -361,7 +371,7 @@ def render_html(data: dict[str, Any], mode: str) -> str:
 .masthead{{display:flex;align-items:center;justify-content:space-between;min-height:194px;padding:0 0 18px;border-bottom:3px solid #191b20;font-size:25px;font-weight:800;letter-spacing:3px}} .masthead-right{{display:flex;align-items:center;gap:24px}} .badge{{color:var(--accent);letter-spacing:1px}} .header-qr{{display:grid;justify-items:center;gap:6px;padding:8px 8px 7px;border:1px solid #d7dce5;background:#f7f9fc;font-size:21px;line-height:1.2;letter-spacing:0;color:#455066}} .header-qr-image{{width:142px;height:142px;padding:5px;border:1px solid #d7dce5;background:#fff;object-fit:contain}} .header-qr-label{{white-space:nowrap}}
 .compliance{{display:inline-block;margin:28px 0 0;padding:7px 12px;background:#f3f5f8;color:#5f6673;font-size:21px;font-weight:800;letter-spacing:1px}} .hero{{max-width:936px;margin:30px 0 42px}} h1{{margin:0 0 16px;font-size:52px;line-height:1.18;letter-spacing:-2px}} .subtitle{{margin:0;color:#545966;font-size:27px;line-height:1.5}} .meta{{margin-top:16px;color:#8b909b;font-size:22px}}
 .map{{position:relative;padding-left:112px}} .map::before{{content:"";position:absolute;left:64px;top:0;bottom:0;width:2px;background:#272727}} .map-section{{position:relative;margin:0 0 40px;min-height:44px}} .section-label{{position:relative;z-index:1;left:64px;display:table;width:auto;min-height:0;margin:0 0 18px -112px;padding:9px 11px;border-radius:2px;font-size:26px;line-height:1.25;font-weight:900;overflow-wrap:anywhere;transform:translateX(-50%)}} .section-label::after{{display:none}} .section-body{{width:824px}} .claim-card{{position:relative;margin:0 0 13px;padding:13px 16px;border-radius:3px;color:#353941;font-size:27px;line-height:1.56;overflow-wrap:anywhere}} .timeline-node::before{{content:"";position:absolute;left:-48px;top:31px;width:48px;height:2px;background:#272727}} .claim-label{{color:#20232a;font-weight:900}} .visual-block{{position:relative;margin:18px 0 4px;padding:15px 16px 17px;border:1px solid #dde2e9;border-radius:3px;background:#fff;color:#30343b;overflow:hidden}} .visual-block h3{{margin:0 0 11px;font-size:23px;line-height:1.3;color:#20232a}} .table-wrap{{width:100%;overflow:hidden}} table{{width:100%;border-collapse:collapse;table-layout:fixed}} th,td{{border:1px solid #dfe4eb;padding:9px 8px;font-size:19px;line-height:1.34;text-align:left;vertical-align:top;overflow-wrap:anywhere}} th{{background:#f1f4f8;color:#303640;font-weight:900}} td{{color:#4b515d}}
-.mobile-footer{{display:grid;grid-template-columns:minmax(0,1fr) 240px;align-items:center;gap:48px;margin:44px -72px 0;padding:52px 72px;color:#fff;background:#132f63}} .footer-title{{font-size:38px;line-height:1.3;font-weight:900}} .footer-intro{{margin-top:14px;color:rgba(255,255,255,.84);font-size:23px;line-height:1.5}} .footer-points{{display:grid;gap:8px;margin-top:16px;color:rgba(255,255,255,.9);font-size:20px;line-height:1.45}} .footer-point b{{display:inline-block;width:28px;color:#9fc7ff;font-size:25px}} .footer-qr{{text-align:center}} .qr-image,.qr-placeholder{{display:flex;width:210px;height:210px;margin:0 auto;border:12px solid #fff;background:#fff;object-fit:contain}} .qr-placeholder{{align-items:center;justify-content:center;flex-direction:column;border-color:#d9dee8;color:#657084;font-weight:900}} .qr-placeholder small{{font-size:20px;font-weight:500}} .qr-label{{margin-top:10px;font-size:21px}} .bottom-safe-area{{height:96px;margin:0 -72px;background:#132f63}}
+.mobile-footer{{position:relative;height:536px;margin:44px -72px 0;padding:0;overflow:hidden;color:#fff;background:#102c61}} .footer-background{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}} .footer-copy{{position:absolute;z-index:1;left:88px;top:198px;width:620px}} .footer-title{{font-size:35px;line-height:1.3;font-weight:900;text-shadow:0 0 18px rgba(63,188,255,.5)}} .footer-intro{{width:560px;margin-top:20px;color:rgba(255,255,255,.88);font-size:20px;line-height:1.75}} .footer-points{{display:grid;gap:5px;width:560px;margin-top:10px;color:rgba(255,255,255,.88);font-size:17px;line-height:1.35}} .footer-point b{{display:inline-block;width:25px;color:#9fdcff;font-size:20px}} .footer-qr{{position:absolute;z-index:1;left:776px;top:132px;width:206px;text-align:center}} .qr-image,.qr-placeholder{{display:flex;width:206px;height:206px;margin:0;background:#fff;object-fit:contain}} .qr-placeholder{{align-items:center;justify-content:center;flex-direction:column;border:10px solid #d9dee8;color:#657084;font-weight:900}} .qr-placeholder small{{font-size:18px;font-weight:500}} .qr-label{{margin-top:14px;font-size:22px;line-height:1.25;white-space:nowrap;text-shadow:0 0 12px rgba(28,120,255,.55)}}
 </style></head><body><main class="page"><div class="safe-area"></div><div class="masthead"><span>{esc(eyebrow)}</span><div class="masthead-right"><span class="badge">{esc(badge)}</span>{header_qr}</div></div>{compliance_html}<header class="hero"><h1>{esc(data.get("title", "手机转发研究长图"))}</h1><p class="subtitle">{esc(data.get("subtitle", ""))}</p><div class="meta">{esc(data.get("meta", {}).get("source", ""))} | {esc(data.get("meta", {}).get("date", ""))}</div></header><div class="map">{render_sections(data.get("sections", []))}</div>{render_footer(data, mode)}</main></body></html>"""
 
 
@@ -376,7 +386,7 @@ def render_png(html_path: Path, png_path: Path) -> None:
         page.goto(html_path.resolve().as_uri(), wait_until="networkidle")
         if page.evaluate("document.documentElement.scrollWidth") != 1080:
             raise RuntimeError("渲染出现水平溢出，拒绝输出图片。")
-        page.screenshot(path=str(png_path), full_page=True)
+        page.locator(".page").screenshot(path=str(png_path))
         browser.close()
 
 

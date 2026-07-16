@@ -1,0 +1,16 @@
+{
+  "output_policy": "single",
+  "title": "AI产业研究图谱",
+  "subtitle": "中性行业信息整理与技术路线概览",
+  "meta": {"source": "公开资料", "date": "2026-07-16"},
+  "sections": [
+    {
+      "title": "产业结构",
+      "tag": "产业结构",
+      "tone": "blue",
+      "cards": [
+        {"label": "研究范围", "text": "覆盖基础设施、模型、应用与服务四层产业结构。"}
+      ]
+    }
+  ]
+}
