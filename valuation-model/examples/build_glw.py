@@ -135,11 +135,11 @@ K.write_consensus(wb.create_sheet(S_CONS), {
     "divergences": [
         "① AI 光订单持续性: Bull 按 Meta/Amazon/Nvidia 多年期锁单 + GlassBridge/CPO 兑现给平台溢价; Bear 按超大厂 capex 同向波动 + 订单集中给周期折价——决定 Enterprise 强度 0.9% 还是 0.55%。",
         "② 倍数 vs 现价: 现价 60x forward 高于卖方目标隐含 48x; 本模型不跟随现价, 按历史带 + AI 结构溢价拍, Base 42x 低于现价隐含。",
-        "③ GlassBridge 市场热卖方冷: 大摩/花旗判断两年内难替代冲击光模块格局, 收入已含在 Photonics $10bn 旧目标内——不是新增量, 但股价为其重复付费。",
+        "③ GlassBridge 市场热卖方冷: 大摩/花旗判断两年内难以替代光模块格局, 收入已含在 Photonics $10bn 旧目标内——不是新增量, 但股价为其重复付费。",
     ],
     "stances": [
         "分析师均值(买入偏向, 目标 $206, 2026-06): AI 光通信 + 玻璃基板双引擎, 但目标价落后于现价涨幅。",
-        "Morgan Stanley / Citi(GlassBridge 点评, 2026-06): 市场热、卖方冷, 两年内难替代冲击光模块; GlassBridge 收入已在 $10bn Photonics 目标内。",
+        "Morgan Stanley / Citi(GlassBridge 点评, 2026-06): 市场热、卖方冷, 两年内难以替代光模块; GlassBridge 收入已在 $10bn Photonics 目标内。",
         "看空方(强烈卖出1家): 122x TTM / 60x forward 对制造业是极端值, Q2 营收指引已低于共识。",
     ],
 })
@@ -536,7 +536,7 @@ dash = K.write_dashboard(wb.create_sheet(S_DASH), {
         {"title": "C. 催化剂 — 什么会逼市场闭合 GAP", "rows": [
             ("Q2 2026 财报(2026-07下旬)", "待; 指引 core 营收 $4.6B/EPS 0.73-0.77", "指引已低于市场 $4.67B; 高位 miss 杀伤大——赔率不对称。"),
             ("超大厂新光纤订单", "Meta/Amazon/Nvidia 已签; 新增待观察", "新增大单=Bull 扳机; 订单不续=Bear 扳机。"),
-            ("GlassBridge/CPO 商用节奏", "2026 送样/2027 小批量/2028 量产", "卖方判断两年内难替代冲击光模块; 收入已在 $10bn Photonics 目标内, 非新增量。"),
+            ("GlassBridge/CPO 商用节奏", "2026 送样/2027 小批量/2028 量产", "卖方判断两年内难以替代光模块; 收入已在 $10bn Photonics 目标内, 非新增量。"),
             ("C 判断", "利好大部分已兑现", "Meta/Amazon/Nvidia 订单+GlassBridge 已 price-in; 剩余催化(新单)有真增量但市场已预付。", True),
         ]},
         {"title": "D. 情绪确认 — 只做 timing + 刹车", "rows": [

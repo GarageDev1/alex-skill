@@ -193,7 +193,7 @@ K.write_consensus(wb.create_sheet(S_CONS), {
         "BofA(买入, TP $300): AI Data Cloud 受益者被验证, CoCo 消费增长正反馈。",
         "JPMorgan(增持, TP $285): CoCo 是 FY27 指引上调最大单一驱动。",
         "Bernstein(Market-Perform, TP $250): 认可动能, 担心竞争加剧 + AI 变现落地。",
-        "UBS(买入, TP $210, 4/20 滞后): AI 替代冲击风险可控但逐项排查。",
+        "UBS(买入, TP $210, 4/20 滞后): AI 替代风险可控但逐项排查。",
     ],
 })
 

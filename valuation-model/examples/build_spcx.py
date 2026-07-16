@@ -339,7 +339,7 @@ for cs in CASES:
 mr += 1
 K.band(wmu, mr, "卖方对账 + 数据源", 9); mr += 1
 K.mtext(wmu, mr, ("凭什么敢给非主流数: Oppenheimer 把 2035 远期当现值、隐含倍数极高; 我们逐年给当年 forward EV/Sales, "
-                  "每段倍数据 a)目标 EV/EBITDA × 稳态 margin 反推 + b)同业 EV/Sales 光谱(上一页)双重定锚, 不靠拍脑袋, 且高增长期高、随成熟 normalize。"
+                  "每段倍数据 a)目标 EV/EBITDA × 稳态 margin 反推 + b)同业 EV/Sales 光谱(上一页)双重定锚, 不靠缺少依据, 且高增长期高、随成熟 normalize。"
                   "数据源: EV/Sales=同业光谱 + 盈利反推; 期权 PV=轨道算力可行性概率 × 潜在 TAM 的粗估。"), "I", 4)
 
 # ════════════ 7. 情景切换(全模型唯一情景参数库; 逐年杠杆)════════════

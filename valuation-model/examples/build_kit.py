@@ -1344,7 +1344,7 @@ def write_dashboard(ws, data):
         dband(dc, "投后跟踪明细 — 哪个指标恶化 → 哪个假设先崩"); dc += 1
         if trk.get("intro"):
             dc = mtext(ws, dc, trk["intro"], "E", 3)
-        heads = ["指标", "当前值/状态", "为什么重要(哪个假设的关键敏感项)", "怎么跟踪(数据源/频率)", "触发什么动作"]
+        heads = ["指标", "当前值/状态", "为什么重要(影响的关键假设)", "怎么跟踪(数据源/频率)", "触发什么动作"]
         for col, h in zip("ABCDE", heads):
             ws[f"{col}{dc}"] = h
             ws[f"{col}{dc}"].font = BF; ws[f"{col}{dc}"].fill = CH

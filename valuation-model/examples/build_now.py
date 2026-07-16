@@ -163,7 +163,7 @@ ma = K.write_multiple_assumptions(wb.create_sheet(S_MULT), {
                  "kit 的 P/B 主线对轻资产 SaaS 只作资产视角参考（BPS 含少量现金+递延收入，P/B 历史波动大）。"
                  "主结论走 P/E 平行镜头：目标 P/E × 前瞻 EPS → 隐含价。P/B 镜头同步给出做三角验证（两个镜头差距大 = 对利润可持续性的分歧）。"),
     "why_rows": 5,
-    "method_text": "P/B 三层（kit 主线，参考用）：①历史峰值 P/B ~35x（2021）× ②结构溢价 0.4x（轻资产，当前 ROE 低于峰值）× ③情绪值。当前 P/B 8x 已大幅低于历史，反映拆股后+回撤。P/E 三案在『情景切换』页直接拍目标（不经三层，因 SaaS P/E 由增速+利润率扩张+利率综合决定）。",
+    "method_text": "P/B 三层（kit 主线，参考用）：①历史峰值 P/B ~35x（2021）× ②结构溢价 0.4x（轻资产，当前 ROE 低于峰值）× ③情绪值。当前 P/B 8x 已大幅低于历史，反映拆股后+回撤。P/E 三案在『情景切换』页直接设置目标（不经三层，因 SaaS P/E 由增速+利润率扩张+利率综合决定）。",
     "peak": 35.0, "peak_note": "2021 P/B 峰值 35.7x（低 BPS 高估值）。",
     "premium": 0.40, "premium_note": "轻资产 SaaS，BPS 含义弱，结构溢价折扣。",
     "all_cols": ALLC, "all_years": ALLY, "hist_cols": HC, "fwd_cols": FCf,

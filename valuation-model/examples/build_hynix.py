@@ -1068,7 +1068,7 @@ drow(dc,"回测: 2025 年中的读数","1.8x vs 3.2x = +78%","当时市场按『
 dband(dc,"C. 催化剂 — 什么会逼市场闭合 GAP(逐条列状态)"); dc+=1
 for name,read,judge in [
  ("HBM4 全球首发量产准备","2025/9 ✓","代际领先实锤, 锁定 NVDA Rubin 主供——盈利可见度延到 2027-28。"),
- ("『2026 sold out』官宣","2025 Q3 业绩会 ✓","叙事替代冲击: 从『扩产→跌价』变『扩产都不够卖』——周期折价切换成长溢价的扳机。"),
+ ("『2026 sold out』官宣","2025 Q3 业绩会 ✓","市场判断变化: 从『扩产→跌价』变『扩产都不够卖』——周期折价切换成长溢价的扳机。"),
  ("Microsoft 独家 HBM 供应","2026/1 ✓","客户维度打开: 不只 NVDA, 所有自研 AI 芯片(Maia/TPU/MTIA/Trainium)都是客户。"),
  ("库存股注销 ₩12.2兆 + 派息上调","2026/1 ✓","首次把 AI 红利分给股东(value-up)——韩国折价收窄(COE↓)的证据。"),
  ("下一批: HBM4 放量 / 龙仁投产 / 2027 售罄官宣","待","兑现 → 撑 FY27 情绪; 落空 → 衰减扳机触发。"),
@@ -1096,7 +1096,7 @@ logic(s,f"A{dc}",("① HBM 收入强度回落(份额被三供蚕食/含量升放
  "② 传统DRAM/NAND 合约价见顶 + 库存周数回升 → 消费段周期假设(2026 +112%/+137%)证伪、净利率从峰值急坠。"
  "③ 全球 AI capex 指引下修 → 物理锚盘子缩水 → 三个 AI 直驱段同缩。盯的优先级: HBM 收入强度&份额 ≈ AI capex 指引 > 商品价&库存 > 认证进度。"))
 s.merge_cells(f"A{dc}:E{dc+2}"); s[f"A{dc}"].alignment=Alignment(wrap_text=True,vertical="top"); dc+=3
-heads=["指标","当前值/状态","为什么重要(哪个假设的关键敏感项)","怎么跟踪(数据源/频率)","触发动作"]
+heads=["指标","当前值/状态","为什么重要(影响的关键假设)","怎么跟踪(数据源/频率)","触发动作"]
 hr=dc
 for col,h in zip(["A","B","C","D","E"],heads): s[f"{col}{hr}"]=h; s[f"{col}{hr}"].font=BF; s[f"{col}{hr}"].fill=CH; s[f"{col}{hr}"].alignment=Alignment(wrap_text=True,vertical="top")
 def trk_band(row,text):

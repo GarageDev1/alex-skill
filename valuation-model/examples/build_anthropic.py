@@ -310,7 +310,7 @@ for cs in CASES:
 ur += 1
 K.band(wu, ur, "卖方对账 + 数据源", 9); ur += 1
 K.mtext(wu, ur, ("凭什么敢给非主流数: 卖方多用 EV/Revenue、frontier lab 组 20-46x run-rate; 本模型用 EV/fwd-GAAP-Sales, "
-                 "据 B 组同业光谱(SNOW/DDOG 14-17x、PLTR 91x)+ 增长换挡逐年 normalize, 不靠拍脑袋。一致性: Base 2027E 9.5x×$110B=$1,045B 复现 v3.1 EV/Sales 镜头。"
+                 "据 B 组同业光谱(SNOW/DDOG 14-17x、PLTR 91x)+ 增长换挡逐年 normalize, 不靠缺少依据。一致性: Base 2027E 9.5x×$110B=$1,045B 复现 v3.1 EV/Sales 镜头。"
                  "数据源: 同业 fwd-GAAP=公开市值÷NTM 收入(2026-06); PE 目标=2030E 稳态净利反推。"), "I", 3)
 
 # ════════════ 7. 情景切换(业务杠杆直接拍 + 估值倍数 link 倍数假设)════════════

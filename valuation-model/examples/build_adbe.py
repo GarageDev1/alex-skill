@@ -124,7 +124,7 @@ K.write_consensus(wb.create_sheet(S_CONS), {
         ("目标 P/E(GAAP)", "卖方隐含 forward P/E 11-20x(目标价÷FY26E EPS)，中位 ~15x。", "给一个正经历 AI 替代风险威胁 + 治理真空的 10% 增长者多少倍数。", "base 17x(GAAP)——10% 增长者理论 justified P/E ~17x，处自身历史下沿之下；bear 11x(价值陷阱)、bull 24x( fallen angel 复位)。"),
     ],
     "divergences": [
-        "① AI 是否结构性替代 Creative Cloud：决定 ARR 有机增速能否守住 ~10%——这是 11.7x 是陷阱还是礼物的唯一裁决。",
+        "① AI 是否结构性替代 Creative Cloud：决定 ARR 有机增速能否守住 ~10%——这是 11.7x 是陷阱还是礼物的关键判断依据。",
         "② 治理风险定价：CEO 继任未定 + CFO 换人，市场要多少折扣；继任落地=催化剂。",
         "③ 板块 systemic 估值倍数下修 vs Adobe idiosyncratic：NOW -48%/CRM -9%/ADBE -37%(YTD)，Adobe 的折价里多少是板块、多少是自身。",
     ],
@@ -172,7 +172,7 @@ ma = K.write_multiple_assumptions(wb.create_sheet(S_MULT), {
                  "P/B 7.3x 且将持续走高，反映的是资本回报政策而非估值高低。主结论走 P/E：目标 P/E × 前瞻 GAAP EPS → 隐含价。"
                  "P/B 镜头同步给出做形式上的三角(两个镜头差距极大 = 对 BPS 含义的认知分歧，轻资产+回购 SaaS 的正常现象)。"),
     "why_rows": 5,
-    "method_text": "P/B 三层(kit 主线，仅参考)：①历史峰值 P/B ~22x(FY21)× ②结构溢价 0.35x(轻资产+回购致 BPS 萎缩)× ③情绪值。P/E 三案在『情景切换』页直接拍目标(不经三层，因 Adobe P/E 由增速+利润率+AI 替代风险风险+治理折价综合决定，非周期情绪单一驱动)。",
+    "method_text": "P/B 三层(kit 主线，仅参考)：①历史峰值 P/B ~22x(FY21)× ②结构溢价 0.35x(轻资产+回购致 BPS 萎缩)× ③情绪值。P/E 三案在『情景切换』页直接设置目标(不经三层，因 Adobe P/E 由增速+利润率+AI 替代风险+治理折价综合决定，非周期情绪单一驱动)。",
     "peak": 22.0, "peak_note": "FY21 P/B 峰值 ~22x(BPS $27.7 × 低价权益)。",
     "premium": 0.35, "premium_note": "轻资产 SaaS + 回购致 BPS 萎缩，结构溢价含义弱。",
     "all_cols": ALLC, "all_years": ALLY, "hist_cols": HC, "fwd_cols": FCf,
@@ -191,7 +191,7 @@ sw = K.write_scenario_switch(wb.create_sheet(S_SW), {
     "title": "情景切换 — SaaS 参数库(C&MP/BP&C 增速 + OPM + 目标P/E) + 开关(默认 Base)",
     "usage": ("B2 下拉切案 → 各杠杆『当前案』行跟切 → 分部收入→利润→EPS→隐含价 全链变档。"
               "三案并排见『估值对比』。Adobe 核心杠杆：①C&MP 增速(创意+营销云，~68%) ②BP&C 增速(Acrobat/Express，~27%) "
-              "③综合营业利润率(Semrush 摊销+AI 投入 vs 运营杠杆) ④目标 P/E(主镜头，AI 替代风险风险+治理折价定价)。"),
+              "③综合营业利润率(Semrush 摊销+AI 投入 vs 运营杠杆) ④目标 P/E(主镜头，AI 替代风险+治理折价定价)。"),
     "cases": CASES, "default": "Base",
     "triggers": [
         ("Bear", "Creative Cloud 有机 ARR 增速跌破 ~6% + Canva/Figma 实质蚕食 + 治理真空延续 + 利润率压缩 → 估值停留在 11-12x P/E 价值陷阱区。"),
@@ -360,7 +360,7 @@ sv = K.write_scenario_valuation(wb.create_sheet(S_VAL), {
     "pe_lens": {"target_row": sw["SWACT"]["tpe"], "mcap_label": "市值 前瞻·P/E镜头($B)"},
     "reading": "P/E 镜头读法：『当下 forward P/E』= 现价÷模型各年 GAAP EPS(光谱里 Adobe 的出处，11x)；『P/E 前瞻隐含』= 目标P/E×EPS。P/B 与 P/E 两镜头差距极大 = 对 BPS 含义的认知分歧(轻资产+回购 SaaS 的正常现象，Adobe P/B 无意义)。",
     "method": "方法：P/E 平行镜头逐年估(主结论)。目标 P/E(情景切换当前案) × 前瞻 GAAP EPS(含递减股本) → 隐含价。基本面在『利润与收入假设』；目标 P/E 在『情景切换』。",
-    "concl": "结论(方向性)：三情景见『估值对比』；当前 $205 处自身历史 P/E 低位，base 隐含价显著高于现价=市场过度定价 AI 替代风险风险，但需 ARR 守住 + 治理继任兑现。",
+    "concl": "结论(方向性)：三情景见『估值对比』；当前 $205 处自身历史 P/E 低位，base 隐含价显著高于现价=市场过度定价 AI 替代风险，但需 ARR 守住 + 治理继任兑现。",
 })
 
 # ════════════ 12. 估值对比（三案 P/E 链为主）════════════
@@ -429,7 +429,7 @@ cm = K.write_comparison(wb.create_sheet(S_CMP), {
             ("总收入($B)", "rev", K.N1, "= C&MP+BP&C+产品与服务 三组增速驱动", False),
             ("净利($B)", "ni", K.N1, "= 总收入×GAAP OPM×净利转换率", False),
             ("EPS GAAP ($)", "eps", K.N2, "= 净利÷递减股本(回购杠杆)", False),
-            ("目标 P/E(GAAP)", "tpe", K.MX, "= 该案 P/E(AI 替代风险风险+治理折价)", False),
+            ("目标 P/E(GAAP)", "tpe", K.MX, "= 该案 P/E(AI 替代风险+治理折价)", False),
             ("隐含价 P/E镜头 ($)", "px", K.PX, "= 目标P/E × EPS(主结论)", True),
             ("隐含 forward P/E", "ipe", K.MX, "= 隐含价÷EPS，交叉验证", False),
             ("vs 现价 $205", "up", K.PCT, "= 隐含价÷$205.02−1", True),
