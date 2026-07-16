@@ -1,6 +1,6 @@
 ---
 name: equity-research-obsidian
-description: 首次覆盖研究管线(报告 × 模型一体化)——ICA 的 Obsidian + 物理锚估值变体。一次调用端到端产出:机构级首次覆盖研报(.md 写入 Obsidian vault, 全 inline ECharts, 正文/写作/体量/质检沿用 ICA 中式深度报告规范,1.5-3 万字 40-70 图)+ 物理锚估值模型(Excel, 调 valuation-model skill)+ 决策 memo。估值由 valuation-model 的"物理锚→营收→利润→多镜头→隐含价"通电链驱动,模型是估值数字的唯一真相源,报告估值章节从模型读出。当用户说"做 initiating coverage""二级研究""深度拆解 XX 公司""initiate XX""写一份机构级研报""研报+模型一起做"时触发此 skill。
+description: 首次覆盖研究管线(报告 × 模型一体化)——initial-coverage-advanced(ICA)的变体:报告写进 Obsidian,估值改用物理锚(业务最底层的物理驱动量)驱动。一次调用端到端产出:机构级首次覆盖研报(.md 写入 Obsidian vault, 全 inline ECharts, 正文/写作/体量/质检沿用 ICA 中式深度报告规范,1.5-3 万字 40-70 图)+ 物理锚估值模型(Excel, 调 valuation-model skill)+ 决策 memo。估值由 valuation-model 沿"物理锚→营收→利润→估值→隐含价"逐级用公式推出,改底层假设、隐含价跟着变;估值数字一律以模型为准,报告估值章节从模型读出。当用户说"做 initiating coverage""二级研究""深度拆解 XX 公司""initiate XX""写一份机构级研报""研报+模型一起做"时触发此 skill。
 ---
 
 # Equity Research(ICA 的 Obsidian + 物理锚估值变体)
@@ -55,7 +55,7 @@ description: 首次覆盖研究管线(报告 × 模型一体化)——ICA 的 Ob
 ## 核心原则(三条)
 
 1. **估值主权在模型**:目标价、评级、三情景的唯一来源是 `valuation-model` 的隐含价阶梯;一个 ticker 只许有一套估值数字,报告不另建加权目标价。**★ 因果方向铁律**:先把 Excel 模型建完、validate 通过、跑出隐含价,报告结论再从模型读出来——绝不允许先定结论再搭 Excel 去凑。
-2. **模型的信息量必须进报告**:物理锚链、三情景假设、隐含价 vs 历史估值带、可跟踪仪表盘指标——这些是第四章正文素材,不是 Excel 暗数据。
+2. **模型的信息量必须进报告**:物理锚链、三情景假设、隐含价 vs 历史估值带、可跟踪仪表盘指标——这些是第四章正文素材,不能只留在 Excel 里不进报告。
 3. **报告 ↔ 模型同源,单向耦合**:报告所有可量化判断必须与 `input.json` 一致;对不上回模型裁决,不在报告另拍数。**模型是估值数字唯一真相源;模型不认识报告**(不回填)。
 
 ---
