@@ -57,7 +57,7 @@ K.write_cover(wb.create_sheet(S_COVER), {
         ("② 核心引擎", "Total Adobe ARR $27.1B(Q2 FY26，+12.5% YoY，含 Semrush；有机 ~+10-11%)；AI-first ARR >$500M(同比×3)。"),
         ("③ 核心分歧", "11.7x 是价值陷阱(AI 抹平创意技能溢价 + Canva/Figma 蚕食 + 治理真空)还是过度恐惧(ARR 未减速、Adobe 嵌 AI 而非被替代)。"),
         ("④ 三情景目标价", "Bear/Base/Bull 从 C&MP/BP&C 增速 + 利润率 + 目标P/E 三杠杆翻档，沿同一条链算出，见『估值对比』。"),
-        ("⑤ 主要风险", "Creative Cloud ARR 有机增速跌破高单位数 / 治理(CEO 继任未定+CFO 换人) / 利润端 Q2 FY26 净利仅 +1.2% / 板块系统性杀估值。"),
+        ("⑤ 主要风险", "Creative Cloud ARR 有机增速跌破高单位数 / 治理(CEO 继任未定+CFO 换人) / 利润端 Q2 FY26 净利仅 +1.2% / 板块系统性估值倍数下修。"),
     ],
 })
 
@@ -97,20 +97,20 @@ ha = K.write_history(wb.create_sheet(S_HIST), {
 
 # ════════════ 3. 股价走势 ════════════
 def phase_fn(ym):
-    if ym <= "2022-09": return "① 利率杀估值+Figma 收购"
+    if ym <= "2022-09": return "① 利率估值倍数下修+Figma 收购"
     if ym <= "2023-11": return "② Figma 终止+AI 叙事反弹"
     if ym <= "2024-11": return "③ 高位回落(增长减速)"
     if ym <= "2025-11": return "④ 持续下行(AI 竞争)"
     if ym <= "2026-03": return "⑤ CEO 卸任"
-    return "⑥ CFO 离任+板块杀估值"
+    return "⑥ CFO 离任+板块估值倍数下修"
 px = K.write_price_chart(wb.create_sheet(S_PX), MONTHLY, {
     "fn": phase_fn,
-    "rows": [("① 利率杀估值+Figma 收购", "2022 加息 + $200 亿收购 Figma 引发垄断与整合担忧，股价从 $670 跌至 $275"),
+    "rows": [("① 利率估值倍数下修+Figma 收购", "2022 加息 + $200 亿收购 Figma 引发垄断与整合担忧，股价从 $670 跌至 $275"),
              ("② Figma 终止+AI 叙事反弹", "2023-12 监管阻力下 Figma 收购终止(付 $10 亿分手费)，AI 叙事推动反弹至 $600"),
              ("③ 高位回落(增长减速)", "2024 增长从 20%+ 减速至 ~11%，估值从 35x 回落"),
              ("④ 持续下行(AI 竞争)", "2025 生成式 AI(Midjourney/Canva/Sora)+ Figma IPO 压制创意软件护城河叙事，全年下行"),
              ("⑤ CEO 卸任", "2026-03 Narayen 宣布卸任(继任未定)，单日跌约 23%"),
-             ("⑥ CFO 离任+板块杀估值", "2026-06 Q2 beat&raise 但 CFO 离任 + 全板块 AI agent 杀估值，触及 7 年新低 $190")],
+             ("⑥ CFO 离任+板块估值倍数下修", "2026-06 Q2 beat&raise 但 CFO 离任 + 全板块 AI agent 估值倍数下修，触及 7 年新低 $190")],
 }, title="Adobe 月度股价 ($)")
 
 # ════════════ 4. 卖方研报共识 ════════════
@@ -119,19 +119,19 @@ K.write_consensus(wb.create_sheet(S_CONS), {
     "overview": "评级 Buy(评分 1.78)：10 买/1 增持/25 持有/0 减持/2 卖。目标价区间 $190-$460，均值 $267.75。核心叙事分裂：多方(AI-ARR 加速+估值低位) vs 空方(AI 商品化 Creative Cloud+治理动荡)。",
     "assumptions": [
         ("收入增速\n(FY26E)", "街上共识 ~+11%(rev $26.5B)，与 Adobe 上调后指引 $26.5-26.6B 一致。", "分歧在 AI 对 Creative Cloud 量价 ARPU 的实质影响何时显现。", "base 取 +10-11%(有机)，与指引 ARR +10.2% 对齐；FY27+ 温和回落。"),
-        ("Total ARR 增速", "Q2 FY26 +12.5%(含 Semrush)，有机 ~+10-11%；街上预期维持高单位数-低双位数。", "有机 ARR 能否守住 ~10% 是估值命门——跌破高单位数 = AI 颠覆兑现。", "base 有机 +10%、Semrush 并表贡献 ~$0.5B；bull AI-first ARR 成第二曲线。"),
+        ("Total ARR 增速", "Q2 FY26 +12.5%(含 Semrush)，有机 ~+10-11%；街上预期维持高单位数-低双位数。", "有机 ARR 能否守住 ~10% 是估值关键敏感项——跌破高单位数 = AI 替代风险兑现。", "base 有机 +10%、Semrush 并表贡献 ~$0.5B；bull AI-first ARR 成第二曲线。"),
         ("GAAP 营业利润率", "FY25 36.6%；共识 FY26E ~35-36%(Semrush 摊销+AI 投入小幅拖累)。", "AI 投入对毛利/获客成本的拖累程度。", "base 持稳 ~35.5%；bear 压缩至 30%(价格战+整合)。"),
-        ("目标 P/E(GAAP)", "卖方隐含 forward P/E 11-20x(目标价÷FY26E EPS)，中位 ~15x。", "给一个正经历 AI 颠覆威胁 + 治理真空的 10% 增长者多少倍数。", "base 17x(GAAP)——10% 增长者理论 justified P/E ~17x，处自身历史下沿之下；bear 11x(价值陷阱)、bull 24x( fallen angel 复位)。"),
+        ("目标 P/E(GAAP)", "卖方隐含 forward P/E 11-20x(目标价÷FY26E EPS)，中位 ~15x。", "给一个正经历 AI 替代风险威胁 + 治理真空的 10% 增长者多少倍数。", "base 17x(GAAP)——10% 增长者理论 justified P/E ~17x，处自身历史下沿之下；bear 11x(价值陷阱)、bull 24x( fallen angel 复位)。"),
     ],
     "divergences": [
-        "① AI 是否结构性颠覆 Creative Cloud：决定 ARR 有机增速能否守住 ~10%——这是 11.7x 是陷阱还是礼物的唯一裁决。",
+        "① AI 是否结构性替代 Creative Cloud：决定 ARR 有机增速能否守住 ~10%——这是 11.7x 是陷阱还是礼物的唯一裁决。",
         "② 治理风险定价：CEO 继任未定 + CFO 换人，市场要多少折扣；继任落地=催化剂。",
-        "③ 板块 systemic 杀估值 vs Adobe idiosyncratic：NOW -48%/CRM -9%/ADBE -37%(YTD)，Adobe 的折价里多少是板块、多少是自身。",
+        "③ 板块 systemic 估值倍数下修 vs Adobe idiosyncratic：NOW -48%/CRM -9%/ADBE -37%(YTD)，Adobe 的折价里多少是板块、多少是自身。",
     ],
     "stances": [
         "Goldman(Sell，TP $220)：生成式 AI 侵蚀 Creative Cloud 护城河，评级里仅有的两家 Sell 之一。",
         "DA Davidson(Buy，TP $250)：Figma S-1 反证 Adobe 护城河，按 FY26 EPS 给 10x。",
-        "RBC(Outperform，TP $350)：AI-first ARR 翻三倍说明 Firefly 在变现而非被颠覆。",
+        "RBC(Outperform，TP $350)：AI-first ARR 翻三倍说明 Firefly 在变现而非被替代。",
         "Stifel(Buy→Hold，TP $350→$200)：CFO 当日砍目标价 43%。",
     ],
 })
@@ -145,7 +145,7 @@ hm = K.write_hist_multiples(wb.create_sheet(S_HMULT), {
     "fwd_note": "forward P/E ≈11x(GAAP $17.95)/8x(非GAAP $24.40)；forward P/B ≈7x(失真)",
     "self_name": "Adobe",
     "self_fwd_pe_label": "≈11x(GAAP)",
-    "self_note": "TTM P/E 11.7x(GAAP)，处自身至少近十年低位——板块 AI 杀估值 + CEO/CFO 双离任 + Creative Cloud AI 颠覆担忧叠加。",
+    "self_note": "TTM P/E 11.7x(GAAP)，处自身至少近十年低位——板块 AI 估值倍数下修 + CEO/CFO 双离任 + Creative Cloud AI 替代风险担忧叠加。",
     "peers": [
         {"name": "Microsoft (MSFT)", "yearly": [None, None, 36.0, 35.0, 33.0], "cur_pb": 11.0, "cur_pe": 33.0, "fwd_pe": 30.0,
          "note": "综合龙头，Copilot 全家桶切入文档/设计/营销；估值远高于 Adobe。"},
@@ -159,8 +159,8 @@ hm = K.write_hist_multiples(wb.create_sheet(S_HMULT), {
          "note": "forward P/E 光谱中位 ~26x(参照)；Adobe 11x 显著偏低。"},
     ],
     "ratio": {"peer": "Intuit (INTU)",
-              "note": "Adobe/INTU forward P/E 比 ~0.45x(INTU 同为大型应用软件、增速相近)——历史常态 ~1.0x，当前深度折价。修复路径取决于 AI 颠覆叙事能否被证伪。"},
-    "reading": "① 自己：当前 11.7x 显著低于 FY22 低谷 33x 与 5 年均值 ~35x → 非周期底部可解释，含结构性折价。② 同行：Adobe forward 11x 远低于 MSFT(30)/NOW(48)/INTU(25)/CRM(22)，是可比里最便宜——市场已把 AI 颠覆 + 治理折价大部分定价。③ 相对 INTU 比值 0.45x(历史 ~1.0x)→ 若 AI 担忧证伪，重估空间大。→ 下一页 P/E 三案 11-24x。",
+              "note": "Adobe/INTU forward P/E 比 ~0.45x(INTU 同为大型应用软件、增速相近)——历史常态 ~1.0x，当前深度折价。修复路径取决于 AI 替代风险叙事能否被证伪。"},
+    "reading": "① 自己：当前 11.7x 显著低于 FY22 低谷 33x 与 5 年均值 ~35x → 非周期底部可解释，含结构性折价。② 同行：Adobe forward 11x 远低于 MSFT(30)/NOW(48)/INTU(25)/CRM(22)，是可比里最便宜——市场已把 AI 替代风险 + 治理折价大部分定价。③ 相对 INTU 比值 0.45x(历史 ~1.0x)→ 若 AI 担忧证伪，重估空间大。→ 下一页 P/E 三案 11-24x。",
 })
 
 # ════════════ 6. 估值倍数假设（P/B 主线=kit 合规参考；P/E 平行镜头=主结论）════════════
@@ -172,7 +172,7 @@ ma = K.write_multiple_assumptions(wb.create_sheet(S_MULT), {
                  "P/B 7.3x 且将持续走高，反映的是资本回报政策而非估值高低。主结论走 P/E：目标 P/E × 前瞻 GAAP EPS → 隐含价。"
                  "P/B 镜头同步给出做形式上的三角(两个镜头差距极大 = 对 BPS 含义的认知分歧，轻资产+回购 SaaS 的正常现象)。"),
     "why_rows": 5,
-    "method_text": "P/B 三层(kit 主线，仅参考)：①历史峰值 P/B ~22x(FY21)× ②结构溢价 0.35x(轻资产+回购致 BPS 萎缩)× ③情绪值。P/E 三案在『情景切换』页直接拍目标(不经三层，因 Adobe P/E 由增速+利润率+AI 颠覆风险+治理折价综合决定，非周期情绪单一驱动)。",
+    "method_text": "P/B 三层(kit 主线，仅参考)：①历史峰值 P/B ~22x(FY21)× ②结构溢价 0.35x(轻资产+回购致 BPS 萎缩)× ③情绪值。P/E 三案在『情景切换』页直接拍目标(不经三层，因 Adobe P/E 由增速+利润率+AI 替代风险风险+治理折价综合决定，非周期情绪单一驱动)。",
     "peak": 22.0, "peak_note": "FY21 P/B 峰值 ~22x(BPS $27.7 × 低价权益)。",
     "premium": 0.35, "premium_note": "轻资产 SaaS + 回购致 BPS 萎缩，结构溢价含义弱。",
     "all_cols": ALLC, "all_years": ALLY, "hist_cols": HC, "fwd_cols": FCf,
@@ -182,7 +182,7 @@ ma = K.write_multiple_assumptions(wb.create_sheet(S_MULT), {
         ("Base", [0.38, 0.36, 0.34, 0.32, 0.30], "温和，P/B 随 BPS 萎缩被动走高。"),
         ("Bull", [0.45, 0.42, 0.40, 0.38, 0.36], "AI 兑现 + 减速回购，P/B 企稳。"),
     ],
-    "reconcile_text": "卖方目标价 $268 隐含 FY26E P/E ~15x(GAAP)。我们 base FY27E P/E 17x(GAAP)——高于卖方，因我们认为市场过度定价了 AI 颠覆 Creative Cloud 的风险：Q2 FY26 ARR +12.5%、AI-first ARR 翻三倍、收入增速加速(10%→13%)均不支持'已发生颠覆'的定价。若 ARR 有机增速守住 ~10%，justified P/E ~17x(10% 增长者理论值)。",
+    "reconcile_text": "卖方目标价 $268 隐含 FY26E P/E ~15x(GAAP)。我们的 base FY27E P/E 为 17x(GAAP),高于卖方,因为市场对 AI 替代 Creative Cloud 的风险定价过高。Q2 FY26 ARR +12.5%、AI-first ARR 翻三倍、收入增速从 10% 升至 13%,均不支持'已出现明显替代'的判断。若 ARR 有机增速维持在 ~10%,justified P/E 约为 17x(10% 增长者理论值)。",
     "source_text": "P/B 历史峰值=『历史财务与估值』实际 P/B；同业=Yahoo/卖方；P/E 三案=本研究判断(增速+利润率+AI 风险+治理折价综合)。",
 })
 
@@ -191,11 +191,11 @@ sw = K.write_scenario_switch(wb.create_sheet(S_SW), {
     "title": "情景切换 — SaaS 参数库(C&MP/BP&C 增速 + OPM + 目标P/E) + 开关(默认 Base)",
     "usage": ("B2 下拉切案 → 各杠杆『当前案』行跟切 → 分部收入→利润→EPS→隐含价 全链变档。"
               "三案并排见『估值对比』。Adobe 核心杠杆：①C&MP 增速(创意+营销云，~68%) ②BP&C 增速(Acrobat/Express，~27%) "
-              "③综合营业利润率(Semrush 摊销+AI 投入 vs 运营杠杆) ④目标 P/E(主镜头，AI 颠覆风险+治理折价定价)。"),
+              "③综合营业利润率(Semrush 摊销+AI 投入 vs 运营杠杆) ④目标 P/E(主镜头，AI 替代风险风险+治理折价定价)。"),
     "cases": CASES, "default": "Base",
     "triggers": [
         ("Bear", "Creative Cloud 有机 ARR 增速跌破 ~6% + Canva/Figma 实质蚕食 + 治理真空延续 + 利润率压缩 → 估值停留在 11-12x P/E 价值陷阱区。"),
-        ("Base", "AI 增量而非颠覆(ARR 有机守住 ~10%) + 利润率持稳 ~35% + 治理继任落地 → 估值从恐慌 11.7x 重估至 ~17x P_E(justified 区间)。"),
+        ("Base", "AI 增量而未形成替代(ARR 有机守住 ~10%) + 利润率持稳 ~35% + 治理继任落地 → 估值从恐慌 11.7x 重估至 ~17x P_E(justified 区间)。"),
         ("Bull", "AI-first ARR 成第二曲线(占比→10%+) + Firefly/GenStudio 货币化兑现 + 新 CEO 重塑叙事 → 估值复位至 ~24x P/E。"),
     ],
     "all_cols": ALLC, "all_years": ALLY, "hist_cols": HC, "fwd_cols": FCf,
@@ -218,7 +218,7 @@ sw = K.write_scenario_switch(wb.create_sheet(S_SW), {
         {"key": "tpe", "name": "目标 P/E(GAAP，主镜头)", "fmt": K.MX, "cols": FCf,
          "vals": {"Bear": [11, 10.5, 10, 9.5, 9.5], "Base": [17, 17, 17, 17, 17], "Bull": [22, 23, 24, 25, 25]},
          "desc": "★ 主结论镜头：目标 P/E × 前瞻 GAAP EPS → 隐含价。10% 增长者理论 justified P/E ~17x；Bear=价值陷阱区(11x)、Bull=fallen angel 复位(24x，仍低于历史 35-50x)。当前 TTM 11.7x。",
-         "stories": {"Bear": "AI 颠覆兑现 + 治理真空，永久去溢价至 11x。", "Base": "AI 增量非颠覆，重估至 justified 17x。", "Bull": "AI 货币化 + 治理复位，回到 24x(仍低于历史)。"},
+         "stories": {"Bear": "AI 替代风险兑现 + 治理真空，永久去溢价至 11x。", "Base": "AI 增量未形成替代，重估至 justified 17x。", "Bull": "AI 货币化 + 治理复位，回到 24x(仍低于历史)。"},
          "hist": [57, 33, 50, 35, 20]},
     ],
     "linked": [
@@ -360,7 +360,7 @@ sv = K.write_scenario_valuation(wb.create_sheet(S_VAL), {
     "pe_lens": {"target_row": sw["SWACT"]["tpe"], "mcap_label": "市值 前瞻·P/E镜头($B)"},
     "reading": "P/E 镜头读法：『当下 forward P/E』= 现价÷模型各年 GAAP EPS(光谱里 Adobe 的出处，11x)；『P/E 前瞻隐含』= 目标P/E×EPS。P/B 与 P/E 两镜头差距极大 = 对 BPS 含义的认知分歧(轻资产+回购 SaaS 的正常现象，Adobe P/B 无意义)。",
     "method": "方法：P/E 平行镜头逐年估(主结论)。目标 P/E(情景切换当前案) × 前瞻 GAAP EPS(含递减股本) → 隐含价。基本面在『利润与收入假设』；目标 P/E 在『情景切换』。",
-    "concl": "结论(方向性)：三情景见『估值对比』；当前 $205 处自身历史 P/E 低位，base 隐含价显著高于现价=市场过度定价 AI 颠覆风险，但需 ARR 守住 + 治理继任兑现。",
+    "concl": "结论(方向性)：三情景见『估值对比』；当前 $205 处自身历史 P/E 低位，base 隐含价显著高于现价=市场过度定价 AI 替代风险风险，但需 ARR 守住 + 治理继任兑现。",
 })
 
 # ════════════ 12. 估值对比（三案 P/E 链为主）════════════
@@ -429,7 +429,7 @@ cm = K.write_comparison(wb.create_sheet(S_CMP), {
             ("总收入($B)", "rev", K.N1, "= C&MP+BP&C+产品与服务 三组增速驱动", False),
             ("净利($B)", "ni", K.N1, "= 总收入×GAAP OPM×净利转换率", False),
             ("EPS GAAP ($)", "eps", K.N2, "= 净利÷递减股本(回购杠杆)", False),
-            ("目标 P/E(GAAP)", "tpe", K.MX, "= 该案 P/E(AI 颠覆风险+治理折价)", False),
+            ("目标 P/E(GAAP)", "tpe", K.MX, "= 该案 P/E(AI 替代风险风险+治理折价)", False),
             ("隐含价 P/E镜头 ($)", "px", K.PX, "= 目标P/E × EPS(主结论)", True),
             ("隐含 forward P/E", "ipe", K.MX, "= 隐含价÷EPS，交叉验证", False),
             ("vs 现价 $205", "up", K.PCT, "= 隐含价÷$205.02−1", True),
@@ -447,8 +447,8 @@ dash = K.write_dashboard(wb.create_sheet(S_DASH), {
     "title": "综合判断仪表盘 — A 基本面拐点 · B 估值错位(预测引擎) · C 催化剂 · D 情绪确认",
     "usage": "预测引擎=B(错位)+C(催化剂)，当下可观测；D 情绪只做 timing 确认。验收=回测：放回 2022 低点($275)或 2025 高点($610)，这套表当时能看到。",
     "blocks": [
-        {"title": "A. 基本面拐点 — AI 是颠覆还是增量?", "rows": [
-            ("ARR 有机增速", "Total ARR Q2 FY26 +12.5%(含 Semrush)；有机 ~+10-11%，未减速", "命门：有机 ARR 守住 ~10% = 颠覆未兑现"),
+        {"title": "A. 基本面拐点 — AI 是形成替代还是带来增量?", "rows": [
+            ("ARR 有机增速", "Total ARR Q2 FY26 +12.5%(含 Semrush)；有机 ~+10-11%，未减速", "关键敏感项：有机 ARR 守住 ~10% = 尚未出现明显替代"),
             ("AI-first ARR", ">$0.5B(同比×3)，Firefly 240 亿张图/MAU 600 万+", "AI 货币化证据，但占总 ARR <2%(基数小)"),
             ("收入增速", "季度加速：10%→11%→11%→12%→13%(Q1FY24→Q2FY26)", "减速未在收入端显现；Q2 净利仅 +1.2% 是利润端警示"),
             ("A 判断", "【中】", "基本面未崩(ARR 加速)，但利润端压力 + 治理真空是悬顶之剑。", True),
@@ -465,30 +465,30 @@ dash = K.write_dashboard(wb.create_sheet(S_DASH), {
         ]},
         {"title": "C. 催化剂 — 什么逼市场闭合 GAP", "rows": [
             ("CEO 继任落地", "待(最高优先级)", "新 CEO 公布 + AI 战略清晰化 = 最大单一催化剂，解除治理折价。"),
-            ("Q3/Q4 FY26 财报", "✓ 进行中", "Total ARR 有机增速 + AI-first ARR 披露：守住 ~10% = 证伪颠覆叙事。"),
+            ("Q3/Q4 FY26 财报", "✓ 进行中", "Total ARR 有机增速 + AI-first ARR 披露：守住 ~10% = 证伪替代风险判断。"),
             ("板块估值回暖", "待", "NOW/CRM 等止跌 + 利率下行带动 SaaS 估值修复。"),
             ("C 判断", "部分兑现", "财报是近 catalyst；CEO 继任是行情级别催化剂。", True),
         ]},
         {"title": "D. 情绪确认 — timing + 刹车（定性档位）", "rows": [
-            ("恐慌位置", "从 2024 高 $635 跌 68% 至 $190(7 年新低)", "板块 AI 杀估值 + 双高管离任，恐慌释放中。"),
+            ("恐慌位置", "从 2024 高 $635 跌 68% 至 $190(7 年新低)", "板块 AI 估值倍数下修 + 双高管离任，恐慌释放中。"),
             ("现价 vs 基本面该给", "forward 11x 远低于该给 17x", "深度反向错位，非合理偏低而是恐慌定价。"),
             ("当前档位", "【退潮末期/恐慌底部】", "下行恐慌接近尾声，反转需 CEO 继任 + ARR 守住 catalyst。", True),
             ("衰减扳机", "Total ARR 有机增速跌破 ~8% / 营业利润率环比转跌 / CEO 继任再拖延", "任一翻→降档+P/E 目标下调至 Bear。"),
         ]},
     ],
     "final": {"band": "★ 综合判断(A+B+C+D)",
-              "text": "基本面未崩(A，ARR 加速)+估值深度反向错位(B，forward 11x vs 该给 17x)+催化剂部分兑现(C，财报+CEO 继任)+情绪恐慌底部(D)→ 风险收益比偏多但非无脑重仓；base 隐含价显著高于现价，建议逢 catalyst(CEO 继任落地/Q3 ARR 守住)分批建仓，Bear 档作止损参照。核心赌注：ARR 有机增速守住 ~10%(证伪 AI 颠覆叙事)。"},
+              "text": "基本面未崩(A，ARR 加速)+估值深度反向错位(B，forward 11x vs 该给 17x)+催化剂部分兑现(C，财报+CEO 继任)+情绪恐慌底部(D)→ 风险收益比偏多但非无脑重仓；base 隐含价显著高于现价，建议逢 catalyst(CEO 继任落地/Q3 ARR 守住)分批建仓，Bear 档作止损参照。核心赌注：ARR 有机增速守住 ~10%(证伪 AI 替代风险叙事)。"},
     "tracking": {
         "intro": "哪个指标恶化 → 哪个假设先崩 → 触发什么动作（盯的优先级）。",
         "rows": [
-            ("__band__", "一、核心驱动链（ARR 有机增速 = 估值命门）"),
-            ("Total ARR 有机增速", "~10-11%(Q2 FY26)", "命门：AI 是否颠覆 Creative Cloud 的唯一裁决", "季报 8-K 披露 + Semrush 剥离", "跌破 ~8% → 全链下调、转 Bear"),
-            ("AI-first ARR", ">$0.5B(同比×3)", "命门：AI 货币化能否成第二曲线", "季报 segment 披露", "增速跌破 ~30% → 下调 g_cmp/Bull 权重"),
+            ("__band__", "一、核心驱动链（ARR 有机增速 = 估值关键敏感项）"),
+            ("Total ARR 有机增速", "~10-11%(Q2 FY26)", "关键敏感项:AI 是否正在替代 Creative Cloud", "季报 8-K 披露 + Semrush 剥离", "跌破 ~8% → 全链下调、转 Bear"),
+            ("AI-first ARR", ">$0.5B(同比×3)", "关键敏感项：AI 货币化能否成第二曲线", "季报 segment 披露", "增速跌破 ~30% → 下调 g_cmp/Bull 权重"),
             ("__band__", "二、利润端（Q2 FY26 净利仅 +1.2% 警示）"),
-            ("GAAP 营业利润率", "36.6%(FY25)", "命门：Semrush 摊销+AI 投入 vs 运营杠杆", "季报", "环比转跌 → 下调 opm 路径"),
+            ("GAAP 营业利润率", "36.6%(FY25)", "关键敏感项：Semrush 摊销+AI 投入 vs 运营杠杆", "季报", "环比转跌 → 下调 opm 路径"),
             ("__band__", "三、治理与估值"),
-            ("CEO 继任", "Narayen 3/12 宣布卸任，未定", "命门：治理折价 + AI 战略清晰度", "公司公告/8-K", "继任落地 = 上调情绪值；拖延 = 维持折价"),
-            ("forward P/E(GAAP)", "~11x", "命门：板块 systemic 杀估值", "股价/一致预期", "NOW/CRM 继续破位 → P/E 目标下调"),
+            ("CEO 继任", "Narayen 3/12 宣布卸任，未定", "关键敏感项：治理折价 + AI 战略清晰度", "公司公告/8-K", "继任落地 = 上调情绪值；拖延 = 维持折价"),
+            ("forward P/E(GAAP)", "~11x", "关键敏感项：板块 systemic 估值倍数下修", "股价/一致预期", "NOW/CRM 继续破位 → P/E 目标下调"),
         ],
     },
 })

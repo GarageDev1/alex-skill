@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-build_dal.py — Delta Air Lines (NYSE:DAL) 估值模型(物理锚通电链, P/E 主镜头 + P/B 底部 + DCF 旁注)。
+build_dal.py — Delta Air Lines (NYSE:DAL) 估值模型(物理锚驱动链, P/E 主镜头 + P/B 底部 + DCF 旁注)。
 
 物理锚 = 运力(ASM 可用座英里) + jet fuel 价格。
 链: [ASM × load factor → RPM × PRASM → 客运收入] + [Amex/忠诚度非周期现金流]
@@ -358,7 +358,7 @@ for col in FCf:
 # ════════════ 10. 利润与收入假设 ════════════
 # 营业利润 = 总营收 − CASM-ex×ASM(非油成本) − 燃油成本; 净利 = 营业利润 × 净利转换(税+利息)
 # kit 的 write_fundamentals 用 段OPM 模型, 但航空成本结构是 unit-cost, 不是段OPM。
-# 我们用一个折中: 把客运/忠诚度/其他各给一个隐含 OPM, 但真正的成本灵敏(CASM-ex, 燃油)在分部测算页已通电。
+# 采用以下处理: 把客运/忠诚度/其他各给一个隐含 OPM, 但真正的成本灵敏(CASM-ex, 燃油)在分部测算页已建立公式联动。
 # 为保持链通且数值灵敏(油价→燃油成本→净利), 改用自定义利润段: 见下方手工回填。
 fr = K.write_fundamentals(wb.create_sheet(S_FUND), {
     "title": "利润与收入假设 — 单位成本驱动(CASM-ex + 燃油) → 营业利润 → 净利 → EPS",
@@ -586,13 +586,13 @@ dash = K.write_dashboard(wb.create_sheet(S_DASH), {
         "intro": "哪个指标恶化 → 哪个假设先崩 → 触发什么动作(盯的优先级)。",
         "rows": [
             ("__band__", "一、油价(最大 swing)"),
-            ("jet fuel $/加仑", "~$2.70(6 月)", "命门: 弹性 $5.17 EPS/加仑", "Argus jet fuel 指数 / EIA STEO(周/月)", "反弹 >$3.30 → 切 Bear 重算 EPS"),
+            ("jet fuel $/加仑", "~$2.70(6 月)", "关键敏感项: 弹性 $5.17 EPS/加仑", "Argus jet fuel 指数 / EIA STEO(周/月)", "反弹 >$3.30 → 切 Bear 重算 EPS"),
             ("__band__", "二、单位收入(暑运票价)"),
-            ("PRASM 同比", "待 Q2", "命门: 客运收入路径", "DAL 季报 + 行业 RASM tracker", "连续转负 → 下调 PRASM 假设"),
+            ("PRASM 同比", "待 Q2", "关键敏感项: 客运收入路径", "DAL 季报 + 行业 RASM tracker", "连续转负 → 下调 PRASM 假设"),
             ("__band__", "三、单位成本(人工)"),
-            ("CASM-ex 同比", "Q1 2026 +6%", "命门: 非油成本刚性", "DAL 季报; 飞行员合同(2026 底重谈)", ">+5% 持续 → 上调 CASM-ex 假设"),
+            ("CASM-ex 同比", "Q1 2026 +6%", "关键敏感项: 非油成本刚性", "DAL 季报; 飞行员合同(2026 底重谈)", ">+5% 持续 → 上调 CASM-ex 假设"),
             ("__band__", "四、非周期现金流"),
-            ("Amex remuneration", "FY2025 $8.2B", "命门: 盈利结构韧性 thesis", "DAL 10-K/10-Q 披露", "增速放缓 <5% → A 块判断降级"),
+            ("Amex remuneration", "FY2025 $8.2B", "关键敏感项: 盈利结构韧性 thesis", "DAL 10-K/10-Q 披露", "增速放缓 <5% → A 块判断降级"),
         ],
     },
 })

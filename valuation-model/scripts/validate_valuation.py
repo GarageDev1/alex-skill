@@ -389,8 +389,8 @@ def main(path):
         scale_detail = f"财务量纲行统一 $B 口径({len(usd_rows)}/{len(fin_rows)} 显式标 $B, 无超量级行)"
     checks.append({"name": "$B 口径统一(scale)", "status": scale_status, "detail": scale_detail})
 
-    # ── 12: 结构 = 物理锚通电模型, 非旧 financial-analysis DCF 模板 ────
-    # 杜绝管线退回 IS/BS/CF/DCF/Comps 那套(它不通电、不是 $B 口径、无三情景并排)。
+    # ── 12: 结构 = 物理锚驱动模型, 非旧 financial-analysis DCF 模板 ────
+    # 杜绝管线退回 IS/BS/CF/DCF/Comps 那套(它未建立公式联动、不是 $B 口径、无三情景并排)。
     OLD_TMPL = {"income statement", "balance sheet", "cash flow", "cash flow statement",
                 "dcf", "dcf inputs", "dcf valuation", "comps", "sensitivity", "revenue model",
                 "valuation summary"}
@@ -401,14 +401,14 @@ def main(path):
     if old_hit >= 4 and std_hit < 2:
         struct_status = "fail"
         struct_detail = (f"检出旧 financial-analysis DCF 模板结构({old_hit} 张 IS/BS/CF/DCF/Comps), "
-                         f"标准物理锚 sheet 仅 {std_hit}/4。必须重建为物理锚通电模型。")
+                         f"标准物理锚 sheet 仅 {std_hit}/4。必须重建为物理锚驱动模型。")
     elif std_hit < 3:
         struct_status = "warn"
         struct_detail = f"标准 sheet(封面/估值对比/情景切换/仪表盘)仅 {std_hit}/4, 复核结构完整性"
     else:
         struct_status = "pass"
-        struct_detail = f"物理锚通电结构完整(标准 sheet {std_hit}/4, 无旧 DCF 模板痕迹)"
-    checks.append({"name": "结构(物理锚通电, 非旧DCF模板)", "status": struct_status, "detail": struct_detail})
+        struct_detail = f"物理锚驱动结构完整(标准 sheet {std_hit}/4, 无旧 DCF 模板痕迹)"
+    checks.append({"name": "结构(物理锚驱动, 非旧DCF模板)", "status": struct_status, "detail": struct_detail})
 
     # ── 13: 公式错误值扫描(#DIV/0! / #REF! 等)— 抓"在场但算坏"的公式/镜头 ──
     # keyword 检镜头只看"有没有 DCF/PE 字样", 抓不到镜头算出 #DIV/0!(实测 ASML DCF

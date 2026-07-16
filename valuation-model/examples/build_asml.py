@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-build_asml.py — ASML Holding 物理锚通电估值模型 (USD $B 口径)。
+build_asml.py — ASML Holding 物理锚驱动估值模型 (USD $B 口径)。
 
-物理锚 = 光刻系统出货台数(EUV + DUV)。通电链:
+物理锚 = 光刻系统出货台数(EUV + DUV)。公式链:
   EUV 台数 × EUV ASP($M/台) → EUV 收入($B)
   DUV 台数 × DUV ASP($M/台) → DUV 收入($B)
   服务收入(Installed Base Mgmt)随累计装机基数 ~+8-12%/yr 增长
@@ -635,13 +635,13 @@ dash = K.write_dashboard(wb.create_sheet(S_DASH), {
         "intro": "哪个指标恶化 → 哪个假设先崩 → 触发什么动作。",
         "rows": [
             ("__band__", "一、核心驱动链(出货台数)"),
-            ("EUV 出货台数 + High-NA 占比", "Base 2027 ~74 台", "命门: EUV 收入 = 台数 × ASP", "季报出货 + High-NA 验收(季度)", "台数低于路径 → 下调台数假设重算"),
+            ("EUV 出货台数 + High-NA 占比", "Base 2027 ~74 台", "关键敏感项: EUV 收入 = 台数 × ASP", "季报出货 + High-NA 验收(季度)", "台数低于路径 → 下调台数假设重算"),
             ("__band__", "二、ASP(混合)"),
-            ("EUV 混合 ASP", "Base 2030 ~$340M/台", "命门: High-NA 占比决定 ASP 上行", "季报 ASP 拆分(季度)", "High-NA 占比慢 → 下移 ASP 路径"),
+            ("EUV 混合 ASP", "Base 2030 ~$340M/台", "关键敏感项: High-NA 占比决定 ASP 上行", "季报 ASP 拆分(季度)", "High-NA 占比慢 → 下移 ASP 路径"),
             ("__band__", "三、需求总盘子"),
-            ("AI capex 指引", "强(hyperscaler 加速)", "命门: 整条出货链需求盘子", "hyperscaler 季报 + ASML 指引", "下修 >10% → 全链重算转 Bear"),
+            ("AI capex 指引", "强(hyperscaler 加速)", "关键敏感项: 整条出货链需求盘子", "hyperscaler 季报 + ASML 指引", "下修 >10% → 全链重算转 Bear"),
             ("__band__", "四、中国/DUV"),
-            ("中国 DUV 占比", "2024 49%→2026 指引 ~20%", "命门: DUV 台数复苏强度", "季报地区拆分 + 出口管制", "管制收紧 → 下调 DUV 台数"),
+            ("中国 DUV 占比", "2024 49%→2026 指引 ~20%", "关键敏感项: DUV 台数复苏强度", "季报地区拆分 + 出口管制", "管制收紧 → 下调 DUV 台数"),
         ],
     },
 })

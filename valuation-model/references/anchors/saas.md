@@ -32,6 +32,6 @@
 
 - **物理锚 = token 量 × 有效混合单价**:`GAAP 收入 = token 处理量(Q/yr) × 有效混合单价($/M)`。单价 = 挂牌 mix(Opus/Sonnet/Haiku 加权)× batch/缓存折扣, **商品化逐年下行**(弹性>1, 降价反放大量); token 量校准到卖方收入绝对值, 前瞻 = 上年×(1+情景增速)。改单价或 token 量 → 收入 → 隐含估值全链动。
 - **margin 杠杆 = compute/收入比**(不是 NRR):`EBIT margin ≈ 1 − compute/收入比 − 云分成% − 其他opex%`。compute/收入比能否从高位(60%+)降到稳态(40-50%)是最大不确定, 单列三案。**run-rate(当月×12)≠ GAAP 全年**, 高增长下全年 GAAP ≪ 年末 exit run-rate, 主模型走 GAAP。
-- **私营标的 = 整体 EV/$B 口径, 无 per-share**:无公开股价 → 不用 kit 的 `write_history`/`write_fundamentals`(它们绑 per-share/PE/PB), 改手搓"整体 $B"六张表(历史财务/历史倍数/倍数假设/利润/情景估值/估值对比);"现锚" = 最新融资轮 post-money, "隐含价" = 隐含整体估值($B)直接对现锚; 历史"股价" = 历次融资轮 post-money 估值带, 配当年 run-rate 得 EV/run-rate de-rating 带。
+- **私营标的 = 整体 EV/$B 口径, 无 per-share**:无公开股价 → 不用 kit 的 `write_history`/`write_fundamentals`(它们绑定 per-share/PE/PB),另行建立"整体 $B"六张表(历史财务/历史倍数/倍数假设/利润/情景估值/估值对比);"现锚" = 最新融资轮 post-money,"隐含价" = 隐含整体估值($B)并直接与现锚比较;历史"股价" = 历次融资轮 post-money 估值带,结合当年 run-rate 得到 EV/run-rate de-rating 带。
 - **估值镜头 = EV/Sales 主 + PE(稳态净利)+ DCF**(亏损刚转正): 主镜头逐年 forward 隐含估值 = 收入 × EV/Sales(高增长期高、随增速换挡 normalize); PE 仅 2030E 稳态净利交叉; DCF 做内在价值 sanity check。三镜头加权 vs 情景概率加权两口径并呈,分歧 = 对稳态 margin 高位的押注大小。
-- **★ 待沉淀债**:`build_spcx.py`(per-share EV/Sales)与 `build_anthropic.py`(整体 EV/$B)都手搓了估值三页 = EV/Sales 主线尚未抽成 kit 骨架函数, 第三个 EV/Sales 标的前应抽进 `build_kit`(参 SKILL 沉淀协议)。
+- **待处理的共用实现**:`build_spcx.py`(per-share EV/Sales)与 `build_anthropic.py`(整体 EV/$B)都各自实现了估值三页,EV/Sales 主线尚未抽成 kit 骨架函数。处理第三个 EV/Sales 标的前,应将该实现抽入 `build_kit`(参考 SKILL 同步规则)。

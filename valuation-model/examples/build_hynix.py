@@ -1068,7 +1068,7 @@ drow(dc,"回测: 2025 年中的读数","1.8x vs 3.2x = +78%","当时市场按『
 dband(dc,"C. 催化剂 — 什么会逼市场闭合 GAP(逐条列状态)"); dc+=1
 for name,read,judge in [
  ("HBM4 全球首发量产准备","2025/9 ✓","代际领先实锤, 锁定 NVDA Rubin 主供——盈利可见度延到 2027-28。"),
- ("『2026 sold out』官宣","2025 Q3 业绩会 ✓","叙事颠覆: 从『扩产→跌价』变『扩产都不够卖』——周期折价切换成长溢价的扳机。"),
+ ("『2026 sold out』官宣","2025 Q3 业绩会 ✓","叙事替代冲击: 从『扩产→跌价』变『扩产都不够卖』——周期折价切换成长溢价的扳机。"),
  ("Microsoft 独家 HBM 供应","2026/1 ✓","客户维度打开: 不只 NVDA, 所有自研 AI 芯片(Maia/TPU/MTIA/Trainium)都是客户。"),
  ("库存股注销 ₩12.2兆 + 派息上调","2026/1 ✓","首次把 AI 红利分给股东(value-up)——韩国折价收窄(COE↓)的证据。"),
  ("下一批: HBM4 放量 / 龙仁投产 / 2027 售罄官宣","待","兑现 → 撑 FY27 情绪; 落空 → 衰减扳机触发。"),
@@ -1096,7 +1096,7 @@ logic(s,f"A{dc}",("① HBM 收入强度回落(份额被三供蚕食/含量升放
  "② 传统DRAM/NAND 合约价见顶 + 库存周数回升 → 消费段周期假设(2026 +112%/+137%)证伪、净利率从峰值急坠。"
  "③ 全球 AI capex 指引下修 → 物理锚盘子缩水 → 三个 AI 直驱段同缩。盯的优先级: HBM 收入强度&份额 ≈ AI capex 指引 > 商品价&库存 > 认证进度。"))
 s.merge_cells(f"A{dc}:E{dc+2}"); s[f"A{dc}"].alignment=Alignment(wrap_text=True,vertical="top"); dc+=3
-heads=["指标","当前值/状态","为什么重要(哪个假设的命门)","怎么跟踪(数据源/频率)","触发动作"]
+heads=["指标","当前值/状态","为什么重要(哪个假设的关键敏感项)","怎么跟踪(数据源/频率)","触发动作"]
 hr=dc
 for col,h in zip(["A","B","C","D","E"],heads): s[f"{col}{hr}"]=h; s[f"{col}{hr}"].font=BF; s[f"{col}{hr}"].fill=CH; s[f"{col}{hr}"].alignment=Alignment(wrap_text=True,vertical="top")
 def trk_band(row,text):
@@ -1106,33 +1106,33 @@ def trk_band(row,text):
 rows_trk=[
  ("__band__","一、HBM 链(估值核心驱动)"),
  ("HBM 收入强度 (收入÷capex)","2025 锚≈4.1%(实数反推)→前瞻 base 3.7/4.4/4.2/4.0/3.8%(JPM HBM $31B/$46B@26/27; bull UBS 4.7%)",
-  "「HBM测算」核心命门:HBM收入=AIDC capex×HBM收入强度。强度回落(份额/含量/价)→HBM收入与营收直接掉。",
+  "「HBM测算」核心关键敏感项:HBM收入=AIDC capex×HBM收入强度。强度回落(份额/含量/价)→HBM收入与营收直接掉。",
   "公司季报 capex 明细 + TEL/AMAT 设备订单(季度);龙仁/清州 fab 进度(公司 IR、行业新闻)。",
   "扩产指引连续两季下修 → 下调产能强度假设、重算 HBM 供给 bit。"),
  ("HBM 合约价 + Hynix 份额","ASP ~$1.9/Gb(2026E);bit 份额 ~62%(25峰)→假设逐年下台阶至48%(30E)",
-  "「HBM测算」需求侧/收入命门:ASP 和份额直接乘出 HBM 收入,也是峰值 ROE→目标 P/B 3.0x 的根。份额被 Samsung/Micron 蚕食→收入与倍数双杀。",
+  "「HBM测算」需求侧/收入关键敏感项:ASP 和份额直接乘出 HBM 收入,也是峰值 ROE→目标 P/B 3.0x 的根。份额被 Samsung/Micron 蚕食→收入与倍数双杀。",
   "TrendForce HBM 月度价格与份额报告;Counterpoint;NVIDIA 供应链 channel check(月度)。",
   "份额单季掉 >3pct 或 ASP 环比转跌 → 下调份额/ASP 假设,重测隐含价。"),
  ("Samsung/Micron HBM 认证进度","Samsung HBM3E 一度未过 NVIDIA 认证(故 Hynix 25 份额冲 62%);HBM4 认证进行中",
-  "份额假设的命门:三供认证一旦全部通过,Hynix 份额下台阶会更快,直接打掉 HBM 份额路径(60→48%)。",
+  "份额假设的关键敏感项:三供认证一旦全部通过,Hynix 份额下台阶会更快,直接打掉 HBM 份额路径(60→48%)。",
   "NVIDIA 供应链/财报电话会 commentary;三星/美光季报认证披露(季度);行业媒体(DigiTimes 等)。",
   "竞品通过 NVIDIA HBM4 认证 → 把份额下滑斜率调陡,重算需求 bit。"),
  ("__band__","二、商品内存周期(P/E 反转的扳机)"),
  ("传统DRAM/NAND 合约价 + 库存周数","2026 价格 DRAM +112%/NAND +137%;2028 起 normalize(-30%)",
-  "「DRAM_NAND测算」消费段价格变化的命门:决定净利率峰值与回落时点,也决定 P/E 周期反转('峰值年给低 PE')何时触发。价见顶+库存回升=周期拐点。",
+  "「DRAM_NAND测算」消费段价格变化的关键敏感项:决定净利率峰值与回落时点,也决定 P/E 周期反转('峰值年给低 PE')何时触发。价见顶+库存回升=周期拐点。",
   "Bernstein 月度合约价 tracker;BofA 周度 spot/contract tracker;DRAMeXchange/TrendForce 月度合约价。",
   "合约价连续两月转跌或库存周数回到 >8 周 → 把价格见顶年前移,重排 P/E 路径。"),
  ("Server DRAM 需求","2026 共识 +39%(GS, 剔HBM);驱动=AI 服务器 + eSSD(KV cache)",
-  "「DRAM_NAND测算」服务器DRAM强度(2.8%→3.3%)的命门:server 需求撑住服务器常规DRAM 的量,挂 AIDC capex;若被涨价'需求破坏'反噬→强度下修。",
+  "「DRAM_NAND测算」服务器DRAM强度(2.8%→3.3%)的关键敏感项:server 需求撑住服务器常规DRAM 的量,挂 AIDC capex;若被涨价'需求破坏'反噬→强度下修。",
   "GS/Citi 季度 server DRAM 需求模型;hyperscaler server 出货(IDC/Counterpoint, 季度)。",
   "server DRAM 需求增速下修 >10pct → 下调服务器DRAM强度。"),
  ("内存供需(S/D)缺口","2026 DRAM 缺口 -4.9%、NAND -4.2%(GS, 15 年最紧)",
-  "整个消费段价格涨幅(+112%/+137%)假设的总命门:缺口收窄=涨价逻辑松动,峰值盈利与 ROE 提前回落。",
+  "整个消费段价格涨幅(+112%/+137%)假设的总关键敏感项:缺口收窄=涨价逻辑松动,峰值盈利与 ROE 提前回落。",
   "GS/Citi 月度或季度 S/D balance 模型;行业产能扩张跟踪。",
   "缺口转为过剩(供给增速反超需求)→ 把商品价格 normalize 提前一年,重算净利率与 P/E。"),
  ("__band__","三、需求总盘子(物理锚)"),
  ("全球 AI capex 指引","2026 ~830B(hyperscaler 指引合计, TrendForce);2027-30 GS 'Tracking Trillions' 基线",
-  "「AIDC Capex预测」物理锚的命门:HBM/服务器DRAM/eSSD 三个 AI 直驱段都按 capex×强度挂它。capex 下修→三段收入同缩。",
+  "「AIDC Capex预测」物理锚的关键敏感项:HBM/服务器DRAM/eSSD 三个 AI 直驱段都按 capex×强度挂它。capex 下修→三段收入同缩。",
   "四大 hyperscaler(MSFT/GOOGL/AMZN/META)季报 capex 指引;TrendForce/GS capex 汇总(季度)。",
   "hyperscaler 合计 capex 指引下修 >10% → 直接改 AIDC Capex 行,全链重算。"),
 ]

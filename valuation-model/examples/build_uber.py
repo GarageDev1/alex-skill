@@ -8,7 +8,7 @@ Uber Technologies / UBER 估值模型（equity-research-obsidian Phase 2）。
 主线镜头：P/E（平台 franchise 资本化盈利，核心经营 EPS）；DCF（核心 FCF）交叉验证。
 P/B 不适用（轻资产、账面无意义、终端 pb=null），不做 P/B 主线。
 
-物理锚链（端到端通电）：
+物理锚链（端到端公式联动）：
   MAPC(月活, M) × 年人均频次(Trips/MAPC) = 总 Trips(M)
   → 单均 Gross Bookings($) → 总 Gross Bookings($B)
   → 各段 take rate → 各段收入 → 总收入
@@ -154,8 +154,8 @@ def build():
             ("① 物理锚", "月活平台消费者(MAPC) × 年人均出行频次 = 总 Trips；× 单均 Gross Bookings = 总 GB（$193.5B, FY25）。GB 增长由量(Trips +20%)驱动，单均稳定 ~$14.3。"),
             ("② 基本面", "Q1'26 GB $53.7B(+25%)、Adj EBITDA $2.5B(+33%/GB margin 4.6%)、MAPC 199M(+17%)、Trips 3.64B(+20%)、Uber One 50M、TTM FCF $9.8B(record)、AV 行程 +10x YoY。"),
             ("③ 卖方对账", "一致目标价均值 $104.48（区间 $70-$150），strong_buy（46 buy / 5-8 hold / 1 sell, 51 家）。多头：robotaxi 期权 + 平台盈利 + 广告/会员 + FCF/回购 + 估值便宜；空头(Melius $73/Wedbush $84)：AV 去中介化。"),
-            ("④ 估值判断", "Base 用 2027E 核心 EPS × 23x P/E。核心 EPS 口径下隐含价显著高于现价——市场用『AV 颠覆空头情景』定价（forward P/E 已压到历史下沿），是预期被错杀的中期预期差。"),
-            ("⑤ 评级", "BUY（买入）：robotaxi 被市场误读为颠覆威胁、年内 -10% 被错杀；实际 Uber 是 AV 公司的需求聚合分发渠道(30+ 伙伴)，robotaxi 是免费期权。平台已规模化盈利(FCF $9.8B/转化 112%)。下行风险=AV 收敛到 1-2 家自营赢家。"),
+            ("④ 估值判断", "Base 用 2027E 核心 EPS × 23x P/E。核心 EPS 口径下隐含价显著高于现价——市场用『AV 替代冲击空头情景』定价（forward P/E 已压到历史下沿），是预期被错杀的中期预期差。"),
+            ("⑤ 评级", "BUY（买入）：robotaxi 被市场误读为替代冲击威胁、年内 -10% 被错杀；实际 Uber 是 AV 公司的需求聚合分发渠道(30+ 伙伴)，robotaxi 是免费期权。平台已规模化盈利(FCF $9.8B/转化 112%)。下行风险=AV 收敛到 1-2 家自营赢家。"),
         ],
     })
 
@@ -194,25 +194,25 @@ def build():
     # 3 股价走势
     def phase_fn(ym):
         if ym <= "2022-12":
-            return "① 成长股杀估值/盈利未证"
+            return "① 成长股估值倍数下修/盈利未证"
         if ym <= "2024-12":
             return "② 盈利转正/纳入标普500"
         if ym <= "2025-09":
             return "③ 平台盈利兑现创新高"
-        return "④ robotaxi 颠覆恐慌错杀"
+        return "④ robotaxi 替代冲击恐慌错杀"
     px = K.write_price_chart(wb.create_sheet(S_PX), MONTHLY, {
         "fn": phase_fn,
-        "rows": [("① 成长股杀估值/盈利未证", "2022 加息周期杀无盈利成长股，叠加 Uber 自身尚未稳定盈利，股价探底 $20。"),
+        "rows": [("① 成长股估值倍数下修/盈利未证", "2022 加息周期杀无盈利成长股，叠加 Uber 自身尚未稳定盈利，股价探底 $20。"),
                  ("② 盈利转正/纳入标普500", "2023 营业利润转正，2023-12 纳入标普 500 指数，盈利叙事确立，股价回升。"),
                  ("③ 平台盈利兑现创新高", "2024-2025 连续超三年框架，FCF/EBITDA 双增，2025-09 创新高 ~$99.6。"),
-                 ("④ robotaxi 颠覆恐慌错杀", "2025-11 起 Waymo/Tesla robotaxi 叙事发酵，市场担心 AV 去中介化，从高点回撤约 28%、年内约 -10% 至 ~$72。")],
+                 ("④ robotaxi 替代冲击恐慌错杀", "2025-11 起 Waymo/Tesla robotaxi 叙事发酵，市场担心 AV 去中介化，从高点回撤约 28%、年内约 -10% 至 ~$72。")],
     }, title="Uber 月度股价走势（USD, 前复权）")
     px["yhigh"].update(PX_HIGH); px["ylow"].update(PX_LOW)
 
     # 4 卖方研报共识
     K.write_consensus(wb.create_sheet(S_CONS), {
         "title": "卖方研报共识 — 一致预期 + 各投行对账（2026 Q1-Q2）",
-        "overview": "约 51 家覆盖，Buy/Overweight 为主（46 buy / 5-8 hold / 1 sell），一致目标价均值约 $104.48（区间 $70-$150），隐含上行约 +45%。核心叙事：robotaxi 是看涨期权而非颠覆、平台盈利兑现、广告/会员高毛利、强 FCF + 回购、估值便宜。最大分歧：robotaxi 对 Uber 是期权还是结构性杀手。",
+        "overview": "约 51 家覆盖，Buy/Overweight 为主（46 buy / 5-8 hold / 1 sell），一致目标价均值约 $104.48（区间 $70-$150），隐含上行约 +45%。核心叙事：robotaxi 是看涨期权而非替代冲击、平台盈利兑现、广告/会员高毛利、强 FCF + 回购、估值便宜。最大分歧：robotaxi 对 Uber 是期权还是结构性杀手。",
         "assumptions": [
             ("Gross Bookings 增速\n(2026/2027)", "一致 2026E 营收 +36%、2027E +33%；GB Q1'26 +25%、Q2 指引 cc +18-22%；管理层三年框架 GB mid-to-high teens CAGR。",
              "分歧在成熟市场是否饱和：bull 维持 14-15% CAGR、bear 个位数饱和。", "Base GB 由 MAPC +13%/频次 +2%/单均 +0.5% 推，2026E +18% 后缓降到 +12%。"),
@@ -244,7 +244,7 @@ def build():
     # 5 历史估值倍数
     hm = K.write_hist_multiples(wb.create_sheet(S_HMULT), {
         "title": "历史估值倍数 — 自身 P/E 带（核心 EPS）+ 当下 + 同业（平台）对照",
-        "intro": "Uber 历史报表 P/E 早年无意义（2021/22 亏损）；2024-25 报表 P/E 因一次性 DTA 释放虚低。当下 TTM 报表 P/E ~17.9x（headline 假便宜），核心 EPS 口径下 ~30x。本轮折价由 robotaxi 颠覆恐慌驱动（forward P/E 压到历史下沿）。主线以核心 EPS × P/E 资本化盈利，P/B 不适用。",
+        "intro": "Uber 历史报表 P/E 早年无意义（2021/22 亏损）；2024-25 报表 P/E 因一次性 DTA 释放虚低。当下 TTM 报表 P/E ~17.9x（headline 假便宜），核心 EPS 口径下 ~30x。本轮折价由 robotaxi 替代冲击恐慌驱动（forward P/E 压到历史下沿）。主线以核心 EPS × P/E 资本化盈利，P/B 不适用。",
         "s_hist": S_HIST, "ha": ha, "hist_cols": HC, "hist_years": HY,
         "yhigh": px["yhigh"], "ylow": px["ylow"],
         "fwd_note": "统一API 当下 TTM 报表 P/E≈17.9x（含一次性，失真）；本模型 Base 2027E 23x 是对核心经营 EPS 的目标倍数，反映平台盈利耐用性，非现价拟合。",
@@ -590,7 +590,7 @@ def build():
                 ("vs 现价", "up", K.PCT, "现价 reality check。", True),
             ],
             "mcap": {"label": "隐含市值($B)", "key": "px", "expr": f"*{SHARES_M}/1000", "note": "隐含股价 × 股本。"},
-            "concl": "Base 2027E 核心 EPS×23x 隐含价显著高于现价 → 市场用『AV 颠覆空头情景』给 Uber 定价（forward P/E 压到历史下沿）。Bull 靠 robotaxi 期权证实 + 广告/会员加速 + 倍数扩张给更大上行；Bear 靠 AV 去中介化 + take rate 压缩给下行。风险收益偏多 → BUY。",
+            "concl": "Base 2027E 核心 EPS×23x 隐含价显著高于现价 → 市场用『AV 替代冲击空头情景』给 Uber 定价（forward P/E 压到历史下沿）。Bull 靠 robotaxi 期权证实 + 广告/会员加速 + 倍数扩张给更大上行；Bear 靠 AV 去中介化 + take rate 压缩给下行。风险收益偏多 → BUY。",
         },
     })
 
@@ -617,23 +617,23 @@ def build():
                 ("最易错处", "用报表 EPS（含 $6.4B/$5.0B DTA 释放）直接套倍数会造『假便宜』（headline P/E 17.9x）。", "本模型用核心经营 EPS，避免这个陷阱。"),
             ]},
             {"title": "D. 综合判断", "rows": [
-                ("一句话结论", "BUY：robotaxi 被市场误读为颠覆威胁、年内 -10% 错杀；实际 Uber 是 AV 需求聚合分发层，robotaxi 是免费期权。平台已规模化盈利。", "上行看 robotaxi 期权 + 广告/会员；下行看 AV 收敛到自营赢家。", True),
+                ("一句话结论", "BUY：robotaxi 被市场误读为替代冲击威胁、年内 -10% 错杀；实际 Uber 是 AV 需求聚合分发层，robotaxi 是免费期权。平台已规模化盈利。", "上行看 robotaxi 期权 + 广告/会员；下行看 AV 收敛到自营赢家。", True),
             ]},
         ],
         "final": {"band": "最终判断",
-                  "text": "Uber 的 alpha 问题：市场把 robotaxi 当成 Uber 的颠覆者，2025-11 起从高点回撤约 28%、年内约 -10%。本模型用核心经营 EPS（剔除一次性 DTA 释放）下，现价对应的 forward P/E 已压到历史下沿——市场在用『AV 去中介化空头情景』给一家已规模化盈利、FCF $9.8B/转化 112%、与 30+ AV 公司合作的需求聚合平台定价。Base 2027E 隐含价显著高于现价 → 预期被错杀的中期预期差。最大未证伪下行是 robotaxi 收敛到 1-2 家自营赢家(Waymo/Tesla)绕过 Uber。评级 BUY。"},
+                  "text": "Uber 的 alpha 问题：市场把 robotaxi 当成 Uber 的替代冲击者，2025-11 起从高点回撤约 28%、年内约 -10%。本模型用核心经营 EPS（剔除一次性 DTA 释放）下，现价对应的 forward P/E 已压到历史下沿——市场在用『AV 去中介化空头情景』给一家已规模化盈利、FCF $9.8B/转化 112%、与 30+ AV 公司合作的需求聚合平台定价。Base 2027E 隐含价显著高于现价 → 预期被错杀的中期预期差。最大未证伪下行是 robotaxi 收敛到 1-2 家自营赢家(Waymo/Tesla)绕过 Uber。评级 BUY。"},
         "tracking": {
             "intro": "投后跟踪按季报滚动更新。",
             "rows": [
                 ("__band__", "一、物理锚"),
-                ("MAPC/Trips 增速", "Q1'26 199M(+17%)/3.64B(+20%)", "命门：用户与频次增长持续性", "季报运营指标", "MAPC 增速掉到个位数 → 转 Bear"),
+                ("MAPC/Trips 增速", "Q1'26 199M(+17%)/3.64B(+20%)", "关键敏感项：用户与频次增长持续性", "季报运营指标", "MAPC 增速掉到个位数 → 转 Bear"),
                 ("__band__", "二、盈利质量"),
-                ("段 EBITDA margin", "Mob 8.1% / Del 3.9%(FY25/GB)", "命门：经营杠杆 + 广告兑现", "季报分部 Adj EBITDA", "margin 停滞 → 下调段 margin 路径"),
+                ("段 EBITDA margin", "Mob 8.1% / Del 3.9%(FY25/GB)", "关键敏感项：经营杠杆 + 广告兑现", "季报分部 Adj EBITDA", "margin 停滞 → 下调段 margin 路径"),
                 ("__band__", "三、robotaxi（核心争议）"),
-                ("Waymo 新城市分发选择", "Austin/Atlanta 用 Uber；SF/DC/London 自营", "命门：AV 是期权还是去中介化", "Uber/Waymo 公告", "新城市全部自营绕过 Uber → 转 Bear 砍 take rate"),
-                ("Tesla Cybercab 规模", "~20-25 辆(2026 中)", "命门：垂直整合能否跨城规模化", "Tesla 季报/NHTSA", "跨城无监督 + 单位经济碾压 → 威胁前置"),
+                ("Waymo 新城市分发选择", "Austin/Atlanta 用 Uber；SF/DC/London 自营", "关键敏感项：AV 是期权还是去中介化", "Uber/Waymo 公告", "新城市全部自营绕过 Uber → 转 Bear 砍 take rate"),
+                ("Tesla Cybercab 规模", "~20-25 辆(2026 中)", "关键敏感项：垂直整合能否跨城规模化", "Tesla 季报/NHTSA", "跨城无监督 + 单位经济碾压 → 威胁前置"),
                 ("__band__", "四、资本回报"),
-                ("FCF / 回购", "FY25 FCF $9.8B / 回购 $6.5B(剩 $19.2B)", "命门：现金返还持续性", "季报现金流", "FCF 转化跌破 90% → 下调 DCF"),
+                ("FCF / 回购", "FY25 FCF $9.8B / 回购 $6.5B(剩 $19.2B)", "关键敏感项：现金返还持续性", "季报现金流", "FCF 转化跌破 90% → 下调 DCF"),
             ],
         },
     })

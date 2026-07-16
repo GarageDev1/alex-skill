@@ -808,12 +808,12 @@ dash = K.write_dashboard(wb.create_sheet(S_DASH), {
         "intro": "哪个指标恶化/兑现 → 哪个假设先动 → 触发什么动作(盯的优先级)。",
         "rows": [
             ("__band__", "一、口径(最大重锚风险)"),
-            ("S-1 GAAP vs run-rate", "待", "命门: 收入绝对值 + EV/Sales 分母", "S-1 招股书(2026-Q3)", "折扣<15%→BUY; >30%→SELL"),
+            ("S-1 GAAP vs run-rate", "待", "关键敏感项: 收入绝对值 + EV/Sales 分母", "S-1 招股书(2026-Q3)", "折扣<15%→BUY; >30%→SELL"),
             ("__band__", "二、价格战 / 商品化"),
-            ("OpenRouter Claude token 份额", "待跟踪", "命门: API 份额 → token 量 → 收入", "OpenRouter 月度", "连续 -10% → 下调 token 增速, 转 Bear"),
-            ("compute/收入比", "Q1'26 0.71→Q2 0.56", "命门: 稳态 margin → PE 镜头", "季报 compute 披露", "卡 60% 不降 → PE 镜头失效, 估值靠 EV/Sales"),
+            ("OpenRouter Claude token 份额", "待跟踪", "关键敏感项: API 份额 → token 量 → 收入", "OpenRouter 月度", "连续 -10% → 下调 token 增速, 转 Bear"),
+            ("compute/收入比", "Q1'26 0.71→Q2 0.56", "关键敏感项: 稳态 margin → PE 镜头", "季报 compute 披露", "卡 60% 不降 → PE 镜头失效, 估值靠 EV/Sales"),
             ("__band__", "三、工具层护城河"),
-            ("Claude Code 企业渗透", "39%(UBS)", "命门: Enterprise 收入引擎", "UBS 半年度调研", "回落 <30% → 下调工具层, 转 Bear"),
+            ("Claude Code 企业渗透", "39%(UBS)", "关键敏感项: Enterprise 收入引擎", "UBS 半年度调研", "回落 <30% → 下调工具层, 转 Bear"),
         ],
     },
 })

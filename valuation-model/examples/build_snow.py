@@ -81,7 +81,7 @@ K.write_cover(wb.create_sheet(S_COVER), {
     "takeaways": [
         ("① 当下估值位置", f"EV ~$90B, 对应 FY27E 前瞻 EV/Sales ~14.8x、EV/FCF ~61x — 营收倍数在高增长数据 SaaS 合理区, FCF 倍数偏贵(FCF margin 仍在爬坡)。"),
         ("② 核心引擎", "产品收入 = 客户数(13.9K)×ARR/客户($336K)×NRR(126%); Q1 FY27 产品收入 +34% 重新加速, NRR 触底回升(125→126%)。"),
-        ("③ AI 变现判断", "Cortex Code(CoCo)9 周 50% 客户使用、早期采用者消费 +11% — AI 是消费飞轮催化, 尚未成独立收入线, 是 Bull 期权。"),
+        ("③ AI 变现判断", "Cortex Code(CoCo)9 周 50% 客户使用、早期采用者消费 +11% — AI 是消费增长正反馈催化, 尚未成独立收入线, 是 Bull 期权。"),
         ("④ 三情景 12M 目标价", "Bear/Base/Bull 从 客户增速 + ARR 扩张 + FCF margin + 目标倍数 四杠杆翻档沿同一条链算出, 见『估值对比』。"),
         ("⑤ 主要风险", "Databricks 增速约 SNOW 2.4x 且 ARR 已反超 + Iceberg 开放格式削弱数据锁定 + 消费型 FinOps 降本 + GAAP 仍亏损。"),
     ],
@@ -153,14 +153,14 @@ K.logic(wh, f"{NOTE_H}{er}", "当下前瞻 EV/Sales = EV ÷ FY27E 总营收(~$6.
 def phase_fn(ym):
     if ym <= "2024-09": return "① 绝望期(Slootman 卸任/NRR 下滑)"
     if ym <= "2025-12": return "② AI 转型修复"
-    if ym <= "2026-04": return "③ 软件杀估值回落"
+    if ym <= "2026-04": return "③ 软件估值倍数下修回落"
     return "④ Q1 加速再重估"
 if MONTHLY:
     px = K.write_price_chart(wb.create_sheet(S_PX), MONTHLY, {
         "fn": phase_fn,
         "rows": [("① 绝望期", "2024-09 触底 $108: Slootman 卸任+NRR 一路下滑+增速换挡。"),
                  ("② AI 转型修复", "2025 全年 $149→$230: Ramaswamy AI 转型叙事 + 产品收入重新加速。"),
-                 ("③ 软件杀估值回落", "2026-04 回落 $153: 软件板块/宏观杀估值。"),
+                 ("③ 软件估值倍数下修回落", "2026-04 回落 $153: 软件板块/宏观估值倍数下修。"),
                  ("④ Q1 加速再重估", "Q1 FY27 产品 +34% + 指引上调 → 3 个月飙至峰值 $280, 现 $267。")],
     }, title="Snowflake 月度股价 ($)")
 else:
@@ -184,16 +184,16 @@ K.write_consensus(wb.create_sheet(S_CONS), {
          "Base FY27 14x, 随增速换挡 normalize 到 8.5x(FY31E)。"),
     ],
     "divergences": [
-        "① Cortex/AI 变现: 是消费飞轮催化(已现)还是独立收入线(未现)——决定 Bull 概率。",
+        "① Cortex/AI 变现: 是消费增长正反馈催化(已现)还是独立收入线(未现)——决定 Bull 概率。",
         "② vs Databricks 份额: Databricks ARR $6.9B(+80%)已反超 SNOW ~$5.6B(+30%), 份额天平向对手。",
         "③ 估值: 3 个月 +75% 后, EV/Sales 15x 是合理还是已 price-in 完美执行。",
     ],
     "stances": [
         "Morgan Stanley(增持, TP $300): 软件业少数 AI 赢家, AI 变现进更高档。",
-        "BofA(买入, TP $300): AI Data Cloud 受益者被验证, CoCo 消费飞轮。",
+        "BofA(买入, TP $300): AI Data Cloud 受益者被验证, CoCo 消费增长正反馈。",
         "JPMorgan(增持, TP $285): CoCo 是 FY27 指引上调最大单一驱动。",
         "Bernstein(Market-Perform, TP $250): 认可动能, 担心竞争加剧 + AI 变现落地。",
-        "UBS(买入, TP $210, 4/20 滞后): AI 颠覆风险可控但逐项排查。",
+        "UBS(买入, TP $210, 4/20 滞后): AI 替代冲击风险可控但逐项排查。",
     ],
 })
 
@@ -312,7 +312,7 @@ sw = K.write_scenario_switch(wb.create_sheet(S_SW), {
     "cases": CASES, "default": "Base",
     "triggers": [
         ("Bear", "Databricks 抢份额加剧(DBSQL 反攻)+ Iceberg 削弱锁定 + Cortex 变现不及 + NRR 跌破 120% → 产品增速降至 ~20%、EV/Sales 去溢价至 5.5-9x。"),
-        ("Base", "Q1 加速部分延续、NRR 守 120%+、Cortex 消费飞轮渐起、FCF margin 稳步扩张 → 产品增速 30%→中双位数、EV/Sales 温和 normalize 到 8.5x。"),
+        ("Base", "Q1 加速部分延续、NRR 守 120%+、Cortex 消费增长正反馈渐起、FCF margin 稳步扩张 → 产品增速 30%→中双位数、EV/Sales 温和 normalize 到 8.5x。"),
         ("Bull", "Cortex/Snowflake Intelligence 成第二曲线 + NRR 回升至 130%+ + 增速守 25%+ + FCF margin 破 34% → 保住 AI 数据云溢价(EV/Sales 11-17x)。"),
     ],
     "all_cols": ALLC, "all_years": ALLY, "hist_cols": HC, "fwd_cols": FCf,
@@ -750,7 +750,7 @@ K.write_dashboard(wb.create_sheet(S_DASH), {
         {"title": "A. 基本面拐点 — 业务在结构性变好吗?", "rows": [
             ("产品收入重新加速", "✓ 已现", "Q1FY27 产品 +34%(环比 +30% 加速 4pp), 史上最强单季环比 +$108M; 指引上调 +27%→+31%。"),
             ("NRR 触底回升", "✓ 初现", "NRR 连跌 10+ 季后 Q1FY27 回升至 126%(+1pt); 回升 1pt 未确立趋势, 需持续。"),
-            ("AI 变现(Cortex)", "✗ 待验证", "CoCo 9 周 50% 客户用、早期采用者消费 +11%; 是消费飞轮催化, 尚未成独立收入线。"),
+            ("AI 变现(Cortex)", "✗ 待验证", "CoCo 9 周 50% 客户用、早期采用者消费 +11%; 是消费增长正反馈催化, 尚未成独立收入线。"),
             ("A 判断", "【中强】", "加速真实且被指引确认, 但可持续性(易比基数)与 AI 变现体量未坐实。", True),
         ]},
         {"title": "B. 估值错位(预测引擎)— 市场给 vs 双镜头该给 → GAP", "rows": [
@@ -784,14 +784,14 @@ K.write_dashboard(wb.create_sheet(S_DASH), {
         "intro": "哪个指标恶化/兑现 → 哪个假设先动 → 触发什么动作。",
         "rows": [
             ("__band__", "一、核心驱动(NRR + 产品增速)"),
-            ("NRR", "126% 回升", "命门: ARR/客户扩张乘数, 估值最敏感", "季报披露", "跌破 120% → 下调 ARR 增速、转 Bear"),
-            ("产品收入增速", "+34%(Q1)", "命门: 客户数×ARR 主链", "季报", "跌破 28% → 下调 g_cust/g_arr"),
+            ("NRR", "126% 回升", "关键敏感项: ARR/客户扩张乘数, 估值最敏感", "季报披露", "跌破 120% → 下调 ARR 增速、转 Bear"),
+            ("产品收入增速", "+34%(Q1)", "关键敏感项: 客户数×ARR 主链", "季报", "跌破 28% → 下调 g_cust/g_arr"),
             ("__band__", "二、AI 变现"),
-            ("Cortex/CoCo 消费占比", "早期(+11% 采用者)", "命门: Bull 第二曲线期权", "季报/投资者日", "计入独立收入线 → 上调 Bull 概率"),
+            ("Cortex/CoCo 消费占比", "早期(+11% 采用者)", "关键敏感项: Bull 第二曲线期权", "季报/投资者日", "计入独立收入线 → 上调 Bull 概率"),
             ("__band__", "三、竞争"),
-            ("Databricks ARR/增速", "$6.9B/+80%", "命门: 份额天平", "Databricks 披露/IPO", "加速抢单/DBSQL 反攻 → 下调 EV/Sales"),
+            ("Databricks ARR/增速", "$6.9B/+80%", "关键敏感项: 份额天平", "Databricks 披露/IPO", "加速抢单/DBSQL 反攻 → 下调 EV/Sales"),
             ("__band__", "四、估值"),
-            ("EV/Sales(前瞻)", "~14.8x", "命门: 倍数对增速敏感", "股价/一致预期", "增速换挡未兑现 → 目标倍数下调"),
+            ("EV/Sales(前瞻)", "~14.8x", "关键敏感项: 倍数对增速敏感", "股价/一致预期", "增速换挡未兑现 → 目标倍数下调"),
         ],
     },
 })

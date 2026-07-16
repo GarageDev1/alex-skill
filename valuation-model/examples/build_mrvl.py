@@ -98,7 +98,7 @@ ha = K.write_history(wb.create_sheet(S_HIST), {
         ("HSH", "non-GAAP 稀释股本(= non-GAAP 净利 ÷ 公司披露 non-GAAP EPS 反推); 当下 893M(FY27Q1)。SBC 致股本每年 +1.5-2.5%。"),
         ("HPX", "财年末(1月底)收盘价, 由 Research Data API 真实日线取得; 当下=2026-06-11 收盘 $280.71。"),
         ("HPXA", "财年内日收盘均价(真实日线算得)。"),
-        ("HPE", "P/E=年末价÷当年 non-GAAP EPS(TTM 口径)。FY2025 71x 为盈利低谷年虚高, FY2023 20x 为 2022 杀估值底。"),
+        ("HPE", "P/E=年末价÷当年 non-GAAP EPS(TTM 口径)。FY2025 71x 为盈利低谷年虚高, FY2023 20x 为 2022 估值倍数下修底。"),
     ],
 })
 
@@ -491,7 +491,7 @@ dash = K.write_dashboard(wb.create_sheet(S_DASH), {
         "intro": "哪个指标恶化 → 哪个假设先崩 → 触发什么动作。",
         "rows": [
             ("__band__", "一、custom 主驱动(all-or-nothing)"),
-            ("MAIA 300 CoWoS 单量", "2026 0.1M → 2027E 0.8M 颗(JPM)", "命门: DC 强度 FY28 1.26% 的最大单一支柱", "JPM TSMC CoWoS 跟踪(月度)", "单量下修>30% → 切 Bear, 重算"),
+            ("MAIA 300 CoWoS 单量", "2026 0.1M → 2027E 0.8M 颗(JPM)", "关键敏感项: DC 强度 FY28 1.26% 的最大单一支柱", "JPM TSMC CoWoS 跟踪(月度)", "单量下修>30% → 切 Bear, 重算"),
             ("Google 签约进展", "在谈未签", "Bull 情景扳机(强度 1.42%)", "媒体+管理层电话会", "签约 → Bull 概率上调, 重出 memo"),
             ("__band__", "二、互联与份额"),
             ("1.6T DSP 份额", "MRVL 第一(~6-7成)", "互联是 DC 强度里最稳的一块", "产业链调研/光模块厂月度", "AVGO 份额明显上行 → 下调强度路径"),
