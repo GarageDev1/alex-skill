@@ -1,11 +1,11 @@
 ---
 name: obsidian-to-docx
-description: 通用 Obsidian markdown → 好看的 Word(.docx)导出器。把 vault 里的笔记/研报/wiki(含 ECharts 代码块、wikilink 双链、markdown 表格、LaTeX)转成排版规整、可发给人看、可打印的 .docx 文档。核心是 markdown→docx 的元素映射 + ECharts 代码块用 puppeteer 渲成 PNG 嵌入 + 中英文双字体；研报封面等版式以可插拔 style profile 提供。这是一个 exporter，不重做研究/建模/写作，单一真相源永远是输入的 .md。适用场景：把已有的 Obsidian 文档导出成 Word 交付版。当用户说"导出成 Word""转成 docx""把这篇笔记/研报出个 Word 版""obsidian 导 word"时触发。
+description: 将 Obsidian Markdown 导出为排版规整、可打印的 Word(.docx)文档。支持 vault 中的笔记、研报和 wiki,包括 ECharts 代码块、wikilink 双链、Markdown 表格与 LaTeX。通过 Markdown 到 docx 的元素映射、Puppeteer 渲染 ECharts PNG 和中英文双字体完成转换;研报封面等版式由可插拔 style profile 提供。输入 `.md` 是内容来源,导出过程不重做研究、建模或写作。当用户说"导出成 Word""转成 docx""把这篇笔记/研报出个 Word 版""obsidian 导 word"时触发。
 ---
 
 # Obsidian → docx 导出器
 
-把一个(或一组)Obsidian markdown 渲染成排版规整的 `.docx`。Word 是 base point 的**第三个 render target**——和 Obsidian 端、xuang.xyz 网页端并列,**单一真相源永远是输入的 `.md`**,本 skill 只做转换,不改写内容、不重做研究。
+把一个或一组 Obsidian Markdown 渲染成排版规整的 `.docx`。Word 与 Obsidian、xuang.xyz 网页同为 base point 的输出端,内容以输入 `.md` 为准。本 skill 只做格式转换,不改写内容,不重做研究。
 
 **默认语言/版式**:正文中文用宋体、英文/数字用 Times New Roman(研报 register);ECharts 块用 puppeteer 渲成 PNG 嵌入,与网页端像素级一致。
 
