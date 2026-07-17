@@ -1,13 +1,13 @@
-# 物理锚:平台/互联网(MAU/DAU × ARPU)
+# 业务驱动量:平台/互联网(MAU/DAU × ARPU)
 
 > 适用:广告/电商/社交平台。范例:Meta、抖音、拼多多。
 
-## 锚是什么
+## 基准是什么
 **活跃用户(MAU/DAU) × 单用户变现(ARPU)**,ARPU 可再拆 `时长 × 广告加载率 × eCPM` 或 `GMV × take rate`。
 
-## 链 build pattern(骨架)
+## 计算方法(结构)
 ```
-① 物理锚:  用户数(MAU/DAU,接渗透率天花板)× ARPU
+① 业务驱动量:  用户数(MAU/DAU,接渗透率天花板)× ARPU
            ARPU = 时长 × ad load × eCPM   或   GMV/用户 × take rate
 ② TAM:     总可触达用户 × 成熟 ARPU
 ③ 营收:    用户 × ARPU(分业务线:广告/电商/直播/订阅)

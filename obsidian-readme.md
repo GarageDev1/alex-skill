@@ -1,6 +1,6 @@
 # Obsidian 投研工作流
 
-本仓库提供一套可整体迁移的投研工作环境：完成首次覆盖研究、物理锚估值、Obsidian Markdown 交付，并可选导出适合打印和对外发送的 Word 文档。
+本仓库提供一套可整体迁移的投研工作环境：完成首次覆盖研究、业务驱动量估值、Obsidian Markdown 交付，并可选导出适合打印和对外发送的 Word 文档。
 
 这里的“自包含”是指：研究方法、写作规范、引用文档、建模脚本、校验器、ECharts 资源和 Word 导出工具都在仓库内。公司公告、行情、研报等时效性数据仍需在运行时从公开来源或用户材料取得，并统一整理成 `input.json`，不把个人电脑上的其他 Skill 当作必需依赖。
 
@@ -12,7 +12,7 @@
         ▼
 equity-research-obsidian（主控与 Obsidian 交付规范）
         ├── initial-coverage-advanced（研究、写作、结构、质检）
-        └── valuation-model（物理锚模型、Excel、input.json、决策 memo）
+        └── valuation-model（业务驱动量模型、Excel、input.json、决策 memo）
                     │
                     ▼
 报告 Markdown + 估值 Excel + input.json + 决策 memo
@@ -22,7 +22,7 @@ equity-research-obsidian（主控与 Obsidian 交付规范）
 
 - [`equity-research-obsidian`](./equity-research-obsidian/)：入口 Skill，负责研究管线、Obsidian Markdown、完整 inline ECharts 和跨产物一致性。
 - [`initial-coverage-advanced`](./initial-coverage-advanced/)：提供机构级中文研报的研究工序、正文结构、写作规范和质量检查。
-- [`valuation-model`](./valuation-model/)：提供物理锚估值方法、模型生成、跨平台重算、业务校验、抽表和决策 memo。
+- [`valuation-model`](./valuation-model/)：提供业务驱动量估值方法、模型生成、跨平台重算、业务校验、抽表和决策 memo。
 - [`obsidian-to-docx`](./obsidian-to-docx/)：可选后处理，将最终 Markdown 和图表导出为 Word，不参与研究与估值判断。
 
 前三个目录必须保持同级，目录名不可更改。ERO 引用同仓的 ICA 与 valuation-model 属于本仓自包含设计的一部分。各 Skill 从自身 `SKILL.md` 所在位置推导仓库根目录，不依赖运行命令时的当前工作目录（CWD）。
@@ -130,14 +130,14 @@ Obsidian 是预览和知识管理端，不是报告生成前置。
 
 1. 由 ERO 调用 ICA 完成研究、正文和质量检查。
 2. 将最新披露、市场数据和研究输入整理为标准 `input.json`。
-3. 由 valuation-model 生成物理锚估值 Excel。
+3. 由 valuation-model 生成业务驱动量估值 Excel。
 4. 对模型运行 `recalc.py --backend auto`，回写公式缓存值。
 5. 运行 `validate_valuation.py`；只有 `verdict` 不为 `FAIL` 才能继续。
 6. 使用 `extract_model_tables.py --full` 从已重算模型抽取报告表格，不手工抄数。
 7. 组装最终 Markdown、估值模型、`input.json` 和决策 memo，并检查四者数字一致。
 8. 需要打印或对外发送时，再调用 obsidian-to-docx。
 
-数据来源、输入契约和降级顺序见 [`valuation-model/references/02-data-grounding.md`](./valuation-model/references/02-data-grounding.md)。估值章节如何与 ERO 对接，见 [`equity-research-obsidian/references/估值章接法.md`](./equity-research-obsidian/references/估值章接法.md)。
+数据来源、输入契约和降级顺序见 [`valuation-model/references/02-data-grounding.md`](./valuation-model/references/02-data-grounding.md)。估值章节如何与 ERO 对接，见 [`equity-research-obsidian/references/估值章节数据接入.md`](./equity-research-obsidian/references/估值章节数据接入.md)。
 
 ## 交付前检查
 

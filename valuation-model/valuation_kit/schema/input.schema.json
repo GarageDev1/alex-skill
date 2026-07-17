@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:valuation-model:input-schema:1.0",
+  "title": "Valuation model input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "company", "currency", "years", "history", "drivers", "scenarios", "valuation_methods", "sources"],
+  "$defs": {
+    "sourceRef": {"type": "string", "minLength": 1},
+    "series": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["values", "source_id"],
+      "properties": {
+        "values": {"type": "array", "minItems": 1, "items": {"type": ["number", "null"]}},
+        "source_id": {"$ref": "#/$defs/sourceRef"}
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["driver_adjustments", "net_margin", "source_id"],
+      "properties": {
+        "driver_adjustments": {"type": "array", "items": {"type": "number"}},
+        "net_margin": {"type": "array", "items": {"type": "number"}},
+        "source_id": {"$ref": "#/$defs/sourceRef"}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "company": {
+      "type": "object",
+      "required": ["name", "ticker", "exchange", "report_date", "data_date", "price", "shares_millions", "net_debt_usd_billions"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "ticker": {"type": "string", "minLength": 1},
+        "exchange": {"type": "string", "minLength": 1},
+        "report_date": {"type": "string", "format": "date"},
+        "data_date": {"type": "string", "format": "date"},
+        "price": {"type": "object", "required": ["value", "currency", "source_id"]},
+        "shares_millions": {"type": "object", "required": ["value", "source_id"]},
+        "net_debt_usd_billions": {"type": "object", "required": ["value", "source_id"]}
+      }
+    },
+    "currency": {
+      "type": "object",
+      "required": ["financial", "price", "local_per_usd"],
+      "properties": {
+        "financial": {"const": "USD"},
+        "price": {"type": "string", "minLength": 3},
+        "local_per_usd": {"type": "object", "required": ["value", "currency", "source_id"]}
+      }
+    },
+    "years": {
+      "type": "object",
+      "required": ["historical", "forecast"],
+      "properties": {
+        "historical": {"type": "array", "minItems": 1, "items": {"type": "integer"}},
+        "forecast": {"type": "array", "minItems": 1, "items": {"type": "integer"}}
+      }
+    },
+    "history": {
+      "type": "object",
+      "required": ["revenue", "net_income", "equity", "shares_millions", "price", "local_per_usd"],
+      "properties": {
+        "revenue": {"$ref": "#/$defs/series"},
+        "net_income": {"$ref": "#/$defs/series"},
+        "equity": {"$ref": "#/$defs/series"},
+        "shares_millions": {"$ref": "#/$defs/series"},
+        "price": {"$ref": "#/$defs/series"},
+        "local_per_usd": {"$ref": "#/$defs/series"}
+      }
+    },
+    "drivers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "unit", "historical", "forecast_base"],
+        "properties": {
+          "name": {"type": "string"},
+          "unit": {"type": "string"},
+          "historical": {"$ref": "#/$defs/series"},
+          "forecast_base": {"$ref": "#/$defs/series"}
+        }
+      }
+    },
+    "scenarios": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["Bear", "Base", "Bull"],
+      "properties": {
+        "Bear": {"$ref": "#/$defs/case"},
+        "Base": {"$ref": "#/$defs/case"},
+        "Bull": {"$ref": "#/$defs/case"}
+      }
+    },
+    "valuation_methods": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["name", "target_year", "source_id"],
+        "properties": {
+          "name": {"enum": ["P/E", "P/B", "EV/Sales", "DCF", "SOTP"]},
+          "target_year": {"type": "integer"},
+          "multiples": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["Bear", "Base", "Bull"],
+            "properties": {"Bear": {"type": "number"}, "Base": {"type": "number"}, "Bull": {"type": "number"}}
+          },
+          "assumptions": {"type": "object"},
+          "source_id": {"$ref": "#/$defs/sourceRef"}
+        }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["title", "publisher", "url", "as_of", "currency_basis"],
+        "properties": {
+          "title": {"type": "string"}, "publisher": {"type": "string"},
+          "url": {"type": "string", "format": "uri"}, "as_of": {"type": "string", "format": "date"},
+          "currency_basis": {"type": "string"}
+        }
+      }
+    }
+  }
+}

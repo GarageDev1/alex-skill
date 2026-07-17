@@ -315,7 +315,7 @@
     }
   },
   "company_slices_examples": {
-    "note": "公司切片示例(Layer 2). 各家映射到 spend_tree 或 chip_content 节点. ⚠ 营收跨层叠加: Hynix 的 HBM 已包在 NVDA 的 GPU 里, 两者营收不能相加去对总额.",
+    "note": "公司份额示例(Layer 2). 各家映射到 spend_tree 或 chip_content 节点. ⚠ 营收跨层叠加: Hynix 的 HBM 已包在 NVDA 的 GPU 里, 两者营收不能相加去对总额.",
     "NVDA": {
       "captures": [
         "GPU(含HBM)",

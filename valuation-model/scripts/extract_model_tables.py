@@ -2,7 +2,7 @@
 """extract_model_tables.py — 从「已 recalc 的」估值模型 xlsx 抽取关键报表为 Markdown 表格。
 
 用途:equity-research 报告组装阶段(Phase 4),把模型里的关键 sheet 以 Markdown 表格
-形式嵌进报告『估值分析』章节——让报告的三情景数字与模型同源、自动一致、可随模型刷新。
+形式嵌进报告『估值分析』章节:让报告的三情景数字与模型同源、自动一致、可随模型刷新。
 单一真相源永远是模型 xlsx;报告里的表是它的投影,不手敲。
 
 ★ 前置硬要求:必须先对该 xlsx 跑 recalc.py --backend auto(跨平台重算回写缓存值)。
@@ -12,14 +12,14 @@
   1. 三情景估值汇总   ← 『估值对比』里 Bear/Base/Bull 表头下的汇总块(核心表)
   2. 历史财务与估值   ← 『历史财务与估值』整页(全行: 分部/毛利率/净利/权益/股本/FX/股价/P-E/P-B/市值; --with-history)
   3. 盈利预测表       ← 『利润与收入假设』Base 逐年明细(分部收入/占比/增速/利润率/净利/EPS/BPS/ROE; --forecast)
-  4. 三情景隐含价阶梯 ← 『估值对比』三案块各自的『隐含价』逐年行(--ladder)
+  4. 三情景逐年隐含价 ← 『估值对比』三案块各自的『隐含价』逐年行(--ladder)
 
 用法:
   python extract_model_tables.py <model.xlsx>                 # 仅三情景汇总
   python extract_model_tables.py <model.xlsx> -o tables.md    # 写文件
   python extract_model_tables.py <model.xlsx> --with-history  # 附历史财务与估值整页
   python extract_model_tables.py <model.xlsx> --forecast      # 附盈利预测表(Base 逐年)
-  python extract_model_tables.py <model.xlsx> --ladder        # 附三情景隐含价阶梯
+  python extract_model_tables.py <model.xlsx> --ladder        # 附三情景逐年隐含价
   python extract_model_tables.py <model.xlsx> --full          # 以上全部(研报组装默认用这个)
 
 返回:Markdown 字符串。可被 import 复用:from extract_model_tables import scenario_table
@@ -45,7 +45,7 @@ def _fmt(label, v):
     # 百分比:vs现价/增速/YoY/涨幅
     if any(k in lab for k in ("vs现价", "vs 现价", "upside", "增速", "涨幅", "yoy")):
         return f"{v*100:+.1f}%"
-    # 任何 "率" 一律百分比(汇率除外——但汇率不在标准抽取的指标白名单里)
+    # 任何 "率" 一律百分比(汇率除外:但汇率不在标准抽取的指标白名单里)
     if ("%" in label) or ("率" in label and "汇率" not in label) or \
        any(k in lab for k in ("margin", "占比", "强度", "roe", "roic")):
         return f"{v*100:.1f}%"
@@ -167,7 +167,7 @@ def _grid_md(ws, hdr_row, cols, stop_blank_after=3):
             continue
         lab = label.strip()
         if not any(cells):
-            # 纯文字行(组标题/说明)——跳过, 不进表
+            # 纯文字行(组标题/说明):跳过, 不进表
             continue
         # 说明/读法行:某个"数值格"其实是长文本(band_note 等)→ 跳过
         if any(len(c) > 22 for c in cells):
@@ -215,7 +215,7 @@ def forecast_table(path):
 
 
 def ladder_table(path):
-    """抽『估值对比』三案块各自的『隐含价』逐年行 → 三情景隐含价阶梯 Markdown。"""
+    """抽『估值对比』三案块各自的『隐含价』逐年行 → 三情景逐年隐含价 Markdown。"""
     wb = openpyxl.load_workbook(path, data_only=True)
     sn = _find_sheet(wb, "估值对比")
     if not sn:
@@ -257,10 +257,10 @@ def build_markdown(path, with_history=False, forecast=False, ladder=False):
         out.append("### 盈利预测表（Base，模型输出）\n\n" + f if f else f"<!-- 盈利预测表抽取失败: {fe} -->")
     if ladder:
         l, le = ladder_table(path)
-        out.append("### 三情景隐含价阶梯（模型输出）\n\n" + l if l else f"<!-- 隐含价阶梯抽取失败: {le} -->")
+        out.append("### 三情景逐年隐含价（模型输出）\n\n" + l if l else f"<!-- 逐年隐含价抽取失败: {le} -->")
     if with_history:
         h, he = history_table(path)
-        out.append("### 历史财务与估值（模型底座，整页）\n\n" + h if h else f"<!-- 历史财务表抽取失败: {he} -->")
+        out.append("### 历史财务与估值（模型基础数据，整页）\n\n" + h if h else f"<!-- 历史财务表抽取失败: {he} -->")
     return "\n\n".join(out)
 
 
@@ -271,7 +271,7 @@ if __name__ == "__main__":
     ap.add_argument("--with-history", action="store_true")
     ap.add_argument("--forecast", action="store_true")
     ap.add_argument("--ladder", action="store_true")
-    ap.add_argument("--full", action="store_true", help="三情景汇总 + 盈利预测 + 隐含价阶梯 + 历史整页")
+    ap.add_argument("--full", action="store_true", help="三情景汇总 + 盈利预测 + 逐年隐含价 + 历史整页")
     a = ap.parse_args()
     wh, fc, ld = a.with_history, a.forecast, a.ladder
     if a.full:

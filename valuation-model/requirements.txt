@@ -1,4 +1,4 @@
 openpyxl>=3.1.0
-formulas>=1.2.8  # examples/_inject_cache_spcx.py 历史缓存注入工具。
+jsonschema>=4.21.0
 pywin32>=306; platform_system == "Windows"  # Excel COM 后端;macOS/LibreOffice 后端不需要。
 # 数据来源通过标准 input.json 契约接入;公开来源、用户材料与可选外部工具均可生产该文件。

@@ -62,10 +62,12 @@ def _mac_excel_installed() -> bool:
 
 def available_backends() -> dict[str, bool]:
     system = platform.system()
+    disable_excel = os.environ.get("VALUATION_RECALC_DISABLE_EXCEL", "").lower() in {"1", "true", "yes"}
     return {
-        "excel-com": system == "Windows" and _module_available("win32com.client"),
+        "excel-com": not disable_excel and system == "Windows" and _module_available("win32com.client"),
         "excel-applescript": (
-            system == "Darwin"
+            not disable_excel
+            and system == "Darwin"
             and shutil.which("osascript") is not None
             and _mac_excel_installed()
         ),

@@ -66,6 +66,16 @@ class RecalcTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "后端不可用"):
                 recalc.choose_backends("excel-com")
 
+    def test_excel_can_be_disabled_for_headless_runs(self) -> None:
+        with (
+            mock.patch.dict(recalc.os.environ, {"VALUATION_RECALC_DISABLE_EXCEL": "1"}),
+            mock.patch.object(recalc.platform, "system", return_value="Darwin"),
+            mock.patch.object(recalc, "_mac_excel_installed", return_value=True),
+            mock.patch.object(recalc.shutil, "which", return_value="/usr/bin/osascript"),
+            mock.patch.object(recalc, "_libreoffice_command", return_value="/opt/homebrew/bin/soffice"),
+        ):
+            self.assertEqual(recalc.choose_backends("auto"), ["libreoffice"])
+
     def test_failed_recalc_never_changes_source(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             source = Path(tmp) / "model.xlsx"
