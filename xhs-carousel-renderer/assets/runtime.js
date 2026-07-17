@@ -102,7 +102,12 @@
       marker.appendChild(element("span", "marker-ink", block.html));
       return marker;
     }
-    if (block.type === "callout") return element("div", "content-block callout-block", block.html);
+    if (block.type === "callout") {
+      const callout = element("div", "content-block callout-block");
+      callout.appendChild(textElement("strong", "callout-label", "AI观点："));
+      callout.appendChild(element("span", "callout-copy", block.html));
+      return callout;
+    }
     if (block.type === "lead") return element("p", "content-block lead-block", block.html);
     if (block.type === "source") return element("p", "content-block source-block", block.html);
     if (block.type === "quote") return element("blockquote", "content-block quote-block", block.html);

@@ -428,6 +428,17 @@ del {
   letter-spacing: 0.3px;
 }
 
+.callout-label {
+  margin-right: 0.28em;
+  color: var(--gold-dark);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.callout-copy {
+  color: inherit;
+}
+
 .quote-block {
   padding: 21px 25px 22px 30px;
   color: var(--quote-ink);
