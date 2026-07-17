@@ -41,12 +41,21 @@ class OutputPolicyTests(unittest.TestCase):
         self.assertEqual(brand["footer_title"], "完整研报加入智富界交流群")
         self.assertEqual(brand["qr_label"], "扫码获取完整研报")
         self.assertEqual(brand["footer_points"], [])
-        self.assertTrue((SCRIPT.parents[1] / brand["footer_background"]).is_file())
+        background_path = SCRIPT.parents[1] / brand["footer_background"]
+        self.assertTrue(background_path.is_file())
+        png = background_path.read_bytes()
+        self.assertEqual(struct.unpack(">II", png[16:24]), (1080, 400))
 
     def test_footer_uses_layered_background_and_fixed_height(self):
         html = MODULE.render_html(MODULE.single_variant(neutral_data()), "single")
         self.assertIn('class="footer-background"', html)
-        self.assertIn("height:536px", html)
+        self.assertIn("height:400px", html)
+        self.assertIn("margin:70px -72px 0", html)
+        self.assertIn("left:116px;top:114px;width:535px", html)
+        self.assertIn("left:780px;top:55px;width:194px", html)
+        self.assertIn("font-size:42px", html)
+        self.assertIn('class="footer-intro-line"', html)
+        self.assertNotIn("text-shadow", html)
         self.assertIn("完整研报加入智富界交流群", html)
         self.assertIn('<div class="header-qr-label">扫码获取完整研报</div>', html)
         self.assertIn('<div class="qr-label">扫码获取完整研报</div>', html)
@@ -54,6 +63,39 @@ class OutputPolicyTests(unittest.TestCase):
         self.assertRegex(html, r'<img class="qr-image"[^>]+alt="扫码获取完整研报">')
         self.assertNotIn('class="bottom-safe-area"', html)
         self.assertNotIn("AI IP 与 AI 员工", html)
+
+    def test_footer_intro_uses_exact_two_browser_lines(self):
+        html = MODULE.render_html(MODULE.single_variant(neutral_data()), "single")
+        with tempfile.TemporaryDirectory() as temp_dir:
+            html_path = Path(temp_dir) / "footer-lines.html"
+            html_path.write_text(html, encoding="utf-8")
+            from playwright.sync_api import sync_playwright
+
+            with sync_playwright() as playwright:
+                browser = playwright.chromium.launch()
+                page = browser.new_page(viewport={"width": 1080, "height": 1920})
+                page.goto(html_path.resolve().as_uri(), wait_until="networkidle")
+                result = page.locator(".footer-intro").evaluate(
+                    """element => {
+                        return {
+                            lines: element.innerText.split('\\n'),
+                            renderedLineCount: [...element.children].reduce((count, line) => {
+                                const range = document.createRange();
+                                range.selectNodeContents(line);
+                                return count + [...range.getClientRects()].filter(rect => rect.width > 0.5).length;
+                            }, 0),
+                        };
+                    }"""
+                )
+                browser.close()
+        self.assertEqual(
+            result["lines"],
+            [
+                "智富界是一个聚焦AI产业、创业与投资的研究平台，",
+                "帮助企业及用户看懂AI、用好AI、投资AI。",
+            ],
+        )
+        self.assertEqual(result["renderedLineCount"], 2)
 
     def test_footer_points_override_remains_compatible(self):
         data = neutral_data()
@@ -81,7 +123,7 @@ class OutputPolicyTests(unittest.TestCase):
             width, height = struct.unpack(">II", png[16:24])
         self.assertEqual(width, 1080)
         self.assertLess(height, 1920)
-        self.assertGreaterEqual(height, 536)
+        self.assertGreaterEqual(height, 470)
 
     def test_single_allows_neutral_industry_language(self):
         variant = MODULE.single_variant(neutral_data())
