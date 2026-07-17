@@ -37,7 +37,7 @@ Create finished image sets, not an interactive webpage. Preserve the source's fa
 - Use Markdown images on their own line for figures. Resolve relative paths from the input Markdown file; the renderer embeds local images into the render payload.
 - Keep code blocks under 18 lines when possible. Long tables, images, code blocks, and callouts stay together rather than splitting across pages.
 - Use `:::marker` for the single most important conclusion on a page.
-- Use `:::callout` for a larger closing takeaway with a themed panel and left rule. The renderer adds the fixed `AI观点：` label automatically; write only the viewpoint itself.
+- Put one `:::callout` near the bottom of every body page for its closing viewpoint. The renderer adds the fixed `AI观点：` label automatically; write only the viewpoint itself. Use `:::marker` for an additional highlighted fact, not as a substitute for the page viewpoint.
 - Use `{circle}` for a short number or phrase only.
 - Use `{wavy}` for a short claim that needs a hand-drawn underline.
 - Use `{accent}` or `==...==` sparingly. More than three simultaneous emphasis styles makes a page noisy.

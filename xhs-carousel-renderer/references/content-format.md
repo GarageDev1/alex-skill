@@ -172,7 +172,7 @@ Use this for the larger pale-yellow conclusion panel normally placed near the bo
 :::
 ```
 
-Keep it to one or two short lines. The renderer automatically prefixes the panel with `AI观点：` and keeps the whole panel on one page; do not repeat the label in the Markdown content.
+Include one closing callout near the bottom of every body page and keep it to one or two short lines. The renderer automatically prefixes the panel with `AI观点：` and keeps the whole panel on one page; do not repeat the label in the Markdown content.
 
 ### Lead and source
 
