@@ -39,7 +39,7 @@ class OutputPolicyTests(unittest.TestCase):
         brand_path = SCRIPT.parents[1] / "assets" / "brand.json"
         brand = json.loads(brand_path.read_text(encoding="utf-8"))
         self.assertEqual(brand["footer_title"], "完整研报加入智富界交流群")
-        self.assertEqual(brand["qr_label"], "扫码获取完整研报")
+        self.assertEqual(brand["qr_label"], "扫码加入研报交流")
         self.assertEqual(brand["footer_points"], [])
         background_path = SCRIPT.parents[1] / brand["footer_background"]
         self.assertTrue(background_path.is_file())
@@ -57,10 +57,10 @@ class OutputPolicyTests(unittest.TestCase):
         self.assertIn('class="footer-intro-line"', html)
         self.assertNotIn("text-shadow", html)
         self.assertIn("完整研报加入智富界交流群", html)
-        self.assertIn('<div class="header-qr-label">扫码获取完整研报</div>', html)
-        self.assertIn('<div class="qr-label">扫码获取完整研报</div>', html)
-        self.assertRegex(html, r'<img class="header-qr-image"[^>]+alt="扫码获取完整研报">')
-        self.assertRegex(html, r'<img class="qr-image"[^>]+alt="扫码获取完整研报">')
+        self.assertIn('<div class="header-qr-label">扫码加入研报交流</div>', html)
+        self.assertIn('<div class="qr-label">扫码加入研报交流</div>', html)
+        self.assertRegex(html, r'<img class="header-qr-image"[^>]+alt="扫码加入研报交流">')
+        self.assertRegex(html, r'<img class="qr-image"[^>]+alt="扫码加入研报交流">')
         self.assertNotIn('class="bottom-safe-area"', html)
         self.assertNotIn("AI IP 与 AI 员工", html)
 
@@ -159,6 +159,22 @@ class OutputPolicyTests(unittest.TestCase):
         self.assertIn("内部研究版", internal_html)
         self.assertNotIn("内部研究版", external_html)
         self.assertNotIn("目标价100元", external_html)
+
+
+    def test_preview_strip_renders_when_uris_present(self):
+        data = neutral_data()
+        data["_preview_uris"] = ["data:image/png;base64,iVBOR"]
+        data["_preview_total_pages"] = 42
+        html = MODULE.render_html(MODULE.single_variant(data), "single")
+        self.assertIn('<section class="preview-strip">', html)
+        self.assertIn("完整研报预览", html)
+        self.assertIn("42", html)
+        self.assertIn('<div class="preview-page">', html)
+
+    def test_preview_strip_absent_without_uris(self):
+        html = MODULE.render_html(MODULE.single_variant(neutral_data()), "single")
+        self.assertNotIn('<section class="preview-strip">', html)
+        self.assertNotIn('<div class="preview-page">', html)
 
 
 if __name__ == "__main__":
