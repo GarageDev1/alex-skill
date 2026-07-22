@@ -107,3 +107,25 @@ External 仅渲染显式标为 `audience: "both"` 的内容，并再通过敏感
 - External 不使用卡片 `source`，避免在来源文本中意外带出敏感投资术语。
 - `single` 不渲染任何受众标签；`dual` 的内部图由渲染器统一显示“内部研究版”，External不显示受众标签。
 - External 忽略 `share.badge`，右上角固定显示 `meta.date`。
+
+## 研报预览横条（可选）
+
+在 JSON 中加入 `docx_preview` 字段可在正文与底栏之间插入研报页面缩略图预览横条：
+
+```json
+{
+  "docx_preview": {
+    "dir": "_page_thumbs",
+    "pages": 4,
+    "thumb_width": 240,
+    "total_pages": 42
+  }
+}
+```
+
+- `dir`：页面缩略图目录路径，相对于输入 JSON 所在目录。目录中需包含 `page_01.png`、`page_02.png` 等按页码命名的 PNG 文件。
+- `pages`：展示前几张页面，默认 `4`。
+- `thumb_width`：缩略图嵌入时缩放到的宽度（像素），默认 `240`。仅影响嵌入尺寸，不改变显示尺寸。
+- `total_pages`：可选，研报总页数。省略时自动从同目录下的 PDF 文件读取；无 PDF 时退回到目录内的 PNG 文件数。
+
+预览横条在 Internal 和 External 两版中均显示。缩略图缩到 210px 宽后页面文字不可读，不构成合规风险。省略 `docx_preview` 字段时不渲染预览横条。
