@@ -9,6 +9,7 @@ import copy
 import html
 import json
 import re
+from datetime import date
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -491,6 +492,18 @@ def write_mode(data: dict[str, Any], mode: str, output_dir: Path, stem: str, htm
     return outputs
 
 
+def auto_fill_date(data: dict[str, Any]) -> None:
+    """Fill meta.date and share.badge with today's date when missing or placeholder."""
+    today = date.today()
+    meta = data.setdefault("meta", {})
+    current_date = meta.get("date", "")
+    if not current_date or current_date == "YYYY-MM-DD":
+        meta["date"] = today.strftime("%Y-%m-%d")
+    share = data.setdefault("share", {})
+    if not share.get("badge"):
+        share["badge"] = today.strftime("%Y.%m.%d")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Render single or compliant dual mobile-share long images.")
     parser.add_argument("input", help="Input JSON file.")
@@ -505,6 +518,7 @@ def main() -> None:
     args = parser.parse_args()
     input_path = Path(args.input)
     data = json.loads(input_path.read_text(encoding="utf-8"))
+    auto_fill_date(data)
     output_dir = Path(args.output_dir) if args.output_dir else input_path.parent
     output_dir.mkdir(parents=True, exist_ok=True)
     if args.mode == "auto":
