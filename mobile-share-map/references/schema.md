@@ -93,7 +93,7 @@ External 仅渲染显式标为 `audience: "both"` 的内容，并再通过敏感
 
 ## 字段约束
 
-- `meta.date` 省略或填写占位符 `YYYY-MM-DD` 时，渲染器自动填充为生成当天日期；`share.badge` 为空时同理。如需指定特定日期，显式写入即可覆盖。
+- `meta.date` 和 `share.badge` 禁止手动指定，始终省略，由渲染器自动填充为生成当天日期。在 JSON 中写入这两个字段会导致日期错误。
 - `output_policy` 必须为 `single` 或 `dual`。省略时默认的 `--mode auto` 会停止渲染，要求先完成策略判断。
 - `dual` 模式的 `audience` 只能为 `both` 或 `internal`。省略时按 `internal` 处理，防止误外发。
 - `tag` 是左侧浅色标签的短章节名，建议 6-12 个汉字；`tone` 可使用 `blue`、`amber`、`green`、`pink`、`cyan`、`purple`、`orange` 或 `gray`，省略时按顺序循环。
