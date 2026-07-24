@@ -15,26 +15,34 @@ from typing import Any
 
 
 SENSITIVE_PATTERNS = (
-    r"评级|买入|卖出|持有|增持|减持|推荐|推票|建仓|交易指令|"
-    r"估值|市值|目标价|目标市值|股价|发行价|P/E|P/B|P/S|"
-    r"(?<![A-Za-z])(?:IPO|PE|PB|PS|DCF|IRR)(?![A-Za-z])|"
-    r"收益率|回报率|上行空间|下行空间|安全边际|涨幅|跌幅|低估|高估|便宜|贵|"
-    r"Bull|Base|Bear|概率加权|隐含价|隐含市值|"
-    r"盈利预测|营收预测|利润预测|EPS 预测|预计.*(营收|收入|利润|出货)|预测.*(营收|收入|利润|出货)|"
+    r"评级|买入|卖出|持有|增持|减持|推荐|推票|建仓|加仓|减仓|仓位|止损|止盈|交易指令|投资建议|"
+    r"目标价|目标市值|发行价|隐含价|隐含市值|"
+    r"(?<![A-Za-z])IPO(?![A-Za-z])|"
+    r"安全边际|上行空间|下行空间|买点|卖点|"
+    r"(?:价值|股价|估值|市值|标的).{0,8}(?:低估|高估)|(?:低估|高估).{0,8}(?:价值|股价|估值|市值|标的)|"
+    r"(?:给予|对应|合理).{0,6}(?:估值|PE|P/E)|"
+    r"(?:Bull|Base|Bear)\s*(?:case|情景)|概率加权|"
+    r"盈利预测|营收预测|利润预测|EPS\s*预测|"
+    r"预计.{0,6}(?:营收|收入|利润|出货)|预测.{0,6}(?:营收|收入|利润|出货)|"
     r"20\d{2}[EF]"
 )
 SENSITIVE_RE = re.compile(SENSITIVE_PATTERNS, flags=re.IGNORECASE)
 
 # `single` is allowed for neutral industry/company information, including capacity forecasts,
 # IPO process facts, and technical terms such as "base die". Only explicit securities-investment
-# language should force the dual-version workflow. External filtering remains intentionally broader.
+# language should force the dual-version workflow. External filtering uses the same philosophy:
+# filter explicit investment advice while allowing historical data, case studies, and analytical
+# frameworks that reference stock prices, PE, EPS, or valuations descriptively.
 SINGLE_INVESTMENT_PATTERNS = (
     r"投资建议|评级|买入|卖出|持有|增持|减持|推票|建仓|加仓|减仓|仓位|止损|止盈|交易指令|"
-    r"估值|目标价|目标市值|股价|发行价|P/E|P/B|P/S|"
-    r"(?<![A-Za-z])(?:PE|PB|PS|DCF|IRR)(?![A-Za-z])|"
-    r"收益率|回报率|上行空间|下行空间|安全边际|隐含价|隐含市值|"
+    r"目标价|目标市值|发行价|隐含价|隐含市值|"
+    r"安全边际|上行空间|下行空间|买点|卖点|"
+    r"(?:价值|股价|估值|市值|标的).{0,8}(?:低估|高估)|(?:低估|高估).{0,8}(?:价值|股价|估值|市值|标的)|"
     r"(?:Bull|Base|Bear)\s*(?:case|情景)|"
-    r"(?:股价|估值|市值|标的).{0,8}(?:低估|高估)|(?:低估|高估).{0,8}(?:股价|估值|市值|标的)"
+    r"(?:给予|对应|合理).{0,6}(?:估值|PE|P/E)|"
+    r"盈利预测|营收预测|利润预测|EPS\s*预测|"
+    r"预计.{0,6}(?:营收|收入|利润|出货)|预测.{0,6}(?:营收|收入|利润|出货)|"
+    r"20\d{2}[EF]"
 )
 SINGLE_INVESTMENT_RE = re.compile(SINGLE_INVESTMENT_PATTERNS, flags=re.IGNORECASE)
 
