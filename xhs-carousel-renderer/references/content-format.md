@@ -175,6 +175,18 @@ Use this for the larger pale-yellow conclusion panel normally placed near the bo
 
 A closing callout near the bottom of a body page is optional — use it when a closing perspective adds value, skip it when the page already ends with a strong narrative beat. Keep it to one or two short lines. The renderer prefixes the panel with a configurable label (default `AI观点：`) and keeps the whole panel on one page; do not repeat the label in the Markdown content. To change the label, set `callout_label` in front matter (e.g. `callout_label: 划重点`).
 
+### Risk callout
+
+Use this for any risk-related content. The renderer prefixes the panel with `AI提示风险：` and renders it with an orange-red accent to distinguish it from opinion callouts:
+
+```md
+:::risk
+周期见顶、出口管制收紧、流通盘解锁后抛压集中——三重风险叠加。
+:::
+```
+
+All risk mentions — whether about past events or future possibilities — must be wrapped in `:::risk`. Do not repeat the label in the Markdown content.
+
 ### Lead and source
 
 ```md

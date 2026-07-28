@@ -109,6 +109,12 @@
       callout.appendChild(element("span", "callout-copy", block.html));
       return callout;
     }
+    if (block.type === "risk") {
+      const risk = element("div", "content-block risk-block");
+      risk.appendChild(textElement("strong", "risk-label", "AI提示风险："));
+      risk.appendChild(element("span", "risk-copy", block.html));
+      return risk;
+    }
     if (block.type === "lead") return element("p", "content-block lead-block", block.html);
     if (block.type === "source") return element("p", "content-block source-block", block.html);
     if (block.type === "quote") return element("blockquote", "content-block quote-block", block.html);
@@ -221,6 +227,33 @@
     const pageNumber = record.page.querySelector(".page-number");
     if (pageNumber) pageNumber.textContent = String(index + 1).padStart(2, "0");
   });
+
+  const lastBody = [...pageRecords].reverse().find((record) => record.flow);
+  if (lastBody) {
+    const endBlock = element("div", "end-block");
+
+    if (data.meta.brandQr) {
+      const brand = element("div", "brand-card");
+      const info = element("div", "brand-card-info");
+      info.appendChild(textElement("div", "brand-card-title", "完整研报加入智富界交流群"));
+      info.appendChild(textElement("div", "brand-card-intro", "智富界是一个聚焦AI产业、创业与投资的研究平台，帮助企业及用户看懂AI、用好AI、投资AI。"));
+      brand.appendChild(info);
+      const qr = element("div", "brand-card-qr");
+      const img = element("img", "brand-card-qr-image");
+      img.src = data.meta.brandQr;
+      img.alt = "扫码加入研报交流";
+      qr.appendChild(img);
+      qr.appendChild(textElement("div", "brand-card-qr-label", "扫码加入研报交流"));
+      brand.appendChild(qr);
+      endBlock.appendChild(brand);
+    }
+
+    const disclaimer = element("div", "disclaimer");
+    disclaimer.textContent = "本文由AI结合公开资料整理生成，不代表投资建议";
+    endBlock.appendChild(disclaimer);
+
+    lastBody.page.insertBefore(endBlock, lastBody.page.querySelector(".page-footer"));
+  }
 
   window.__renderReport = {
     pageCount: pageRecords.length,

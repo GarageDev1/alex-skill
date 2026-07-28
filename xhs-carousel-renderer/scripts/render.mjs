@@ -132,7 +132,7 @@ function parseFrontMatter(source) {
 
 function parseDirective(name, content, lineNumber, inline) {
   const raw = content.trim();
-  if (name === "section" || name === "marker" || name === "callout" || name === "lead" || name === "source") {
+  if (name === "section" || name === "marker" || name === "callout" || name === "risk" || name === "lead" || name === "source") {
     if (!raw) throw new Error(`Empty :::${name} directive near line ${lineNumber}.`);
     return { type: name, html: inline(raw.replace(/\n+/g, " ")), raw };
   }
@@ -669,11 +669,13 @@ async function render(inputPath, outputDirectory, themeOverride = "") {
   if (validation.errors.length) throw new Error(validation.errors.join("\n"));
   validation.warnings.forEach((warning) => process.stderr.write(`Warning: ${warning}\n`));
 
-  const [css, runtime, playwright] = await Promise.all([
+  const [css, runtime, playwright, qrBytes] = await Promise.all([
     fs.readFile(path.join(SKILL_DIR, "assets/theme.css"), "utf8"),
     fs.readFile(path.join(SKILL_DIR, "assets/runtime.js"), "utf8"),
-    loadPlaywright()
+    loadPlaywright(),
+    fs.readFile(path.join(SKILL_DIR, "assets/zhifujie-qr.png"))
   ]);
+  document.meta.brandQr = `data:image/png;base64,${qrBytes.toString("base64")}`;
 
   await cleanOwnedOutputs(outputDirectory);
   const browser = await playwright.chromium.launch(await browserLaunchOptions());

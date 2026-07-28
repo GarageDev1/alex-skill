@@ -658,6 +658,88 @@ del {
   text-align: right;
 }
 
+.risk-block {
+  background: rgba(210, 90, 50, 0.08);
+  border-left: 4px solid rgba(210, 90, 50, 0.6);
+  border-radius: 0 16px 16px 0;
+  padding: 28px 36px;
+  font-size: 28px;
+  line-height: 1.65;
+}
+
+.risk-label {
+  color: rgba(210, 90, 50, 0.9);
+  font-size: 26px;
+  font-weight: 800;
+  margin-right: 8px;
+}
+
+.risk-copy {
+  color: var(--ink);
+}
+
+.end-block {
+  margin-top: auto;
+}
+
+.brand-card {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 24px 28px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 16px;
+  margin-bottom: 16px;
+}
+
+.brand-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.brand-card-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.brand-card-intro {
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.brand-card-qr {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.brand-card-qr-image {
+  width: 140px;
+  height: 140px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  background: #fff;
+  object-fit: contain;
+  padding: 4px;
+}
+
+.brand-card-qr-label {
+  font-size: 19px;
+  color: var(--muted);
+  margin-top: 6px;
+  white-space: nowrap;
+}
+
+.disclaimer {
+  color: var(--footer-muted);
+  font-size: 20px;
+  text-align: center;
+  padding: 8px 0 0;
+  opacity: 0.7;
+}
+
 .cover-page {
   display: grid;
   grid-template-rows: auto 1fr auto;
