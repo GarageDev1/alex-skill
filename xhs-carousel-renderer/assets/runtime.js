@@ -104,7 +104,8 @@
     }
     if (block.type === "callout") {
       const callout = element("div", "content-block callout-block");
-      callout.appendChild(textElement("strong", "callout-label", "AI观点："));
+      const label = (data.meta.callout_label || "AI观点") + "：";
+      callout.appendChild(textElement("strong", "callout-label", label));
       callout.appendChild(element("span", "callout-copy", block.html));
       return callout;
     }

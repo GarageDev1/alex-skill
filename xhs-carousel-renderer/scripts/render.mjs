@@ -457,6 +457,7 @@ export function parseDocument(source) {
   meta.kicker = String(meta.kicker || "图文报告").trim();
   meta.cover = meta.cover !== false;
   meta.theme = String(meta.theme || "classic").trim().toLowerCase();
+  if (meta.callout_label != null) meta.callout_label = String(meta.callout_label).trim();
   meta.titleHtml = parseInline(meta.title);
   meta.subtitleHtml = parseInline(meta.subtitle);
   return { meta, blocks };
