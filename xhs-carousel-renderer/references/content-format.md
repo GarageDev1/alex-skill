@@ -199,6 +199,19 @@ All risk mentions — whether about past events or future possibilities — must
 :::
 ```
 
+### Thumbnails
+
+Use this to insert source material preview images at the end of the carousel. The renderer automatically creates a grid layout with a heading and call-to-action text. Just provide the images:
+
+```md
+:::thumbnails
+![](./source-page1.png)
+![](./source-page2.png)
+:::
+```
+
+Images are arranged in a centered row. Use 1–4 images (2 recommended); they don't need to be legible—the purpose is to hint that more complete content is available.
+
 ### Forced page break
 
 ```md

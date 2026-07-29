@@ -659,27 +659,42 @@ del {
 }
 
 .risk-block {
-  background: rgba(210, 90, 50, 0.08);
-  border-left: 4px solid rgba(210, 90, 50, 0.6);
-  border-radius: 0 16px 16px 0;
-  padding: 28px 36px;
-  font-size: 28px;
-  line-height: 1.65;
+  position: relative;
+  background: linear-gradient(135deg, rgba(210, 90, 50, 0.07) 0%, rgba(210, 90, 50, 0.12) 100%);
+  border: 1px solid rgba(210, 90, 50, 0.18);
+  border-left: 5px solid rgba(210, 90, 50, 0.7);
+  border-radius: 4px 14px 14px 4px;
+  padding: 26px 32px 26px 56px;
+  font-size: 29px;
+  line-height: 1.62;
+}
+
+.risk-block::before {
+  content: "\26A0";
+  position: absolute;
+  left: 20px;
+  top: 26px;
+  font-size: 22px;
+  line-height: 1;
+  opacity: 0.7;
 }
 
 .risk-label {
-  color: rgba(210, 90, 50, 0.9);
-  font-size: 26px;
-  font-weight: 800;
-  margin-right: 8px;
+  display: block;
+  color: rgba(210, 90, 50, 0.92);
+  font-size: 24px;
+  font-weight: 850;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
 }
 
 .risk-copy {
-  color: var(--ink);
+  color: var(--soft-ink);
+  font-weight: 500;
 }
 
 .end-block {
-  margin-top: auto;
+  margin-top: 32px;
 }
 
 .brand-card {
@@ -730,6 +745,41 @@ del {
   color: var(--muted);
   margin-top: 6px;
   white-space: nowrap;
+}
+
+.thumbnails-block {
+  margin: 0 0 16px;
+}
+
+.thumbnails-heading {
+  color: var(--heading-ink);
+  font-size: 24px;
+  font-weight: 850;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.thumbnails-grid {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.thumbnail-item {
+  height: 260px;
+  aspect-ratio: 210 / 297;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.thumbnail-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .disclaimer {

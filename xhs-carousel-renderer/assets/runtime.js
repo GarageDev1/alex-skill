@@ -208,9 +208,14 @@
     return next;
   }
 
+  let thumbnailsBlock = null;
   if (data.meta.cover) createCover();
   let current = createBodyPage();
   data.blocks.forEach((block) => {
+    if (block.type === "thumbnails") {
+      thumbnailsBlock = block;
+      return;
+    }
     if (block.type === "pagebreak") {
       if (current.flow.children.length) current = createBodyPage();
       return;
@@ -232,6 +237,22 @@
   if (lastBody) {
     const endBlock = element("div", "end-block");
 
+    if (thumbnailsBlock) {
+      const thumbSection = element("div", "thumbnails-block");
+      thumbSection.appendChild(textElement("div", "thumbnails-heading", "完整内容预览"));
+      const grid = element("div", "thumbnails-grid");
+      thumbnailsBlock.images.forEach((img) => {
+        const thumb = element("div", "thumbnail-item");
+        const image = element("img", "thumbnail-image");
+        image.src = img.src;
+        image.alt = img.alt || "";
+        thumb.appendChild(image);
+        grid.appendChild(thumb);
+      });
+      thumbSection.appendChild(grid);
+      endBlock.appendChild(thumbSection);
+    }
+
     if (data.meta.brandQr) {
       const brand = element("div", "brand-card");
       const info = element("div", "brand-card-info");
@@ -252,7 +273,7 @@
     disclaimer.textContent = "本文由AI结合公开资料整理生成，不代表投资建议";
     endBlock.appendChild(disclaimer);
 
-    lastBody.page.insertBefore(endBlock, lastBody.page.querySelector(".page-footer"));
+    lastBody.flow.appendChild(endBlock);
   }
 
   window.__renderReport = {

@@ -136,6 +136,17 @@ function parseDirective(name, content, lineNumber, inline) {
     if (!raw) throw new Error(`Empty :::${name} directive near line ${lineNumber}.`);
     return { type: name, html: inline(raw.replace(/\n+/g, " ")), raw };
   }
+  if (name === "thumbnails") {
+    const images = content.split("\n").map((line) => line.trim()).filter(Boolean).map((line, index) => {
+      const match = line.match(/^!\[([^\]]*)\]\((<[^>]+>|[^\s)]+)(?:\s+["']([^"']*)["'])?\)$/);
+      if (!match) throw new Error(`Invalid thumbnail near line ${lineNumber + index + 1}: use ![alt](path) syntax.`);
+      const src = safeUrl(match[2], "image");
+      if (!src) throw new Error(`Invalid thumbnail image URL near line ${lineNumber + index + 1}.`);
+      return { alt: match[1], src };
+    });
+    if (!images.length) throw new Error(`Empty :::thumbnails directive near line ${lineNumber}.`);
+    return { type: "thumbnails", images };
+  }
   if (name === "metrics") {
     const items = content.split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
       const withoutBullet = line.replace(/^[-*]\s+/, "");
