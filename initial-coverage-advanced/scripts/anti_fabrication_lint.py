@@ -28,14 +28,30 @@ SYNTH_PATTERNS = [
 
 # 2) 把编造合法化的免责标签，贴在数据系列/数值上
 DISCLAIMER_PATTERNS = [
-    (r"示意(?!图标题)", "“示意”——不得用于标注不存在的数据，缺数就留空或标“未获取”"),
+    (
+        r"示意(?=(?:数据|值|曲线|序列|填充|口径)|[\"'”’]?(?:[,，。；;、/）)]|$))",
+        "“示意”——不得用于标注不存在的数据，缺数就留空或标“未获取”",
+    ),
     (r"approx|placeholder|dummy|fake|mock", "approx/placeholder 等——疑似占位/编造数据"),
     (r"假设值|估计值|凑数|大致(?:画|给)|随便给", "假设值/凑数——图表数值必须有来源，不许估着填"),
 ]
 
+# 规范、检查清单会在禁止性语境里复述上述词语。只豁免命中词前紧邻的
+# 明确否定表达，不因一行中任意位置出现“不”就整行放行。
+PROHIBITION_CONTEXT = re.compile(
+    r"(?:不得|不许|禁止|不能|不要|不用|绝不|别|避免|严禁|拒绝|"
+    r"未使用|没有|并无|不含|不为|无)"
+    r"[^。！？；;\n]{0,24}$",
+    re.IGNORECASE,
+)
+
 # 3) 缺一手结算源的迹象：声称是现价/收盘，但没有日 K 原始序列落盘
 PRICE_WORDS = re.compile(r"现价|收盘价|最新价|股价图|指数线|日\s*K|日频")
-RAW_SERIES_HINT = re.compile(r"_data|日K|daily|close.*csv|push2his|序列.*csv|\.csv")
+RAW_SERIES_HINT = re.compile(
+    r"_data|日K|daily|close.*csv|push2his|序列.*csv|"
+    r"\.csv|\.xlsx?|read_excel",
+    re.IGNORECASE,
+)
 
 # 4) 用涨幅反推收盘的迹象（应当反过来：close 来自结算源，涨幅是核出来的）
 REVERSE_DERIVE = re.compile(
@@ -43,6 +59,15 @@ REVERSE_DERIVE = re.compile(
 )
 
 SCAN_EXTS = (".py", ".md", ".csv", ".json", ".txt")
+THIS_FILE = os.path.abspath(__file__)
+
+
+def is_prohibition_context(line, match):
+    """命中词若紧跟在明确的禁止/否定表达后，则视为规范性表述。"""
+    stripped = line.lstrip("*#- \t")
+    if stripped.startswith("常见错误"):
+        return True
+    return bool(PROHIBITION_CONTEXT.search(line[: match.start()]))
 
 
 def iter_files(paths):
@@ -51,9 +76,12 @@ def iter_files(paths):
             for root, _, files in os.walk(p):
                 for f in files:
                     if f.endswith(SCAN_EXTS):
-                        yield os.path.join(root, f)
+                        candidate = os.path.join(root, f)
+                        if os.path.abspath(candidate) != THIS_FILE:
+                            yield candidate
         elif os.path.isfile(p):
-            yield p
+            if os.path.abspath(p) != THIS_FILE:
+                yield p
         else:
             print(f"[warn] 路径不存在，跳过：{p}", file=sys.stderr)
 
@@ -77,13 +105,15 @@ def scan_file(path):
             if is_code and re.search(pat, line):
                 hits.append((i, "合成", msg, line.strip()))
         for pat, msg in DISCLAIMER_PATTERNS:
-            if re.search(pat, line):
+            match = re.search(pat, line, re.IGNORECASE)
+            if match and not is_prohibition_context(line, match):
                 hits.append((i, "免责标签", msg, line.strip()))
         if REVERSE_DERIVE.search(line):
             hits.append((i, "反推", "疑似用涨幅反推收盘——收盘必须取结算源本身", line.strip()))
 
-    # 文件级：提了价格/收盘，却全文没有日 K 原始序列的迹象
-    if PRICE_WORDS.search(text) and not RAW_SERIES_HINT.search(text):
+    # 只检查负责构建数据/图表的代码。研报正文和版式规范不应被要求自行写出
+    # CSV/XLSX 路径；它们的溯源由配套 _data 底稿核验。
+    if is_code and PRICE_WORDS.search(text) and not RAW_SERIES_HINT.search(text):
         hits.append((0, "缺一手源", "提到现价/收盘/股价图，但没看到日 K 原始序列落盘的迹象", ""))
 
     return hits

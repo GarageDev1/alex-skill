@@ -78,7 +78,7 @@ OOXML 层面，每处文字的 `w:rFonts` 三个属性都要设为 `Source Han S
 
 ## 怎么构建
 
-用 anthropic-skills:docx（Documents skill）生成 DOCX，先读它的 `SKILL.md` 和 `references/design_presets.md` 按其规范操作。本标准约束的是最终 OOXML 结果，不绑定具体工具——但用 python-docx 时注意它会自动产生 `tblW type="auto"`，要清掉换成 `type="dxa"`。
+用内嵌的 `../anthropic_skills/docx/SKILL.md` 生成 DOCX，先完整读取该文件并按其规范操作；其中脚本路径以 `../anthropic_skills/docx/` 为基准。本标准约束的是最终 OOXML 结果，不绑定具体工具——但用 python-docx 时注意它会自动产生 `tblW type="auto"`，要清掉换成 `type="dxa"`。
 
 ## 交付前核验（11 步）
 
