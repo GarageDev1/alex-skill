@@ -5,7 +5,7 @@
 完成步骤 4（缩略图）和步骤 4a（设置日期）后，用 pipeline 脚本一次性完成 检查→渲染→验收：
 
 ```
-python scripts/pipeline.py input.json
+python scripts/pipeline.py 线图/input.json
 ```
 
 Pipeline 依次执行：
@@ -21,8 +21,8 @@ Pipeline / 渲染脚本启动时会自动检查，任一不通过即拒绝：
 
 1. **日期**：`meta.date` 必须已通过 `set_date.py` 设置。Agent 不得自行填写日期——必须由用户显式要求后运行：
    ```
-   python scripts/set_date.py input.json                     # 默认当天，无需传参
-   python scripts/set_date.py input.json --date 2025-03-15   # 仅用户要求指定日期时
+   python scripts/set_date.py 线图/input.json                     # 默认当天，无需传参
+   python scripts/set_date.py 线图/input.json --date 2025-03-15   # 仅用户要求指定日期时
    ```
 2. **缩略图**：`docx_preview` 字段和对应缩略图文件必须存在。跳过的唯一方式是用户显式要求后在 JSON 中设置 `"skip_thumbnails": true`。
 
@@ -31,7 +31,7 @@ Pipeline / 渲染脚本启动时会自动检查，任一不通过即拒绝：
 如需跳过 pipeline 单独渲染：
 
 ```
-python scripts/render_mobile_share.py input.json [--output-dir DIR]
+python scripts/render_mobile_share.py 线图/input.json
 ```
 
 默认 `--mode auto`，根据 JSON 中的 `output_policy` 自动选择：

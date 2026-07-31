@@ -1,13 +1,21 @@
 # 步骤 1：提取源文档
 
-## 提取源文档内容
+## 创建输出目录
 
-先运行提取脚本，将源文档转为可引用的结构化内容：
+在工作目录下创建 `线图/` 文件夹，后续所有产物均放入此目录：
 
 ```
-python scripts/extract_source.py report.pdf --output-dir workdir/
-python scripts/extract_source.py report.docx --output-dir workdir/
-python scripts/extract_source.py page.html --output-dir workdir/
+mkdir 线图
+```
+
+## 提取源文档内容
+
+运行提取脚本，将源文档转为可引用的结构化内容，输出到 `线图/`：
+
+```
+python scripts/extract_source.py report.pdf --output-dir 线图/
+python scripts/extract_source.py report.docx --output-dir 线图/
+python scripts/extract_source.py page.html --output-dir 线图/
 ```
 
 - PDF/DOCX → 通过 PaddleOCR API 提取为 `source_content.md` + `_source_images/`

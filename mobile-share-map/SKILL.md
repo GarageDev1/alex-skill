@@ -10,6 +10,21 @@ description: "将 PDF、DOCX、Markdown、网页、图片、访谈记录、报�
 - `single`：单版。用于中性行业/公司/知识整理。只生成 `input.png`。
 - `dual`：双版。用于包含投资建议、评级、估值等内容的研究。生成 `input-internal.png` 与 `input-external.png`。
 
+## 输出目录
+
+所有产物统一放在工作目录下的 `线图/` 文件夹中，步骤 1 开始时创建。
+
+```
+workspace/                    ← 用户工作目录（动态）
+  report.pdf                  ← 源文件（用户提供）
+  线图/                       ← 步骤 1 创建
+    source_content.md (.html) ← 步骤 1 提取
+    _source_images/           ← 步骤 1 提取的图片（PDF/DOCX）
+    input.json                ← 步骤 3 创建
+    _page_thumbs/             ← 步骤 4 缩略图
+    input.png / input.html    ← 步骤 5 最终输出
+```
+
 ## 工作流程
 
 按顺序执行以下步骤，每步的详细说明在对应文件中：

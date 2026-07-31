@@ -1,6 +1,6 @@
 # 步骤 3：创建 JSON
 
-先读取 `references/schema.md` 了解字段定义和约束。
+先读取 `references/schema.md` 了解字段定义和约束。JSON 文件创建在 `线图/` 目录中。
 
 ## 观点卡
 

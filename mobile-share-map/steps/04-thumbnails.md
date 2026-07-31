@@ -11,7 +11,7 @@
 ### PDF 源文件（自动模式）
 
 ```
-python scripts/generate_thumbnails.py input.json --source report.pdf
+python scripts/generate_thumbnails.py 线图/input.json --source report.pdf
 ```
 
 脚本自动用 `pdf2image` 转换前 N 页，写入 `_page_thumbs/`，并回填 JSON 的 `docx_preview` 字段。
@@ -19,7 +19,7 @@ python scripts/generate_thumbnails.py input.json --source report.pdf
 ### DOCX 源文件（自动模式）
 
 ```
-python scripts/generate_thumbnails.py input.json --source report.docx
+python scripts/generate_thumbnails.py 线图/input.json --source report.docx
 ```
 
 脚本自动通过 LibreOffice headless 将 DOCX 导出为 PDF，再用 `pdf2image` 转图。
@@ -29,7 +29,7 @@ python scripts/generate_thumbnails.py input.json --source report.docx
 Agent 自行生成缩略图图片后，使用导入模式：
 
 ```
-python scripts/generate_thumbnails.py input.json --import img1.png img2.png ...
+python scripts/generate_thumbnails.py 线图/input.json --import img1.png img2.png ...
 ```
 
 脚本负责将图片复制到 `_page_thumbs/`、统一重命名、回填 JSON。Agent 不需要手动管理文件和 JSON 字段。
