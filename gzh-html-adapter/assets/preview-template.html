@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}} · 公众号 HTML 预览</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      color: CanvasText;
+      background: Canvas;
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid currentColor;
+      background: Canvas;
+      z-index: 1;
+    }
+    .toolbar p {
+      margin: 0;
+      font-size: 0.875rem;
+    }
+    .toolbar button {
+      flex: 0 0 auto;
+      padding: 0.6rem 1rem;
+      border: 1px solid currentColor;
+      border-radius: 0.25rem;
+      color: ButtonText;
+      background: ButtonFace;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .status {
+      min-height: 1.5rem;
+      margin: 0;
+      padding: 0.5rem 1rem 0;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+    .stage {
+      width: min(100% - 2rem, 700px);
+      margin: 1rem auto 4rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="toolbar">
+    <p>下方内容将按富文本复制，按钮和提示不会进入正文。</p>
+    <button id="copy-button" type="button">复制到公众号</button>
+  </header>
+  <p class="status" id="copy-status" role="status" aria-live="polite"></p>
+  <main class="stage">
+    <section id="gzh-content">
+<!-- GZH_CONTENT -->
+    </section>
+  </main>
+  <script>
+    (function () {
+      "use strict";
+
+      var button = document.getElementById("copy-button");
+      var status = document.getElementById("copy-status");
+      var content = document.getElementById("gzh-content");
+
+      button.addEventListener("click", function () {
+        var range = document.createRange();
+        var selection = window.getSelection();
+
+        range.selectNodeContents(content);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        var copied = false;
+        try {
+          copied = document.execCommand("copy");
+        } finally {
+          selection.removeAllRanges();
+        }
+
+        status.textContent = copied
+          ? "已复制正文富文本。"
+          : "浏览器没有完成复制。";
+      });
+    }());
+  </script>
+</body>
+</html>
