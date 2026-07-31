@@ -92,7 +92,11 @@ class QRExtractor(HTMLParser):
         attr_dict = dict(attrs)
         cls = attr_dict.get("class", "")
         src = attr_dict.get("src", "")
-        if src and ("qr" in cls.lower() or "qr" in src.lower()):
+        # Only match class names for QR detection; skip src content for data URIs
+        # to avoid false positives from base64-encoded thumbnails that randomly
+        # contain the substring "qr".
+        src_has_qr = not src.startswith("data:") and "qr" in src.lower()
+        if src and ("qr" in cls.lower() or src_has_qr):
             self.qr_sources.append(src)
 
 

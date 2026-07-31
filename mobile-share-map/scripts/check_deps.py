@@ -15,6 +15,7 @@ REQUIRED_PACKAGES = [
     ("playwright", "playwright", "HTML → PNG 渲染"),
     ("PIL", "Pillow", "缩略图处理"),
     ("pdf2image", "pdf2image", "PDF 页数检测与缩略图生成"),
+    ("requests", "requests", "PaddleOCR API 调用"),
 ]
 
 REQUIRED_ASSETS = [

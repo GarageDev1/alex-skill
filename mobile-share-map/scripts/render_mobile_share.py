@@ -492,16 +492,42 @@ def write_mode(data: dict[str, Any], mode: str, output_dir: Path, stem: str, htm
     return outputs
 
 
-def auto_fill_date(data: dict[str, Any]) -> None:
-    """Fill meta.date and share.badge with today's date when missing or placeholder."""
-    today = date.today()
-    meta = data.setdefault("meta", {})
+def require_date(data: dict[str, Any]) -> None:
+    """Verify meta.date is set. Fail if missing — dates must be set explicitly via set_date.py."""
+    meta = data.get("meta", {})
     current_date = meta.get("date", "")
     if not current_date or current_date == "YYYY-MM-DD":
-        meta["date"] = today.strftime("%Y-%m-%d")
-    share = data.setdefault("share", {})
+        raise ValueError(
+            "meta.date 未设置。日期必须由用户显式要求后设置，禁止 Agent 自行填充。\n"
+            "请让用户确认后运行：python scripts/set_date.py <input.json>\n"
+            "默认使用当天日期，无需传参。仅当用户要求指定日期时才加 --date YYYY-MM-DD。"
+        )
+    share = data.get("share", {})
     if not share.get("badge"):
-        share["badge"] = today.strftime("%Y.%m.%d")
+        data.setdefault("share", {})["badge"] = current_date.replace("-", ".")
+
+
+def require_thumbnails(data: dict[str, Any], input_dir: Path) -> None:
+    """Block rendering if thumbnails are missing and not explicitly skipped."""
+    if data.get("skip_thumbnails") is True:
+        return
+    preview = data.get("docx_preview")
+    if not preview:
+        raise ValueError(
+            "缺少 docx_preview 字段，缩略图未生成。缩略图为必需步骤，禁止跳过。\n"
+            "请先完成步骤 4（生成缩略图），或由用户显式要求跳过后在 JSON 中设置 \"skip_thumbnails\": true。"
+        )
+    thumb_dir = input_dir / preview.get("dir", "_page_thumbs")
+    expected = int(preview.get("pages", 4))
+    if not thumb_dir.is_dir():
+        raise ValueError(
+            f"缩略图目录 {thumb_dir} 不存在。请先完成步骤 4（生成缩略图）。"
+        )
+    actual = len(list(thumb_dir.glob("page_*.png")))
+    if actual < expected:
+        raise ValueError(
+            f"缩略图数量不足：期望 {expected} 张，实际 {actual} 张。请先完成步骤 4（生成缩略图）。"
+        )
 
 
 def main() -> None:
@@ -518,7 +544,8 @@ def main() -> None:
     args = parser.parse_args()
     input_path = Path(args.input)
     data = json.loads(input_path.read_text(encoding="utf-8"))
-    auto_fill_date(data)
+    require_date(data)
+    require_thumbnails(data, input_path.parent)
     output_dir = Path(args.output_dir) if args.output_dir else input_path.parent
     output_dir.mkdir(parents=True, exist_ok=True)
     if args.mode == "auto":

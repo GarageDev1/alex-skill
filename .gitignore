@@ -7,3 +7,6 @@ CLAUDE.md
 __pycache__/
 *.pyc
 AGENTS.md
+.env
+.venv/
+.python-version

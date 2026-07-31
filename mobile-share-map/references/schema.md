@@ -93,7 +93,7 @@ External 仅渲染显式标为 `audience: "both"` 的内容，并再通过敏感
 
 ## 字段约束
 
-- `meta.date` 和 `share.badge` 禁止手动指定，始终省略，由渲染器自动填充为生成当天日期。在 JSON 中写入这两个字段会导致日期错误。
+- `meta.date` 和 `share.badge` 禁止 Agent 自行填写，在 JSON 中始终省略。日期必须由用户显式要求后通过 `python scripts/set_date.py <input.json> [--date YYYY-MM-DD]` 设置。渲染器启动时会检查日期是否已设置，未设置则拒绝渲染。
 - `output_policy` 必须为 `single` 或 `dual`。省略时默认的 `--mode auto` 会停止渲染，要求先完成策略判断。
 - `dual` 模式的 `audience` 只能为 `both` 或 `internal`。省略时按 `internal` 处理，防止误外发。
 - `tag` 是左侧浅色标签的短章节名，建议 6-12 个汉字；`tone` 可使用 `blue`、`amber`、`green`、`pink`、`cyan`、`purple`、`orange` 或 `gray`，省略时按顺序循环。
@@ -130,3 +130,5 @@ External 仅渲染显式标为 `audience: "both"` 的内容，并再通过敏感
 - `total_pages`：可选，研报总页数。省略时自动从同目录下的 PDF 文件读取；无 PDF 时退回到目录内的 PNG 文件数。
 
 预览横条在 Internal 和 External 两版中均显示。缩略图缩到 210px 宽后页面文字不可读，不构成合规风险。仅当用户显式要求省略时才可不生成缩略图。
+
+渲染器会在启动时检查缩略图是否就绪（`docx_preview` 字段和实际文件），缺少时拒绝渲染。用户显式要求跳过时，须在 JSON 中设置 `"skip_thumbnails": true`。

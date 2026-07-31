@@ -2,27 +2,45 @@
 
 缩略图的作用是吸引阅读的用户加群。除非用户显式要求省略，否则必须生成。
 
+:::warning 强制阻断
+渲染脚本（步骤 5）会检查 `docx_preview` 字段和缩略图文件是否存在。**缺少缩略图时渲染会被拒绝。** 跳过缩略图的唯一方式是用户显式要求后在 JSON 中设置 `"skip_thumbnails": true`。
+:::
+
 ## 按源格式处理
 
-- **PDF**：直接用 `pdf2image` 转图。
-- **DOCX**：先通过 `win32com` 导出 PDF 再用 `pdf2image` 转图，或使用 LibreOffice headless。
-- **其他格式**：自行判断什么样的缩略图合适且能吸引用户，把推荐选项告诉用户并征求意见。
+### PDF 源文件（自动模式）
 
-## 输出规范
-
-将生成的缩略图放入输入 JSON 同目录下的 `_page_thumbs/` 子目录，文件命名为 `page_01.png`、`page_02.png` 等。
-
-在 JSON 中加入 `docx_preview` 字段：
-
-```json
-{
-  "docx_preview": {
-    "dir": "_page_thumbs",
-    "pages": 4
-  }
-}
+```
+python scripts/generate_thumbnails.py input.json --source report.pdf
 ```
 
-`pages` 为实际生成的缩略图数量。渲染器每行最多显示 4 张，超出自动换行。
+脚本自动用 `pdf2image` 转换前 N 页，写入 `_page_thumbs/`，并回填 JSON 的 `docx_preview` 字段。
+
+### DOCX 源文件（自动模式）
+
+```
+python scripts/generate_thumbnails.py input.json --source report.docx
+```
+
+脚本自动通过 LibreOffice headless 将 DOCX 导出为 PDF，再用 `pdf2image` 转图。
+
+### HTML、图片、访谈记录等其他格式（导入模式）
+
+Agent 自行生成缩略图图片后，使用导入模式：
+
+```
+python scripts/generate_thumbnails.py input.json --import img1.png img2.png ...
+```
+
+脚本负责将图片复制到 `_page_thumbs/`、统一重命名、回填 JSON。Agent 不需要手动管理文件和 JSON 字段。
+
+### 存疑情况处理
+
+如果Agent无法自行判断生成什么图片合适，直接阻断并且询问用户。
+
+## 可选参数
+
+- `--pages N`：展示的缩略图数量，默认 4。
+- `--thumb-width N`：嵌入时缩放宽度（像素），默认 240。
 
 详见 `references/schema.md` 的"研报预览横条"章节。
