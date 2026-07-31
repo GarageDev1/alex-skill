@@ -22,6 +22,12 @@ async function main() {
     process.exitCode = 1;
     return;
   }
+  const hasThumbnails = document.blocks.some((block) => block.type === "thumbnails") || /^:::thumbnails\s*$/m.test(source);
+  if (!hasThumbnails) {
+    process.stderr.write("Error: missing :::thumbnails block. Every carousel must end with source thumbnails.\n");
+    process.exitCode = 1;
+    return;
+  }
   const renderable = document.blocks.filter((block) => block.type !== "pagebreak").length;
   process.stdout.write(`Valid: ${renderable} content block(s), cover ${document.meta.cover ? "enabled" : "disabled"}.\n`);
 }
