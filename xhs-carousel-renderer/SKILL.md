@@ -34,7 +34,7 @@ python "<skill-dir>/scripts/preflight.py"
 
 ### 3. 素材分析
 
-阅读原始素材，确定以下要素：标题、副标题、数据来源、核心数据、强调要点、输出目录。
+阅读原始素材，确定以下要素：标题、副标题、数据来源、核心数据、强调要点。
 
 准备或修改渲染器输入时，阅读 [references/content-format.md](references/content-format.md)。选择或更改视觉主题时，阅读 [references/themes.md](references/themes.md)。**每次都必须**阅读 [references/narrative-style.md](references/narrative-style.md)——它规定了所有轮播图的写作语气、数字密度、钩子结构和组件用法。
 
@@ -104,8 +104,11 @@ python "<skill-dir>/scripts/lint.py" <input.md>
 
 ### 7. 渲染
 
+所有产物统一输出到工作区下的 `视频图/` 目录。目录不存在时自动创建。
+
 ```bash
-node "<skill-dir>/scripts/render.mjs" <input.md> --output <output-dir>
+mkdir -p "<workspace>/视频图"
+node "<skill-dir>/scripts/render.mjs" <input.md> --output "<workspace>/视频图"
 ```
 
 输出编号的 1080×1440 PNG 文件和 `manifest.json`。会根据内容自动生成所需数量的正文页，并默认添加封面（设置 `cover: false` 可跳过）。使用 `--theme classic|finance|editorial|tech` 可预览或覆盖 front matter 中的主题。渲染器返回非零退出码时视为真实失败。修复输入或运行环境；不得谎称图片已生成。
