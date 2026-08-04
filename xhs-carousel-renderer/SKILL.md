@@ -7,18 +7,36 @@ description: Render Chinese articles, reports, explainers, case studies, and dat
 
 产出是完成的图片集，不是交互式网页。严格保留原始素材中的事实和数据。
 
+## 前置依赖
+
+本技能依赖 **Inkstone** 提取源文档内容。步骤 1 检查依赖时会确认 Inkstone 是否已安装；若未安装，停止执行并提示用户在终端手动运行：
+
+```
+npx skills add zzzdajb/inkstone
+```
+
+安装完成后重新开始。
+
 ## 编码
 
 所有输入和输出文件使用 UTF-8 编码。在 Windows 环境下运行脚本时，确保终端编码为 UTF-8（`chcp 65001`），否则中文内容可能出现乱码。
 
 ## 工作流程
 
-### 1. 确认信源
+### 1. 确认信源与检查依赖
 
 用户在要求生成轮播图之前，应提供信源文件。常见格式为 HTML、DOCX、PDF。
 
 - 如果用户已经提供了信源，确认收到并记录格式和路径。
 - 如果用户没有明确提供信源，**必须主动询问**，不得跳过。
+
+确认当前环境已安装 Inkstone 技能（用于步骤 3 提取源文档）。若未找到 Inkstone，**停止执行**并提示用户在终端手动运行：
+
+```
+npx skills add zzzdajb/inkstone
+```
+
+安装完成后重新开始。
 
 后续所有内容以信源为准。除了叙事风格指南允许的联网搜索故事素材以外，不得引入信源之外的事实、数据或观点。
 
@@ -34,7 +52,7 @@ python "<skill-dir>/scripts/preflight.py"
 
 ### 3. 素材分析
 
-阅读原始素材，确定以下要素：标题、副标题、数据来源、核心数据、强调要点。
+调用 Inkstone 技能提取源文档，将产物输出到 `视频图/`。提取完成后，阅读 `source_content.md`（或 `.html`）确定以下要素：标题、副标题、数据来源、核心数据、强调要点。
 
 准备或修改渲染器输入时，阅读 [references/content-format.md](references/content-format.md)。选择或更改视觉主题时，阅读 [references/themes.md](references/themes.md)。**每次都必须**阅读 [references/narrative-style.md](references/narrative-style.md)——它规定了所有轮播图的写作语气、数字密度、钩子结构和组件用法。
 
@@ -72,11 +90,11 @@ python "<skill-dir>/scripts/preflight.py"
 
 缩略图提取规则：
 
-- **PDF / DOCX 信源**：提取前2页作为缩略图图片文件。
+- **PDF / DOCX 信源**：提取前4页作为缩略图图片文件。
 - **网页信源**：截取网页关键区域的截图。
-- **无法自动获取时**：询问用户提供缩略图，或跳过。
+- **无法自动获取时**：必须询问用户提供缩略图，不得跳过。
 
-放1-4张缩略图（渲染器自动居中排成一行）。推荐2张。
+放1-4张缩略图（渲染器自动居中排成一行）。推荐4张。在 front matter 中设置 `source_pages` 可以让缩略图标题显示信源总页数（如 `source_pages: 9` → "完整内容预览 共9页"）。
 
 #### 排版决策
 
