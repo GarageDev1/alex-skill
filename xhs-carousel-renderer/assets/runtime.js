@@ -239,7 +239,8 @@
 
     if (thumbnailsBlock) {
       const thumbSection = element("div", "thumbnails-block");
-      thumbSection.appendChild(textElement("div", "thumbnails-heading", "完整内容预览"));
+      const thumbHeading = data.meta.source_pages ? `完整内容预览 共${data.meta.source_pages}页` : "完整内容预览";
+      thumbSection.appendChild(textElement("div", "thumbnails-heading", thumbHeading));
       const grid = element("div", "thumbnails-grid");
       thumbnailsBlock.images.forEach((img) => {
         const thumb = element("div", "thumbnail-item");

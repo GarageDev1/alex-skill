@@ -22,6 +22,7 @@ Supported fields:
 - `cover` — `true` or `false`; defaults to `true`.
 - `theme` — `classic`, `finance`, `editorial`, or `tech`; defaults to `classic`. See [themes.md](themes.md) for selection guidance.
 - `callout_label` — optional label prefix for `:::callout` panels; defaults to `AI观点`.
+- `source_pages` — optional integer; total page count of the source document. When set, the thumbnails heading shows `完整内容预览 共X页`.
 
 Keep each field on one line. Quote a value only when leading or trailing spaces matter.
 
