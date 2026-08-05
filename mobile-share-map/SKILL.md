@@ -7,6 +7,16 @@ description: "将 PDF、DOCX、Markdown、网页、图片、访谈记录、报�
 
 将长文档转为适合手机阅读和转发的 1080px 宽竖向长图，语言使用简体中文。
 
+## 前置依赖
+
+本技能依赖 **Inkstone** 提取源文档内容。步骤 0 检查依赖时会确认 Inkstone 是否已安装；若未安装，停止执行并提示用户在终端手动运行：
+
+```
+npx skills add zzzdajb/inkstone
+```
+
+安装完成后重新开始。
+
 - `single`：单版。用于中性行业/公司/知识整理。只生成 `input.png`。
 - `dual`：双版。用于包含投资建议、评级、估值等内容的研究。生成 `input-internal.png` 与 `input-external.png`。
 
@@ -18,8 +28,8 @@ description: "将 PDF、DOCX、Markdown、网页、图片、访谈记录、报�
 workspace/                    ← 用户工作目录（动态）
   report.pdf                  ← 源文件（用户提供）
   线图/                       ← 步骤 1 创建
-    source_content.md (.html) ← 步骤 1 提取
-    _source_images/           ← 步骤 1 提取的图片（PDF/DOCX）
+    source_content.md (.html) ← 步骤 1（Inkstone 提取）
+    _source_images/           ← 步骤 1（Inkstone 提取，PDF/DOCX）
     input.json                ← 步骤 3 创建
     _page_thumbs/             ← 步骤 4 缩略图
     input.png / input.html    ← 步骤 5 最终输出
@@ -32,7 +42,7 @@ workspace/                    ← 用户工作目录（动态）
 | 步骤 | 文件 | 说明 |
 |---|---|---|
 | 0 | `steps/00-check-deps.md` | 检查运行环境与依赖 |
-| 1 | `steps/01-read-source.md` | 提取源文档：`python scripts/extract_source.py`，产出 `source_content.md`/`.html` |
+| 1 | `steps/01-read-source.md` | 使用 Inkstone 提取源文档，阅读并建立论证骨架 |
 | 2 | `steps/02-output-policy.md` | 判断并记录 single/dual 输出策略 |
 | 3 | `steps/03-create-json.md` | 基于 `source_content` 按 schema 创建结构化 JSON |
 | 3a | `steps/03a-audit-json.md` | **Sub-agent** — JSON 合规审计，建议性 |

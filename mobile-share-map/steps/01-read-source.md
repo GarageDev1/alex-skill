@@ -1,4 +1,4 @@
-# 步骤 1：提取源文档
+# 步骤 1：提取与阅读源文档
 
 ## 创建输出目录
 
@@ -10,16 +10,7 @@ mkdir 线图
 
 ## 提取源文档内容
 
-运行提取脚本，将源文档转为可引用的结构化内容，输出到 `线图/`：
-
-```
-python scripts/extract_source.py report.pdf --output-dir 线图/
-python scripts/extract_source.py report.docx --output-dir 线图/
-python scripts/extract_source.py page.html --output-dir 线图/
-```
-
-- PDF/DOCX → 通过 PaddleOCR API 提取为 `source_content.md` + `_source_images/`
-- HTML → 原样复制为 `source_content.html`
+调用 Inkstone 技能提取源文档，将产物输出到 `线图/`。
 
 提取完成后，阅读 `source_content.md`（或 `.html`）建立论证骨架。后续步骤 3（创建 JSON）和步骤 3b（数据审计）均基于此文件工作。
 
