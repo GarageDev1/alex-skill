@@ -54,6 +54,8 @@ python "<skill-dir>/scripts/preflight.py"
 
 调用 Inkstone 技能提取源文档，将产物输出到 `视频图/`。提取完成后，阅读 `source_content.md`（或 `.html`）确定以下要素：标题、副标题、数据来源、核心数据、强调要点。
 
+同时判断**信源语言**：如果信源是英文或从英文翻译而来，在后续改写中必须执行 [references/narrative-style.md](references/narrative-style.md) 中"翻译腔反模式"和"英文术语处理"章节的全部规则。英文信源的翻译腔风险远高于中文信源，需要格外警惕。
+
 准备或修改渲染器输入时，阅读 [references/content-format.md](references/content-format.md)。选择或更改视觉主题时，阅读 [references/themes.md](references/themes.md)。**每次都必须**阅读 [references/narrative-style.md](references/narrative-style.md)——它规定了所有轮播图的写作语气、数字密度、钩子结构和组件用法。
 
 ### 4. 改写与编写 Markdown
@@ -67,6 +69,7 @@ python "<skill-dir>/scripts/preflight.py"
 - 整体读感应像聊天而非汇报。
 - 如果某个话题适合插入一段真实故事，可联网从高置信度来源搜索。将搜到的故事素材先写入一个草稿笔记文件（不得直接写入最终 Markdown），以便审计 sub-agent 稍后核查。
 - 信源中出现悖论式、循环式或反直觉的修辞时，拆成**线性因果链**。不保留原文的绕圈结构，直接写清楚"先发生什么→导致什么"。例如："短缺的原因是过剩，过剩的原因是短缺"→"一旦某样东西短缺，所有人都冲进去造，最终建过头变成过剩"。
+- **英文/翻译件信源**的改写必须额外遵守叙事风格指南中的"英文术语处理"、"翻译腔反模式"和"读者知识假设"章节。写完后逐句自查是否存在英文语序、被动句式、多层定语嵌套等翻译腔痕迹。
 
 编写一份 UTF-8 Markdown 输入文件，使用 [references/content-format.md](references/content-format.md) 定义的 front matter、块级指令和行内标记。不得编造事实、数据、引用或品牌信息。
 
