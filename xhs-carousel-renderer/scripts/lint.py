@@ -105,6 +105,32 @@ def lint(filepath):
                     continue
                 findings.append(f'[COMPLIANCE] "{keyword}" outside :::risk: {directive_line[:80]}')
 
+    # --- Rule: AI-style contrastive patterns ("不是A，而是B") ---
+    ai_contrastive = re.compile(
+        r"(?:不是|并非|不取决于|不在于|不会.*?而).*?(?:而是|而取决于|而在于|而会)"
+    )
+    for i, line in enumerate(body_no_code.split("\n"), start=1):
+        stripped = line.strip()
+        if stripped.startswith(":::") or stripped.startswith("|"):
+            continue
+        if ai_contrastive.search(stripped):
+            findings.append(
+                f'[AI-STYLE] contrastive "不是…而是" pattern (line {i}): {stripped[:80]}'
+            )
+
+    # --- Rule: self-referential section titles ("没人叫X的X") ---
+    self_ref = re.compile(r"(?:没人|无人|不算|没有人)(?:叫|称|称作|称为|说).{1,6}的.{1,6}")
+    section_title_re = re.compile(r"^:::section\s*$", re.MULTILINE)
+    lines = body.split("\n")
+    for i, line in enumerate(lines):
+        if section_title_re.match(line.strip()) and i + 1 < len(lines):
+            title_line = lines[i + 1].strip()
+            if title_line and not title_line.startswith(":::"):
+                if self_ref.search(title_line):
+                    findings.append(
+                        f'[AI-STYLE] self-referential section title (line {i + 2}): {title_line[:80]}'
+                    )
+
     # --- Output ---
     if findings:
         print(f"Found {len(findings)} issue(s):\n")
