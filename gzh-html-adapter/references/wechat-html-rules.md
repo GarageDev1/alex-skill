@@ -5,12 +5,13 @@
 正文是一个纯 HTML 片段：
 
 ```html
-<section style="max-width:100%;box-sizing:border-box;color:inherit;font-family:inherit;">
+<section style="max-width:100%;box-sizing:border-box;background:#f7f7f5;color:#222222;font-family:inherit;">
   ...
 </section>
 ```
 
 正文只能有一个根 `<section>`，不能包含 `DOCTYPE`、`html`、`head`、`body`。
+根元素必须通过 `background` 或 `background-color` 声明可解析的浅色背景。纯色和渐变色标都要保持明亮；不能用透明、继承值或无法判断亮度的写法代替明确背景。示例中的颜色只用于说明格式，不是固定配色。
 
 ## 标签和属性
 
@@ -39,17 +40,17 @@
 
 ## 内联 CSS
 
-样式只解决粘贴稳定性和内容结构。字体与文字颜色从公众号编辑器继承。
+样式既要保证粘贴稳定，也要体现本篇文章的设计方向。字体从公众号编辑器继承；颜色、边框、留白和阴影按文章内容选择，并在全文保持一致。
 
-常用中性规则：
+常用结构规则：
 
 ```text
-根容器：max-width:100%;box-sizing:border-box;color:inherit;font-family:inherit
-正文：margin:0 0 1em;line-height:1.75;word-break:break-word;color:inherit
-标题：margin:1.4em 0 .7em;line-height:1.4;color:inherit;font-weight:700
-表格：width:100%;border-collapse:collapse;table-layout:fixed;color:inherit
-单元格：padding:.5em;border:1px solid currentColor;vertical-align:top
-链接：color:inherit;text-decoration:underline;word-break:break-all
+根容器：max-width:100%;box-sizing:border-box;background:<明确的浅色背景>;font-family:inherit
+正文：margin:0 0 1em;line-height:1.75;word-break:break-word
+标题：margin:1.4em 0 .7em;line-height:1.4;font-weight:700
+表格：width:100%;border-collapse:collapse;table-layout:fixed
+单元格：padding:.5em;border:1px solid <本篇边框色>;vertical-align:top
+链接：text-decoration:underline;word-break:break-all
 ```
 
 图表可以使用：
@@ -58,18 +59,20 @@
 - `display:block`、`inline-block`、`table`、`table-cell`；
 - `vertical-align`、`text-align`；
 - `border`、`border-width`、`border-style`、`border-color`；
-- `background:currentColor` 与 `opacity`；
+- 与本篇设计方向一致的颜色、浅色渐变和透明度；
+- 克制的 `box-shadow` 或 `text-shadow`；
 - `overflow`、`word-break`、`box-sizing`。
+
+根背景可以使用纯色，也可以使用 `background:linear-gradient(...)`、`radial-gradient(...)` 等无需外部资源的原生 CSS 表现。所有色标都要是可解析的浅色。内部标题和强调块可以使用深色背景，校验器只检查根背景的整体明度。
 
 不得使用：
 
-- 颜色字面量，包括十六进制、RGB、HSL 和命名颜色；
 - 外部字体和字体文件；
 - CSS 变量；
 - `url()`、data URI、`background-image`、`list-style-image`；
 - `position:absolute|fixed|sticky`、`float`；
 - Grid、动画、媒体查询和关键帧；
-- 阴影、渐变和滤镜；
+- 滤镜；
 - 依赖浏览器脚本计算的布局。
 
 ## 文字包裹

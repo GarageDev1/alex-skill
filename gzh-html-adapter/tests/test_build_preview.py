@@ -13,9 +13,10 @@ from build_preview import build_preview, default_output_path  # noqa: E402
 
 
 BODY = (
-    '<section style="max-width:100%;box-sizing:border-box;color:inherit;'
+    '<section style="max-width:100%;box-sizing:border-box;background:#f7f8fb;'
+    'color:#263238;'
     'font-family:inherit;">'
-    '<p style="margin:0;line-height:1.75;color:inherit;">'
+    '<p style="margin:0;line-height:1.75;color:#263238;">'
     '<span leaf="">正文</span></p></section>'
 )
 

@@ -12,17 +12,22 @@ from validate_gzh_html import validate_html  # noqa: E402
 
 
 ROOT_STYLE = (
-    "max-width:100%;box-sizing:border-box;color:inherit;font-family:inherit;"
+    "max-width:100%;box-sizing:border-box;background:#f7f8fb;"
+    "color:#263238;font-family:inherit;"
 )
-BLOCK_STYLE = "margin:1em 0;color:inherit;box-sizing:border-box;"
-TEXT_STYLE = "margin:0;line-height:1.75;color:inherit;"
+BLOCK_STYLE = (
+    "margin:1em 0;color:#263238;background:#ffffff;"
+    "border:1px solid #d7e0e8;box-sizing:border-box;"
+)
+TEXT_STYLE = "margin:0;line-height:1.75;color:#263238;"
 TABLE_STYLE = (
-    "width:100%;border-collapse:collapse;table-layout:fixed;color:inherit;"
+    "width:100%;border-collapse:collapse;table-layout:fixed;color:#263238;"
 )
 CELL_STYLE = (
-    "padding:.5em;border:1px solid currentColor;vertical-align:top;color:inherit;"
+    "padding:.5em;border:1px solid #c7d4e3;vertical-align:top;"
+    "color:#263238;background:#ffffff;"
 )
-ROW_STYLE = "color:inherit;"
+ROW_STYLE = "color:#263238;"
 
 
 def leaf(text: str) -> str:
@@ -60,10 +65,10 @@ def compliant_fragment() -> str:
     horizontal_bar = (
         f'<section style="{BLOCK_STYLE}">'
         f'<p style="{TEXT_STYLE}">{leaf("横向条形图")}</p>'
-        f'<section style="width:100%;border:1px solid currentColor;'
-        f'box-sizing:border-box;color:inherit;">'
-        f'<section style="width:50%;height:1em;background:currentColor;'
-        f'opacity:.2;color:inherit;">{leaf(" ")}</section>'
+        f'<section style="width:100%;border:1px solid #b7c7d9;'
+        f'background:#eef3f8;box-sizing:border-box;color:#263238;">'
+        f'<section style="width:50%;height:1em;background:#2f6f8f;'
+        f'color:#ffffff;">{leaf(" ")}</section>'
         "</section>"
         f'<p style="{TEXT_STYLE}">{leaf("类别：数值")}</p>'
         "</section>"
@@ -73,19 +78,19 @@ def compliant_fragment() -> str:
         f'<p style="{TEXT_STYLE}">{leaf("纵向条形图")}</p>'
         f'<table style="{TABLE_STYLE}"><tbody style="{ROW_STYLE}">'
         f'<tr style="{ROW_STYLE}"><td style="{CELL_STYLE}">'
-        f'<section style="height:2em;background:currentColor;opacity:.2;'
-        f'color:inherit;">{leaf(" ")}</section>'
+        f'<section style="height:2em;background:#2f6f8f;'
+        f'color:#ffffff;">{leaf(" ")}</section>'
         f'<p style="{TEXT_STYLE}">{leaf("时期：数值")}</p>'
         "</td></tr></tbody></table></section>"
     )
     stacked_bar = (
         f'<section style="{BLOCK_STYLE}">'
         f'<p style="{TEXT_STYLE}">{leaf("堆叠条形图")}</p>'
-        f'<section style="width:100%;font-size:0;color:inherit;">'
+        f'<section style="width:100%;font-size:0;color:#263238;">'
         f'<span style="display:inline-block;width:40%;height:1em;'
-        f'background:currentColor;opacity:.2;"></span>'
+        f'background:#2f6f8f;"></span>'
         f'<span style="display:inline-block;width:60%;height:1em;'
-        f'background:currentColor;opacity:.4;"></span>'
+        f'background:#74a6b8;"></span>'
         "</section>"
         f'<p style="{TEXT_STYLE}">{leaf("分项及数值")}</p>'
         "</section>"
@@ -93,10 +98,10 @@ def compliant_fragment() -> str:
     progress = (
         f'<section style="{BLOCK_STYLE}">'
         f'<p style="{TEXT_STYLE}">{leaf("进度图：实际值与目标值")}</p>'
-        f'<section style="width:100%;border:1px solid currentColor;'
-        f'box-sizing:border-box;color:inherit;">'
-        f'<section style="width:75%;height:1em;background:currentColor;'
-        f'opacity:.2;color:inherit;">{leaf(" ")}</section>'
+        f'<section style="width:100%;border:1px solid #b7c7d9;'
+        f'background:#eef3f8;box-sizing:border-box;color:#263238;">'
+        f'<section style="width:75%;height:1em;background:#477a5b;'
+        f'color:#ffffff;">{leaf(" ")}</section>'
         "</section></section>"
     )
     timeline = (
@@ -132,11 +137,19 @@ class ValidateWechatHtmlTests(unittest.TestCase):
             "canvas": "<canvas></canvas>",
             "script": "<script></script>",
             "style": "<style></style>",
+            "external-style": '<link rel="stylesheet" href="theme.css">',
             "button": "<button>复制</button>",
             "css-url": '<section style="background:url(chart.png);"></section>',
+            "background-image": (
+                '<section style="background-image:linear-gradient(#fff,#eee);">'
+                "</section>"
+            ),
             "data-uri": (
                 '<section style="background-image:url(data:image/png;base64,AA);">'
                 "</section>"
+            ),
+            "forbidden-position": (
+                '<section style="position:absolute;color:#222222;"></section>'
             ),
         }
         for name, payload in forbidden.items():
@@ -156,22 +169,76 @@ class ValidateWechatHtmlTests(unittest.TestCase):
         html = f'<section style="{ROOT_STYLE}"><p style="{TEXT_STYLE}">正文</p></section>'
         self.assertFalse(validate_html(html).ok)
 
-    def test_rejects_concrete_colors_and_font_families(self) -> None:
+    def test_accepts_contextual_colors_shadows_and_internal_dark_block(self) -> None:
+        html = (
+            '<section style="max-width:100%;box-sizing:border-box;'
+            'background:linear-gradient(135deg,#ffffff 0%,#eef4ff 100%);'
+            'font-family:inherit;color:#263238;">'
+            '<section style="margin:1em 0;padding:1em;background:#17202a;'
+            'color:#ffffff;border:1px solid #314152;'
+            'box-shadow:0 2px 8px rgba(0,0,0,.15);">'
+            f'{leaf("局部深色强调")}</section></section>'
+        )
+        result = validate_html(html)
+        self.assertTrue(result.ok, result.errors)
+
+    def test_accepts_light_solid_and_gradient_root_backgrounds(self) -> None:
+        backgrounds = (
+            "#f8f6f1",
+            "rgb(246,248,252)",
+            "hsl(210,40%,97%)",
+            "linear-gradient(135deg,#ffffff 0%,rgb(238,244,255) 100%)",
+            "radial-gradient(circle at top,hsl(210,100%,98%),#f5f0ff)",
+            (
+                "repeating-linear-gradient(45deg,#ffffff 0,#ffffff 8px,"
+                "#f2f5f8 8px,#f2f5f8 16px)"
+            ),
+        )
+        for background in backgrounds:
+            with self.subTest(background=background):
+                html = (
+                    '<section style="max-width:100%;box-sizing:border-box;'
+                    f'background:{background};font-family:inherit;"></section>'
+                )
+                result = validate_html(html)
+                self.assertTrue(result.ok, result.errors)
+
+    def test_accepts_light_background_color_declaration(self) -> None:
+        html = (
+            '<section style="max-width:100%;background-color:#f4f7f9;'
+            'font-family:inherit;"></section>'
+        )
+        result = validate_html(html)
+        self.assertTrue(result.ok, result.errors)
+
+    def test_rejects_missing_dark_and_unparseable_root_backgrounds(self) -> None:
         styles = (
-            "color:#000",
-            "background:rgb(0,0,0)",
-            "border:1px solid red",
-            "border-top-color:red",
-            "font-family:Arial",
+            "max-width:100%;box-sizing:border-box;font-family:inherit",
+            "max-width:100%;background:#111827;font-family:inherit",
+            (
+                "max-width:100%;background:linear-gradient(90deg,#ffffff,#334155);"
+                "font-family:inherit"
+            ),
+            (
+                "max-width:100%;background:linear-gradient(90deg,#111827,#334155);"
+                "background-color:#ffffff;font-family:inherit"
+            ),
+            (
+                "max-width:100%;background:color-mix(in srgb,white 80%,blue);"
+                "font-family:inherit"
+            ),
         )
         for style in styles:
             with self.subTest(style=style):
-                html = (
-                    f'<section style="{ROOT_STYLE}">'
-                    f'<p style="{TEXT_STYLE}{style};">{leaf("正文")}</p>'
-                    "</section>"
-                )
-                self.assertFalse(validate_html(html).ok)
+                self.assertFalse(validate_html(f'<section style="{style}"></section>').ok)
+
+    def test_rejects_non_inherited_font_family(self) -> None:
+        html = (
+            f'<section style="{ROOT_STYLE}">'
+            f'<p style="{TEXT_STYLE}font-family:Arial;">{leaf("正文")}</p>'
+            "</section>"
+        )
+        self.assertFalse(validate_html(html).ok)
 
     def test_rejects_document_shell_and_multiple_roots(self) -> None:
         document = (

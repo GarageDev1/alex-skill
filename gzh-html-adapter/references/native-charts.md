@@ -38,8 +38,10 @@
 推荐的容器属性：
 
 ```text
-max-width:100%;box-sizing:border-box;margin:1em 0;color:inherit;font-family:inherit
+max-width:100%;box-sizing:border-box;margin:1em 0;font-family:inherit
 ```
+
+图表颜色服从本篇文章的设计方向。同一类数据在全文使用相同颜色，边框、标签和说明的用色保持一致，并保证文字与所在背景清楚可读；不套用固定配色，也不为每类图表另起一套风格。
 
 比例计算只改变 `width` 或 `height`：
 
@@ -57,10 +59,10 @@ max-width:100%;box-sizing:border-box;margin:1em 0;color:inherit;font-family:inhe
 使用原生 `table`、`thead`、`tbody`、`tr`、`th`、`td`。设置：
 
 ```text
-width:100%;border-collapse:collapse;table-layout:fixed;color:inherit
+width:100%;border-collapse:collapse;table-layout:fixed
 ```
 
-每个单元格使用 `currentColor` 边框，并保留原始表头、单位和脚注。
+每个单元格使用本篇统一的边框色，并保留原始表头、单位和脚注。
 
 ## 横向条形图
 
@@ -68,7 +70,7 @@ width:100%;border-collapse:collapse;table-layout:fixed;color:inherit
 
 1. 类别和原始数值；
 2. 宽度为 `100%` 的边框容器；
-3. 宽度按比例计算、背景为 `currentColor` 的内层 `section`。
+3. 宽度按比例计算、颜色与本篇设计方向一致的内层 `section`。
 
 数值写在条形之外，避免透明度影响文字。
 
@@ -84,8 +86,7 @@ width:100%;border-collapse:collapse;table-layout:fixed;color:inherit
 
 ## 堆叠条形图
 
-只有原文明确给出总量或各分项之和可以核对时才能使用。各段使用相同的
-`currentColor`，通过边框和不同透明度区分；图例逐项列出名称、数值和占比。
+只有原文明确给出总量或各分项之和可以核对时才能使用。各段使用能够相互区分且与全文一致的颜色；图例逐项列出名称、数值和占比。
 
 舍入导致占比之和略有偏差时，按原始数值计算宽度，显示值仍使用原文精度。
 
@@ -112,4 +113,5 @@ width:100%;border-collapse:collapse;table-layout:fixed;color:inherit
 - 用视觉长度代替数值标签。
 - 根据上下文补齐缺失年份或缺失值。
 - 为了凑满宽度修改占比。
-- 使用渐变、SVG、Canvas、背景图片或脚本。
+- 图表配色与正文脱节，或文字和背景难以分辨。
+- 使用 SVG、Canvas、背景图片或脚本。
