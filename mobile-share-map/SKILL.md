@@ -47,7 +47,7 @@ workspace/                    ← 用户工作目录（动态）
 | 3 | `steps/03-create-json.md` | 基于 `source_content` 按 schema 创建结构化 JSON |
 | 3a | `steps/03a-audit-json.md` | **Sub-agent** — JSON 合规审计，建议性 |
 | 3b | `steps/03b-audit-data.md` | **Sub-agent** — 数据可靠性审计：溯源比对 + 联网核实 |
-| 4 | `steps/04-thumbnails.md` | 生成缩略图：`python scripts/generate_thumbnails.py`（渲染器强制检查） |
+| 4 | `steps/04-thumbnails.md` | 生成缩略图：`python scripts/generate_thumbnails.py`（渲染器强制检查，不可跳过） |
 | 4a | — | **用户触发** — 设置生成日期：`python scripts/set_date.py <input.json>`（默认当天，无需传参）。仅当用户显式要求指定日期时候才根据用户要求加参数 `--date YYYY-MM-DD`。 |
 | 5 | `steps/05-render.md` | Pipeline 一键执行：`python scripts/pipeline.py`（检查→渲染→验收） |
 | 6 | `steps/06-verify.md` | 目视确认排版与可读性（pipeline 已执行自动化验收） |

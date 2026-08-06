@@ -30,16 +30,11 @@ def main() -> int:
 
     data = json.loads(input_path.read_text(encoding="utf-8"))
 
-    if data.get("skip_thumbnails") is True:
-        print(f"{YELLOW}{BOLD}用户已显式跳过缩略图（skip_thumbnails: true）。{RESET}")
-        return 0
-
     preview = data.get("docx_preview")
     if not preview:
         print(
             f"{RED}{BOLD}缩略图未生成：JSON 中缺少 docx_preview 字段。{RESET}\n"
-            f"请先完成步骤 4（生成缩略图）。\n"
-            f"如需跳过，须由用户显式要求后在 JSON 中添加 \"skip_thumbnails\": true。"
+            f"请先完成步骤 4（生成缩略图）。"
         )
         return 1
 

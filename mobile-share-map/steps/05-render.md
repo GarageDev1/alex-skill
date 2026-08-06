@@ -24,7 +24,7 @@ Pipeline / 渲染脚本启动时会自动检查，任一不通过即拒绝：
    python scripts/set_date.py 线图/input.json                     # 默认当天，无需传参
    python scripts/set_date.py 线图/input.json --date 2025-03-15   # 仅用户要求指定日期时
    ```
-2. **缩略图**：`docx_preview` 字段和对应缩略图文件必须存在。跳过的唯一方式是用户显式要求后在 JSON 中设置 `"skip_thumbnails": true`。
+2. **缩略图**：`docx_preview` 字段和对应缩略图文件必须存在。
 
 ## 单独运行渲染
 

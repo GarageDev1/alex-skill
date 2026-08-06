@@ -509,13 +509,10 @@ def require_date(data: dict[str, Any]) -> None:
 
 def require_thumbnails(data: dict[str, Any], input_dir: Path) -> None:
     """Block rendering if thumbnails are missing and not explicitly skipped."""
-    if data.get("skip_thumbnails") is True:
-        return
     preview = data.get("docx_preview")
     if not preview:
         raise ValueError(
-            "缺少 docx_preview 字段，缩略图未生成。缩略图为必需步骤，禁止跳过。\n"
-            "请先完成步骤 4（生成缩略图），或由用户显式要求跳过后在 JSON 中设置 \"skip_thumbnails\": true。"
+            "缺少 docx_preview 字段，缩略图未生成。请先完成步骤 4（生成缩略图）。"
         )
     thumb_dir = input_dir / preview.get("dir", "_page_thumbs")
     expected = int(preview.get("pages", 4))
