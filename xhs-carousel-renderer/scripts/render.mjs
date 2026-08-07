@@ -738,6 +738,20 @@ async function render(inputPath, outputDirectory, themeOverride = "") {
 
     const report = await page.evaluate(() => window.__renderReport);
     if (report.overflowPages.length) {
+      const debugCards = page.locator(".page-card");
+      const cardCount = await debugCards.count();
+      for (let index = 0; index < cardCount; index += 1) {
+        const text = await debugCards.nth(index).innerText();
+        const lines = text.split(/\n/).filter(Boolean);
+        const head = lines.slice(0, 3).join(" | ").slice(0, 60);
+        const tail = lines.slice(-3).join(" | ").slice(0, 80);
+        const size = await debugCards.nth(index).evaluate((el) => {
+          const flow = el.querySelector(".page-flow") || el;
+          return { used: flow.scrollHeight, max: flow.clientHeight };
+        });
+        const marker = report.overflowPages.includes(index + 1) ? "OVERFLOW" : "ok";
+        console.error(`  page ${index + 1} [${marker}] content ${size.used}px / limit ${size.max}px :: head: ${head} :: tail: ${tail}`);
+      }
       throw new Error(`Content overflow on rendered page(s): ${report.overflowPages.join(", ")}. Shorten the oversized block or insert a page break.`);
     }
 

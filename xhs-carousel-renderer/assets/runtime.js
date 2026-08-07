@@ -195,6 +195,8 @@
     const carry = [];
     if (previous?.classList.contains("block-section")) {
       carry.push(previous);
+    } else if (previous?.classList.contains("lead-block") && previous.previousElementSibling?.classList.contains("block-section")) {
+      carry.push(previous.previousElementSibling, previous);
     } else if (node.classList.contains("source-block") && previous) {
       carry.unshift(previous);
       const beforePrevious = previous.previousElementSibling;
