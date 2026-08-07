@@ -451,6 +451,34 @@ function parseBlocks(body, meta, footnotes) {
   return blocks;
 }
 
+function countWords(blocks) {
+  const parts = [];
+  function collect(block) {
+    if (block.raw != null) parts.push(plainText(block.raw));
+    if (block.type === "list") {
+      block.items.forEach((item) => {
+        parts.push(plainText(item.raw));
+        if (item.children) item.children.forEach(collect);
+      });
+    }
+    if (block.type === "metrics") {
+      block.items.forEach((item) => { parts.push(item.label); parts.push(item.value); });
+    }
+    if (block.type === "table") {
+      block.headers.forEach((h) => parts.push(h.raw));
+      block.rows.forEach((row) => row.forEach((cell) => parts.push(cell.raw)));
+    }
+    if (block.type === "footnotes") {
+      block.items.forEach((item) => parts.push(plainText(item.raw)));
+    }
+  }
+  blocks.forEach(collect);
+  const text = parts.join(" ");
+  const chinese = (text.match(/[一-鿿㐀-䶿]/g) || []).length;
+  const english = (text.replace(/[一-鿿㐀-䶿]/g, " ").match(/[a-zA-Z]+/g) || []).length;
+  return chinese + english;
+}
+
 export function parseDocument(source) {
   const { meta: suppliedMeta, body } = parseFrontMatter(source);
   const meta = {
@@ -471,6 +499,9 @@ export function parseDocument(source) {
   if (meta.callout_label != null) meta.callout_label = String(meta.callout_label).trim();
   meta.titleHtml = parseInline(meta.title);
   meta.subtitleHtml = parseInline(meta.subtitle);
+  const wc = countWords(blocks);
+  meta.wordCount = wc;
+  meta.readingMinutes = Math.max(1, Math.ceil(wc / 400));
   return { meta, blocks };
 }
 

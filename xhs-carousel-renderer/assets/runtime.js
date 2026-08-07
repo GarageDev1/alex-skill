@@ -211,6 +211,14 @@
   let thumbnailsBlock = null;
   if (data.meta.cover) createCover();
   let current = createBodyPage();
+
+  if (data.meta.wordCount) {
+    const ri = element("div", "reading-info");
+    const m = data.meta.readingMinutes;
+    ri.textContent = "全文" + data.meta.wordCount + "字，阅读需约" + m + "分钟";
+    current.flow.appendChild(ri);
+  }
+
   data.blocks.forEach((block) => {
     if (block.type === "thumbnails") {
       thumbnailsBlock = block;
