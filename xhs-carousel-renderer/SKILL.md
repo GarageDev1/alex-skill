@@ -3,19 +3,19 @@ name: xhs-carousel-renderer
 description: Render Chinese articles, reports, explainers, case studies, and data-backed posts into a polished multi-page Xiaohongshu-style PNG carousel. Use when an agent needs to turn text or Markdown—including tables, local images, links, code, task lists, nested lists, footnotes, and rich emphasis—into coordinated 1080x1440 social cards with a title-only cover, automatic pagination, fixed branding, page numbers, and selectable classic, finance, editorial, or tech visual themes.
 ---
 
-# 小红书轮播图渲染器
+# 视频图渲染器
 
-产出是完成的图片集，不是交互式网页。严格保留原始素材中的事实和数据。
+产出是完成的图片集，严格保留原始素材中的事实和数据。
 
 ## 前置依赖
 
-本技能依赖 **Inkstone** 提取源文档内容。步骤 1 检查依赖时会确认 Inkstone 是否已安装；若未安装，停止执行并提示用户在终端手动运行：
+本技能依赖 **Inkstone** 提取源文档内容。步骤 1 检查依赖时会确认 Inkstone 是否已安装；若未安装，立刻停止执行，并提示用户在终端手动运行：
 
 ```
 npx skills add zzzdajb/inkstone
 ```
 
-安装完成后重新开始。
+不允许跳过Inkstone依赖。
 
 ## 编码
 
@@ -23,20 +23,14 @@ npx skills add zzzdajb/inkstone
 
 ## 工作流程
 
-### 1. 确认信源与检查依赖
+### 1. 确认信源，检查依赖
 
 用户在要求生成轮播图之前，应提供信源文件。常见格式为 HTML、DOCX、PDF。
 
 - 如果用户已经提供了信源，确认收到并记录格式和路径。
-- 如果用户没有明确提供信源，**必须主动询问**，不得跳过。
+- 如果用户没有明确提供信源，**必须主动询问**，严禁跳过，严禁自作主张。
 
-确认当前环境已安装 Inkstone 技能（用于步骤 3 提取源文档）。若未找到 Inkstone，**停止执行**并提示用户在终端手动运行：
-
-```
-npx skills add zzzdajb/inkstone
-```
-
-安装完成后重新开始。
+确认当前环境已安装 Inkstone 技能（用于步骤 3 提取源文档）后使用Inkstone SKILL提取信源并获得结构化数据。
 
 后续所有内容以信源为准。除了叙事风格指南允许的联网搜索故事素材以外，不得引入信源之外的事实、数据或观点。
 
@@ -48,15 +42,19 @@ npx skills add zzzdajb/inkstone
 python "<skill-dir>/scripts/preflight.py"
 ```
 
-脚本会检测 Node.js、Playwright 和浏览器。`[FOUND]` 表示确认存在，`[UNCERTAIN]` 表示无法确认——需要自行判断是否可以继续。需要 Node.js 和 Playwright 及 Chromium 浏览器；渲染器会在当前工作区和 SKILL 的上级工作区搜索 `playwright`。如果关键依赖缺失且无法解决，终止流程并告知用户。
+脚本会检测 Node.js、Playwright 和浏览器。`[FOUND]` 表示确认存在，`[UNCERTAIN]` 表示无法确认，需要自行判断是否可以继续。需要 Node.js 和 Playwright 及 Chromium 浏览器；渲染器会在当前工作区和 SKILL 的上级工作区搜索 `playwright`。如果关键依赖缺失且无法解决，终止流程并告知用户。
 
 ### 3. 素材分析
 
-调用 Inkstone 技能提取源文档，将产物输出到 `视频图/`。提取完成后，阅读 `source_content.md`（或 `.html`）确定以下要素：标题、副标题、数据来源、核心数据、强调要点。
+调用 Inkstone SKILL提取源文档，将产物输出到 `视频图/`。提取完成后，阅读 `source_content.md`（或 `.html`）确定以下要素：标题、副标题、数据来源、核心数据、强调要点。
 
-同时判断**信源语言**：如果信源是英文或从英文翻译而来，在后续改写中必须执行 [references/narrative-style.md](references/narrative-style.md) 中"翻译腔反模式"和"英文术语处理"章节的全部规则。英文信源的翻译腔风险远高于中文信源，需要格外警惕。
+同时判断**信源语言**：如果信源是英文或从英文翻译而来，在后续改写中必须执行 [references/narrative-style.md](references/narrative-style.md) 中"翻译腔反模式"和"英文术语处理"章节的全部规则。英文信源的翻译腔风险远高于中文信源。
 
-准备或修改渲染器输入时，阅读 [references/content-format.md](references/content-format.md)。选择或更改视觉主题时，阅读 [references/themes.md](references/themes.md)。**每次都必须**阅读 [references/narrative-style.md](references/narrative-style.md)——它规定了所有轮播图的写作语气、数字密度、钩子结构和组件用法。
+准备或修改渲染器输入时，阅读 [references/content-format.md](references/content-format.md)。
+
+选择或更改视觉主题时，阅读 [references/themes.md](references/themes.md)。
+
+任何时候都**必须**阅读 [references/narrative-style.md](references/narrative-style.md)——它规定了所有轮播图的写作语气、数字密度、钩子结构和组件用法。
 
 ### 4. 改写与编写 Markdown
 
@@ -67,7 +65,7 @@ python "<skill-dir>/scripts/preflight.py"
 - 每页应以读者视角的钩子开头。
 - 数字应编进叙述（而非堆在数据面板里）。
 - 整体读感应像聊天而非汇报。
-- 如果某个话题适合插入一段真实故事，可联网从高置信度来源搜索。将搜到的故事素材先写入一个草稿笔记文件（不得直接写入最终 Markdown），以便审计 sub-agent 稍后核查。
+- 如果某个话题适合插入一段真实故事，可联网从高置信度来源搜索。将搜到的故事素材先写入一个草稿笔记文件（不得直接写入最终 Markdown），以便审计 subagent 稍后核查。
 - 信源中出现悖论式、循环式或反直觉的修辞时，拆成**线性因果链**。不保留原文的绕圈结构，直接写清楚"先发生什么→导致什么"。例如："短缺的原因是过剩，过剩的原因是短缺"→"一旦某样东西短缺，所有人都冲进去造，最终建过头变成过剩"。
 - **英文/翻译件信源**的改写必须额外遵守叙事风格指南中的"英文术语处理"、"翻译腔反模式"和"读者知识假设"章节。写完后逐句自查是否存在英文语序、被动句式、多层定语嵌套等翻译腔痕迹。
 
@@ -78,24 +76,27 @@ python "<skill-dir>/scripts/preflight.py"
 轮播图主要在手机上阅读，屏幕小、注意力短。
 
 - **优先用表格而非图片**展示结构化数据。表格在小屏上可读性远优于缩小后的图表。
-- **尽量少插入图片**。如果必须插入，使用简单、对比度高、元素少的图——复杂图表缩到手机上根本看不清。
+- **尽量少插入图片**。如果必须插入，使用简单、对比度高、元素少的图，复杂图表缩到手机上根本看不清。
 - 图片不传达关键信息时，考虑用文字描述替代。
 
-#### 封面策略
+#### 封面
 
-封面的目标是制造阅读动机，必须回答三个问题：**和读者有什么关系、看了有什么用、读者是谁**。从读者利益出发，不从信源作者出发。
+封面的目标是制造阅读动机，读者为泛金融受众，因此，必须回答三个问题：
+- 作者是谁？用大白话告诉读者作者的身份，不要假设读者了解信源来源/背景
+- 和读者有什么关系？没有直接关系就试着去拆间接关系，举个例子，非自己国家的国际冲突（没有直接关系）——油价可能和冲突有关——油价影响其他物品价格
+- 对读者可能有什么影响？没有直接影响就试着去拆间接影响，同样的，国际冲突——油价不稳定——物价上涨
 
-封面由三层信息组成，各司其职、互不重复：
+封面由三层信息组成，各司其职：
 
 - **`kicker`（左上角标签）**：承载来源和场景信息——机构名 + 时间 + 文档类型（如 `A16Z 2026LP 会议纪要`）。
-- **`title`（主标题）**：制造阅读动机，聚焦"对读者意味着什么"。不放人名或机构名，用短句制造好奇心或紧迫感。
-- **`subtitle`（副标题）**：堆权威感 + 内容承诺。要求：
-  - 使用**具体数字**（如"超400亿美元"），禁止模糊说法（如"几百亿"）。
+- **`title`（主标题）**：制造阅读动机，聚焦"对读者可能有什么影响"，不放人名或机构名，用短句制造好奇心或紧迫感。
+- **`subtitle`（副标题）**：
+要求：
+  - 如果要涉及到数字，使用**具体数字**（如"超400亿美元"），禁止模糊说法（如"几百亿"）。
   - 使用**定性词**建立可信度（如"美国顶级风投"）。
   - 包含**人名或机构名**。
-  - 包含**内容量化**（如"7个核心判断"）。
 
-三层之间不重复信息。kicker 已有的内容（如机构名、会议类型），subtitle 不再写。
+三层之间尽量不要重复信息。kicker 已有的内容（如机构名、会议类型），subtitle 不再写。
 
 #### 结尾缩略图
 
@@ -159,6 +160,8 @@ node "<skill-dir>/scripts/render.mjs" <input.md> --output "<workspace>/视频图
 **文本审计**（读 Markdown）：
 
 - 主体指代是否明确？抽出中间任一页单独读，能否知道在讲哪家公司/哪个人？禁止跨页依赖“这家公司”等指代；封面 subtitle 必须点名主角。
+- 封面是否遵循了封面相关原则，回答“作者是谁？和读者有什么关系？对读者可能有什么影响？”
+- 封面是否具有一定程度上吸引泛金融读者阅读的能力？
 - 每页是否以读者视角的钩子开头？
 - 是否使用了僵硬的编号结构（一、二、三）作为主要组织方式？
 - 整体读感是否像聊天，而非研报？
